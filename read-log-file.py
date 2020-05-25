@@ -23,6 +23,41 @@ for line in lines:
 	json_line_dict = json.loads(line)
 	json_list.append(json_line_dict)
 
-print("eventid")
+
 for json_dict in json_list:
-	print(json_dict["eventid"])
+	if json_dict["eventid"] == "cowrie.session.connect":
+		print("put data into session-connect structure")
+
+	elif json_dict["eventid"] == "cowrie.session.closed":
+		print("put data into session-closed structure")
+
+	elif json_dict["eventid"] == "cowrie.login.success":
+		print("put data into login structure")
+
+	elif json_dict["eventid"] == "cowrie.login.failed":
+		print("put data into login structure")
+
+	elif json_dict["eventid"] == "cowrie.command.input":
+		print("put data into command structure")
+
+	elif json_dict["eventid"] == "cowrie.command.failed":
+		print("put data into command structure")
+
+	elif json_dict["eventid"] == "cowrie.client.version":
+		print("put data into client-version structure")
+
+	elif json_dict["eventid"] == "cowrie.client.kex":
+		print("put data into kex structure")
+
+	else:
+		print("MISSING: {}".format(json_dict["eventid"]))
+
+
+
+
+
+
+
+
+
+#
