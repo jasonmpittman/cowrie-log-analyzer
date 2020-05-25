@@ -6,6 +6,8 @@ from session_closed_structure import *
 
 from login_structure import *
 
+from command_structure import *
+
 
 '''
 cowrie-log-analyzer: Read Log File
@@ -44,12 +46,9 @@ for json_dict in json_list:
 		obj = login_structure(json_dict)
 		obj.printS()
 
-
-	elif json_dict["eventid"] == "cowrie.command.input":
-		print("put data into command structure")
-
-	elif json_dict["eventid"] == "cowrie.command.failed":
-		print("put data into command structure")
+	elif json_dict["eventid"] == "cowrie.command.input" or json_dict["eventid"] == "cowrie.command.failed":
+		obj = command_structure(json_dict)
+		obj.printS()
 
 	elif json_dict["eventid"] == "cowrie.client.version":
 		print("put data into client-version structure")
