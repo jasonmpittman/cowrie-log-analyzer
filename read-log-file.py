@@ -49,6 +49,18 @@ for json_dict in json_list:
 	elif json_dict["eventid"] == "cowrie.client.kex":
 		print("put data into kex structure")
 
+	elif json_dict["eventid"] == "cowrie.log.closed":
+		print("put data into log-closed structure")
+
+	elif json_dict["eventid"] == "cowrie.session.params":
+		print("put data into session-params structure")
+
+	elif json_dict["eventid"] == "cowrie.session.file_upload":
+		print("put data into session-file_upload structure")
+
+	elif json_dict["eventid"] == "cowrie.session.file_download":
+		print("put data into session-params structure")
+
 	else:
 		print("MISSING: {}".format(json_dict["eventid"]))
 
