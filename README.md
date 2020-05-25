@@ -10,15 +10,17 @@ CLA consumes cowrie JSON log files. The optimal and expected operation is to con
 CLA captures source IP address and source IP port.   
   
 ## Messages
-CLA captures and deconstructs *messages*.
-
-### Usernames
-
-### Passwords
+CLA captures and deconstructs *messages*. The message types CLA targets are:
+   1. login attempt
+      a. usernames
+      b. passwords
+   2. CMD
+   3. 
 
 ### Other
 
 ## Artifacts
+CLA tracks file downloads but does not *download* artifacts.
 
 ## Output
 CLA generates text and graphical output. The text output is simple and displayed in the program GUI. The graphical output consists of basic charts (e.g., line, histogram) that can be exported.
