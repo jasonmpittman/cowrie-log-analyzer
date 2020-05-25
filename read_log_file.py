@@ -1,6 +1,6 @@
 import json
 
-from 'session-connect-structure' import *
+from session_connect_structure import *
 '''
 cowrie-log-analyzer: Read Log File
 
