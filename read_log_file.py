@@ -31,12 +31,12 @@ for line in lines:
 
 for json_dict in json_list:
 	if json_dict["eventid"] == "cowrie.session.connect":
-		print("put data into session-connect structure")
 		obj = session_connect_structure(json_dict)
 		obj.printS()
 
 	elif json_dict["eventid"] == "cowrie.session.closed":
-		print("put data into session-closed structure")
+		obj = session_closed_structure(json_dict)
+		obj.printS()
 
 	elif json_dict["eventid"] == "cowrie.login.success":
 		print("put data into login structure")
