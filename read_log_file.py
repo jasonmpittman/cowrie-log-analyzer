@@ -8,6 +8,7 @@ from login_structure import *
 
 from command_structure import *
 
+from file_download_structure import *
 
 '''
 cowrie-log-analyzer: Read Log File
@@ -66,7 +67,8 @@ for json_dict in json_list:
 		print("put data into session-file_upload structure")
 
 	elif json_dict["eventid"] == "cowrie.session.file_download":
-		print("put data into session-params structure")
+		obj = file_download_structure(json_dict)
+		obj.printS()
 
 	else:
 		print("MISSING: {}".format(json_dict["eventid"]))
