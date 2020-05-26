@@ -33,6 +33,7 @@ for json_dict in json_list:
 E = Events(obj_list)
 #E.printEvents()
 E.print_all_src_ips()
+E.print_all_src_ports()
 
 
 

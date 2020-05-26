@@ -9,3 +9,7 @@ class Events:
 	def print_all_src_ips(self):
 		for event in self.events:
 			event.print_src_ip()
+
+	def print_all_src_ports(self):
+		for event in self.events:
+			event.print_src_port()
