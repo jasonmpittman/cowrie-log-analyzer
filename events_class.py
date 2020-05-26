@@ -6,6 +6,6 @@ class Events:
 		for event in self.events:
 			event.printEvent()
 
-	def print_all_src_ip(self):
+	def print_all_src_ips(self):
 		for event in self.events:
 			event.print_src_ip()
