@@ -6,7 +6,10 @@ class Event:
 		print(self.event)
 
 	def print_src_ip(self):
-		print(self.event["src_ip"])
+		try:
+			print(self.event["src_ip"])
+		except:
+			pass
 
 	def print_src_port(self):
 		try:
