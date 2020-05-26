@@ -1,6 +1,6 @@
 import json
 
-#from session_connect_structure import *
+from event_class import *
 
 '''
 cowrie-log-analyzer: Read Log File
@@ -25,47 +25,11 @@ for line in lines:
 	json_line_dict = json.loads(line)
 	json_list.append(json_line_dict)
 
-'''
+
 for json_dict in json_list:
-	if json_dict["eventid"] == "cowrie.session.connect":
-		obj = session_connect_structure(json_dict)
-		obj.printS()
+		obj = event_class(json_dict)
+		obj.printEvent()
 
-	elif json_dict["eventid"] == "cowrie.session.closed":
-		obj = session_closed_structure(json_dict)
-		obj.printS()
-
-	elif json_dict["eventid"] == "cowrie.login.success" or json_dict["eventid"] == "cowrie.login.failed":
-		obj = login_structure(json_dict)
-		obj.printS()
-
-	elif json_dict["eventid"] == "cowrie.command.input" or json_dict["eventid"] == "cowrie.command.failed":
-		obj = command_structure(json_dict)
-		obj.printS()
-
-	elif json_dict["eventid"] == "cowrie.client.version":
-		print("put data into client-version structure")
-
-	elif json_dict["eventid"] == "cowrie.client.kex":
-		print("put data into kex structure")
-
-	elif json_dict["eventid"] == "cowrie.log.closed":
-		print("put data into log-closed structure")
-
-	elif json_dict["eventid"] == "cowrie.session.params":
-		print("put data into session-params structure")
-
-	elif json_dict["eventid"] == "cowrie.session.file_upload":
-		obj = file_upload_structure(json_dict)
-		obj.printS()
-
-	elif json_dict["eventid"] == "cowrie.session.file_download":
-		obj = file_download_structure(json_dict)
-		obj.printS()
-
-	else:
-		print("MISSING: {}".format(json_dict["eventid"]))
-'''
 
 
 
