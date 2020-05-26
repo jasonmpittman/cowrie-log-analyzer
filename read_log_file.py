@@ -1,16 +1,6 @@
 import json
 
-from session_connect_structure import *
-
-from session_closed_structure import *
-
-from login_structure import *
-
-from command_structure import *
-
-from file_download_structure import *
-
-from file_upload_structure import *
+#from session_connect_structure import *
 
 '''
 cowrie-log-analyzer: Read Log File
@@ -35,7 +25,7 @@ for line in lines:
 	json_line_dict = json.loads(line)
 	json_list.append(json_line_dict)
 
-
+'''
 for json_dict in json_list:
 	if json_dict["eventid"] == "cowrie.session.connect":
 		obj = session_connect_structure(json_dict)
@@ -75,7 +65,7 @@ for json_dict in json_list:
 
 	else:
 		print("MISSING: {}".format(json_dict["eventid"]))
-
+'''
 
 
 
