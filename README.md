@@ -1,5 +1,5 @@
 # Cowrie Log Analyzer
-Cowrie Log Analzer (CLA) is a Python\TKinter program which analyzes cowrie honeypot json log files and shows useful research information. 
+Cowrie Log Analzer (CLA) is a Python\TKinter program which analyzes cowrie honeypot json log files and shows useful research information.
 
 What makes CLA different than other cowrie log analyzers is the notion of history. CLA retains analysis in persistent storage
 
@@ -8,14 +8,14 @@ CLA consumes cowrie JSON log files. The optimal and expected operation is to con
 
 ## IP Addresses
 CLA captures source IP address and source IP port.   
-  
+
 ## Messages
 CLA captures and deconstructs *messages*. The message types CLA targets are:
    1. login attempt
       a. usernames
       b. passwords
    2. CMD
-   3. 
+   3.
 
 ### Other
 
