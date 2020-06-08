@@ -16,3 +16,9 @@ class Event:
 			print("src_port:", self.event["src_port"])
 		except:
 			pass
+
+	def getEventValue(self, k):
+		try:
+			return self.event[k]
+		except:
+			return ""
