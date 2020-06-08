@@ -1,6 +1,28 @@
+import json
+
+from event_class import *
+
 class Events:
-	def __init__(self, events):
+	def __init__(self, events=[]):
 		self.events = events
+
+	def getDataFromFile(self, fileName):
+		file = open(fileName, "r")
+
+		#Gets the lines from the log file
+		lines = []
+		lines = file.readlines()
+
+		#Converts each line from string of json to a python dictionary
+		#then puts each line into Events clas
+
+		json_list = []
+
+		for line in lines:
+			json_line_dict = json.loads(line)
+			obj = Event(json_line_dict)
+			self.events.append(obj)
+
 
 	def printEvents(self):
 		for event in self.events:
@@ -13,7 +35,6 @@ class Events:
 	def print_all_src_ports(self):
 		for event in self.events:
 			event.print_src_port()
-
 
 	def topTen(self, category):
 		totals = {}
