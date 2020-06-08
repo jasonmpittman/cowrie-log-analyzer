@@ -40,7 +40,7 @@ class ScrollSection:
 		self.scrollFrame.pack(side=Side, padx=px, pady=py)
 
 	def Append(self, text):
-		self.scrollText.insert(tk.END, text + "\n")
+		self.scrollText.insert(tk.END, text)
 
 class Graph:
 	def __init__(self, parent, widthIn, heightIn, xLabel, yLabel, title="Title"):
