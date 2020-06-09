@@ -30,7 +30,7 @@ class ScrollSection:
 		self.title.pack(side="top", padx=10, pady=2)
 		self.scroll = tk.Scrollbar(self.scrollFrame)
 		self.scrollText = tk.Text(self.scrollFrame, yscrollcommand=self.scroll.set, height=h, width=w)
-		#self.scrollText.configure(state="disabled")
+		self.scrollText.configure(state="disabled")
 		self.scrollText.pack(side="left", padx=5, pady=10)
 
 	def Grid(self, r, c, px=10, py=10):
@@ -40,7 +40,9 @@ class ScrollSection:
 		self.scrollFrame.pack(side=Side, padx=px, pady=py)
 
 	def Append(self, text):
+		self.scrollText.configure(state="normal")
 		self.scrollText.insert(tk.END, text)
+		self.scrollText.configure(state="disabled")
 
 class Graph:
 	def __init__(self, parent, widthIn, heightIn, xLabel, yLabel, title="Title"):

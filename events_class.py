@@ -59,6 +59,13 @@ class Events:
 			i += 1
 		return strReturn
 
+	def getEventCategory(self, eventid):
+		ret = []
+		for ev in self.events:
+			if eventid == ev.event["eventid"]:
+				ret.append(ev)
+		return ret
+
 
 
 #
