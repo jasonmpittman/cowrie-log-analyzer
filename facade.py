@@ -19,24 +19,36 @@ fileName = "cowrie.json.2020-03-19"
 
 E = Events()
 E.getDataFromFile(fileName)
-print(E.topTen("src_ip"))
 
-Command = ScrollSection(root, 10, 20, "Top 10 Commands")
-IP_Address = ScrollSection(root, 10, 20, "Top 10 IP Addresses")
-User_names = ScrollSection(root, 10, 20, "Top 10 Usernames")
-Passwords = ScrollSection(root, 10, 20, "Top 10 Passwords")
+first_row = tk.Frame()
+first_row.pack(side="top")
 
-Command.Grid(0, 0)
+second_row = tk.Frame()
+second_row.pack(side="top")
+
+
+IP_Address = ScrollSection(first_row, 10, 20, "Top 10 IP Addresses")
+User_names = ScrollSection(first_row, 10, 20, "Top 10 Usernames")
+Passwords = ScrollSection(first_row, 10, 20, "Top 10 Passwords")
+user_and_pass = ScrollSection(second_row, 10, 20, "Top 10 Username \nPassword Pairs")
+
+
+#in first_row
 IP_Address.Grid(0, 1)
 User_names.Grid(0, 2)
 Passwords.Grid(0, 3)
 
+#in second_row
+user_and_pass.Grid(0,0)
+
+
 IP_Address.Append(E.topTen("src_ip"))
 User_names.Append(E.topTen("username"))
 Passwords.Append(E.topTen("password"))
+user_and_pass.Append(E.topTen("username", "password"))
 
 BottomBar = tk.Frame(root)
-BottomBar.grid(row=1, column=3, sticky="s")
+BottomBar.pack(side="bottom")
 
 Exit = standardButton(BottomBar, exitFunction , "Exit")
 Exit.Pack("right")
