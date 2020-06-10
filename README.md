@@ -14,13 +14,16 @@ CLA captures and deconstructs *messages*. The message types CLA targets are:
    1. login attempt [cowrie.login.success]  
       a. usernames  
       b. passwords  
+      
    2. commands [cowrie.command.input]  
       a. single command or single line sequential command input  
       b. sequential command input exploded
-   3. downloads [cowrie.session.file_download]
+   
+   3. downloads [cowrie.session.file_download]  
       a. url  
       b. destination file  
-   4. session duration [cowrie.session.connect -> cowrie.session.closed]
+   
+   4. session duration [cowrie.session.connect -> cowrie.session.closed]  
       a. session id (session)  
       b. session duration (time in seconds)
       
