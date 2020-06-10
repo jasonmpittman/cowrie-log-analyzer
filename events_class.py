@@ -50,7 +50,7 @@ class Events:
 
 		i = 0
 		strReturn = ""
-		while i < 10:
+		while i < 10 and i < len(sortedDictionary):
 			key, value = sortedDictionary[i]
 			if i == 9:
 				strReturn += str(i + 1) + ". " + key + "\n"
