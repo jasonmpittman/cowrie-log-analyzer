@@ -11,12 +11,19 @@ CLA captures source IP address and source IP port.
 
 ## Messages
 CLA captures and deconstructs *messages*. The message types CLA targets are:
-   1. login attempt  
+   1. login attempt [cowrie.login.success]  
       a. usernames  
       b. passwords  
-   2. CMD
-   3.
-
+   2. commands [cowrie.command.input]  
+      a. single command or single line sequential command input  
+      b. sequential command input exploded
+   3. downloads [cowrie.session.file_download]
+      a. url  
+      b. destination file  
+   4. session duration [cowrie.session.connect -> cowrie.session.closed]
+      a. session id (session)  
+      b. session duration (time in seconds)
+      
 ### Data Analysis
 CLA offers two types of data analysis: text and graph.
 
@@ -26,7 +33,8 @@ CLA offers two types of data analysis: text and graph.
 3. Top 10 attempted passwords
 4. Top 10 attempted username & password pairs
 5. Top 10 downloaded file object (name)
-5. Top 10 source countries (geoip lookup on source IP)
+6. Top 10 source countries (geoip lookup on source IP)
+7. Top 10 session durations
 
 Overall--
 1. Most common source IP (frequency)
@@ -34,6 +42,10 @@ Overall--
 3. Most common password (frequency)
 4. Most common username & password pair (frequency)
 5. Most common source country
+6. Longest session duration
+
+#### Graph Analysis Output:
+TBD
 
 ## Artifacts
 CLA tracks file downloads but does not *download* artifacts.
@@ -42,4 +54,4 @@ CLA tracks file downloads but does not *download* artifacts.
 CLA generates text and graphical output. The text output is simple and displayed in the program GUI. The graphical output consists of basic charts (e.g., line, histogram) that can be exported.
 
 ## Storage
-Concurrently, CLA persists data to a sqlite3 database. 
+Concurrently, CLA persists data to a sqlite3 database. The schema is as follows:
