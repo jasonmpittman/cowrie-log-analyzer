@@ -36,10 +36,10 @@ class Events:
 		for event in self.events:
 			event.print_src_port()
 
-	def topTen(self, category):
+	def topTen(self, category1, category2=""):
 		totals = {}
 		for event in self.events:
-			res = event.getEventValue(category)
+			res = event.getEventValue(category1, category2)
 			if res != "":
 				if res not in totals:
 					totals.update({res : 1})

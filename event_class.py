@@ -17,11 +17,17 @@ class Event:
 		except:
 			pass
 
-	def getEventValue(self, k):
-		try:
-			return self.event[k]
-		except:
-			return ""
+	def getEventValue(self, category1, category2=""):
+		if category2 == "":
+			try:
+				return self.event[category1]
+			except:
+				return ""
+		else:
+			try:
+				return self.event[category1] + ": " + self.event[category2]
+			except:
+				return ""
 
 	def get_command_list(self):
 		commandLine = self.event["message"]
