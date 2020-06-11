@@ -4,6 +4,8 @@ from event_class import *
 
 import os
 
+import pathlib
+
 class Events:
 	def __init__(self, events=[]):
 		self.events = events
@@ -29,6 +31,17 @@ class Events:
 		for filename in os.listdir(dir_name):
 			self.getDataFromFile(dir_name + "/" + filename)
 
+	def get_data(self, name):
+		file = pathlib.Path(name)
+		if file.exists():
+			if os.path.isfile(name):
+				self.getDataFromFile(name)
+			else:
+				self.get_data_from_dir(name)
+			return True
+		else:
+			print("Not a file or directory with that path")
+			return False
 
 
 	def printEvents(self):

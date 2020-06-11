@@ -13,10 +13,13 @@ def graphWindow():
 
 def import_cmd():
 	file_name = input_box.Get()
-	#E.getDataFromFile(file_name)
-	E.get_data_from_dir(file_name)
-	E.print_all_src_ips()
-	import_window.destroy()
+	success = E.get_data(file_name)
+	if success:
+		E.print_all_src_ips()
+		import_window.destroy()
+	else:
+		error_message.set("Not a file or directory")
+		print("Failed")
 
 def importWindow():
 	global import_window
@@ -27,8 +30,13 @@ def importWindow():
 	input_box.Pack("top", 20, 30)
 	cancel = standardButton(import_window, import_window.destroy, "Cancel")
 	cancel.Pack("right")
+	global error_message
+	error_message = tk.StringVar()
+	error_message.set("")
+	error_label = tk.Label(import_window, textvariable=error_message)
 	import_button = standardButton(import_window, import_cmd, "Import")
 	import_button.Pack("right")
+	error_label.pack(side="bottom")
 
 
 root = tk.Tk()
