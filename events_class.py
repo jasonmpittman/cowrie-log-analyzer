@@ -2,6 +2,8 @@ import json
 
 from event_class import *
 
+import os
+
 class Events:
 	def __init__(self, events=[]):
 		self.events = events
@@ -22,6 +24,11 @@ class Events:
 			json_line_dict = json.loads(line)
 			obj = Event(json_line_dict)
 			self.events.append(obj)
+
+	def get_data_from_dir(self, dir_name):
+		for filename in os.listdir(dir_name):
+			self.getDataFromFile(dir_name + "/" + filename)
+
 
 
 	def printEvents(self):

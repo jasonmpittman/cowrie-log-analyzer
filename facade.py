@@ -13,7 +13,8 @@ def graphWindow():
 
 def import_cmd():
 	file_name = input_box.Get()
-	E.getDataFromFile(file_name)
+	#E.getDataFromFile(file_name)
+	E.get_data_from_dir(file_name)
 	E.print_all_src_ips()
 	import_window.destroy()
 
@@ -24,7 +25,7 @@ def importWindow():
 	global input_box
 	input_box = Text_Imput_Section(import_window, "File or directory name: ")
 	input_box.Pack("top", 20, 30)
-	cancel = standardButton(import_window, exitFunction, "Cancel")
+	cancel = standardButton(import_window, import_window.destroy, "Cancel")
 	cancel.Pack("right")
 	import_button = standardButton(import_window, import_cmd, "Import")
 	import_button.Pack("right")
