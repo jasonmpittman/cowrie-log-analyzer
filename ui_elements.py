@@ -77,7 +77,7 @@ class Graph:
 		self.graph.set_xlabel(self.xLabel)
 		self.graph.set_ylabel(self.yLabel)
 
-class Text_Imput_Section:
+class Text_Input_Section:
 	def __init__(self, parent, label_text):
 		self.frame = tk.Frame(parent)
 		self.label = tk.Label(self.frame, text=label_text)
@@ -93,6 +93,38 @@ class Text_Imput_Section:
 
 	def Get(self):
 		return self.text.get("1.0", "end-1c")
+
+class Import_Popup:
+	def __init__(self, E, lus, parent):
+		self.file_name = ""
+		self.E = E
+		self.lambda_update_screen = lus
+		self.parent = parent
+
+	def import_popup(self):
+		self.import_window = tk.Toplevel(self.parent)
+		self.import_window.title("Import")
+		self.input_box = Text_Input_Section(self.import_window, "File or directory name: ")
+		self.input_box.Pack("top", 20, 30)
+		self.cancel = standardButton(self.import_window, self.import_window.destroy, "Cancel")
+		self.cancel.Pack("right")
+		self.error_message = tk.StringVar()
+		self.error_message.set("")
+		self.error_label = tk.Label(self.import_window, textvariable=self.error_message)
+		self.import_button = standardButton(self.import_window, self.import_cmd, "Import")
+		self.import_button.Pack("right")
+		self.error_label.pack(side="bottom")
+
+	def import_cmd(self):
+		self.file_name = self.input_box.Get()
+		succ = self.E.get_data(self.file_name)
+		if succ:
+			pass
+			self.lambda_update_screen()
+			self.import_window.destroy()
+		else:
+			self.error_message.set("Not a file or directory")
+
 
 
 #
