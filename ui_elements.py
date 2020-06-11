@@ -76,4 +76,23 @@ class Graph:
 		self.graph.set_title(self.title)
 		self.graph.set_xlabel(self.xLabel)
 		self.graph.set_ylabel(self.yLabel)
+
+class Text_Imput_Section:
+	def __init__(self, parent, label_text):
+		self.frame = tk.Frame(parent)
+		self.label = tk.Label(self.frame, text=label_text)
+		self.label.pack(side="left")
+		self.text = tk.Text(self.frame, height=1, width=25)
+		self.text.pack(side="left", padx=5)
+
+	def Pack(self, Side, px=0, py=0):
+		self.frame.pack(side=Side, padx=px, pady=py)
+
+	def Grid(self, r, c, px=0, py=0):
+		self.frame.grid(row=r, column=c, padx=px, pady=py)
+
+	def Get(self):
+		return self.text.get("1.0", "end-1c")
+
+
 #
