@@ -73,11 +73,12 @@ class Events:
 		while i < 10 and i < len(sortedDictionary):
 			key, value = sortedDictionary[i]
 			if i == 9:
-				strReturn += str(i + 1) + ". " + key + "\n"
+				strReturn += str(i + 1) + ". " + str(key) + "\n"
 			else:
-				strReturn += str(i + 1) + ".  " + key + "\n"
+				strReturn += str(i + 1) + ".  " + str(key) + "\n"
 			i += 1
-		return strReturn
+		first, val = sortedDictionary[0]
+		return strReturn, first
 
 	def getEventCategory(self, eventid):
 		ret = []

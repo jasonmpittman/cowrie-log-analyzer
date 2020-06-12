@@ -82,7 +82,8 @@ class Text_Input_Section:
 		self.frame = tk.Frame(parent)
 		self.label = tk.Label(self.frame, text=label_text)
 		self.label.pack(side="left")
-		self.text = tk.Text(self.frame, height=1, width=25)
+		self.text = tk.Entry(self.frame, bd=2)
+		self.text.focus_set()
 		self.text.pack(side="left", padx=5)
 
 	def Pack(self, Side, px=0, py=0):
@@ -92,7 +93,7 @@ class Text_Input_Section:
 		self.frame.grid(row=r, column=c, padx=px, pady=py)
 
 	def Get(self):
-		return self.text.get("1.0", "end-1c")
+		return self.text.get()
 
 class Import_Popup:
 	def __init__(self, E, lus, parent):
@@ -104,6 +105,7 @@ class Import_Popup:
 	def import_popup(self):
 		self.import_window = tk.Toplevel(self.parent)
 		self.import_window.title("Import")
+		self.import_window.bind('<Return>', self.import_cmd)
 		self.input_box = Text_Input_Section(self.import_window, "File or directory name: ")
 		self.input_box.Pack("top", 20, 30)
 		self.cancel = standardButton(self.import_window, self.import_window.destroy, "Cancel")
@@ -115,7 +117,7 @@ class Import_Popup:
 		self.import_button.Pack("right")
 		self.error_label.pack(side="bottom")
 
-	def import_cmd(self):
+	def import_cmd(self, event=None):
 		self.file_name = self.input_box.Get()
 		succ = self.E.get_data(self.file_name)
 		if succ:
