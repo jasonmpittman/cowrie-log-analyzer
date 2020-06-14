@@ -44,6 +44,12 @@ class ScrollSection:
 		self.scrollText.insert(tk.END, text)
 		self.scrollText.configure(state="disabled")
 
+	def export_md(self):
+		string = "## " + self.title.text
+		string += self.scrollText.get("1.0", tk.END)
+		return string
+
+
 class Graph:
 	def __init__(self, parent, widthIn, heightIn, xLabel, yLabel, title="Title"):
 		self.data = []
@@ -95,37 +101,42 @@ class Text_Input_Section:
 	def Get(self):
 		return self.text.get()
 
-class Import_Popup:
-	def __init__(self, E, lus, parent):
-		self.file_name = ""
-		self.E = E
-		self.lambda_update_screen = lus
-		self.parent = parent
 
-	def import_popup(self):
-		self.import_window = tk.Toplevel(self.parent)
-		self.import_window.title("Import")
-		self.import_window.bind('<Return>', self.import_cmd)
-		self.input_box = Text_Input_Section(self.import_window, "File or directory name: ")
+class PopUp:
+	def __init__(self, cmd, update, parent, title, action_name, error_message, label_text):
+		self.cmd = cmd
+		self.update = update
+		self.parent = parent
+		self.title = title
+		self.action_name = action_name
+		self.error_message = error_message
+		self.input_text = ""
+		self.label_text = label_text
+
+	def pop_up(self):
+		self.window = tk.Toplevel(self.parent)
+		self.window.title(self.title)
+		self.window.bind('<Return>', self.btn_cmd)
+		self.input_box = Text_Input_Section(self.window, self.label_text)
 		self.input_box.Pack("top", 20, 30)
-		self.cancel = standardButton(self.import_window, self.import_window.destroy, "Cancel")
+		self.cancel = standardButton(self.window, self.window.destroy, "Cancel")
 		self.cancel.Pack("right")
 		self.error_message = tk.StringVar()
 		self.error_message.set("")
-		self.error_label = tk.Label(self.import_window, textvariable=self.error_message)
-		self.import_button = standardButton(self.import_window, self.import_cmd, "Import")
-		self.import_button.Pack("right")
+		self.error_label = tk.Label(self.window, textvariable=self.error_message)
+		self.button = standardButton(self.window, self.btn_cmd, self.action_name)
+		self.button.Pack("right")
 		self.error_label.pack(side="bottom")
 
-	def import_cmd(self, event=None):
-		self.file_name = self.input_box.Get()
-		succ = self.E.get_data(self.file_name)
+
+	def btn_cmd(self, event=None):
+		self.input_text = self.input_box.Get()
+		succ = self.cmd(self.input_text)
 		if succ:
-			pass
-			self.lambda_update_screen()
-			self.import_window.destroy()
+			self.update()
+			self.window.destroy()
 		else:
-			self.error_message.set("Not a file or directory")
+			self.error_message.set(self.error_message)
 
 
 

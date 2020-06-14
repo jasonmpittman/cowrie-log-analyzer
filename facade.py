@@ -45,7 +45,7 @@ fileName = "cowrie.json.2020-03-19"
 E = Events()
 #E.getDataFromFile(fileName)
 
-import_pop = Import_Popup(E, update_screen, root)
+import_pop = PopUp(E.get_data, update_screen, root, "Import", "Import", "Not a file or directory", "File or directory name: ")
 
 first_row = tk.Frame()
 first_row.pack(side="top")
@@ -89,7 +89,9 @@ Exit.Pack("right")
 Graph = standardButton(BottomBar, graphWindow, "Graph")
 Graph.Pack("right")
 
-Import = standardButton(BottomBar, import_pop.import_popup, "Import")
+Import = standardButton(BottomBar, import_pop.pop_up, "Import")
 Import.Pack("right")
+
+# Export = standardButton(BottomBar, , "Export")
 
 root.mainloop()
