@@ -87,6 +87,14 @@ class Events:
 				ret.append(ev)
 		return ret
 
+def ip_to_decimal(ip):
+	ip_parts = ip.split(".")
+	return int(ip_parts[0]) * 256**3 + int(ip_parts[1]) * 256**2 + int(ip_parts[2]) * 256**1 + int(ip_parts[3])
+
+
+
+
+
 
 
 #

@@ -2,8 +2,11 @@ from events_class import *
 
 from ui_elements import *
 
+from database_functions import *
+
 import sys
 
+# print(ip_to_decimal("47.134.135.197"))
 
 def graphWindow():
 	graphW = tk.Toplevel(root)

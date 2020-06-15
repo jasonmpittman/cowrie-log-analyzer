@@ -58,6 +58,8 @@ CLA generates text and graphical output. The text output is simple and displayed
 
 ## Storage
 Concurrently, CLA persists data to a sqlite3 database. The schema is as follows:
+
+#### Main Database
 - id: Integer
 - type: String
 - ip address: String
@@ -66,6 +68,14 @@ Concurrently, CLA persists data to a sqlite3 database. The schema is as follows:
 - filename: String
 - country: String
 - duration: Real
-- date: String
-- time: String
+- date/time: datetime
 - message: String
+
+#### Commands Database
+- Foreign id: Integer
+- Command: String
+
+#### Country Database
+- Primary Key: Integer
+- IP: String
+- Country: String
