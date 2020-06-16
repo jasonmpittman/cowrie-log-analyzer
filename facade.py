@@ -7,6 +7,8 @@ from database_functions import *
 import sys
 
 # print(ip_to_decimal("47.134.135.197"))
+country = get_ip_country("47.134.135.197")
+print("Country: {}".format(country))
 
 def graphWindow():
 	graphW = tk.Toplevel(root)
@@ -80,7 +82,6 @@ download_file.Grid(0, 0)
 origin_country.Grid(0, 1)
 session_duration.Grid(0, 2)
 overall_one.Grid(0, 3)
-
 
 #bottom buttons
 BottomBar = tk.Frame(root)

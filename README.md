@@ -76,6 +76,7 @@ Concurrently, CLA persists data to a sqlite3 database. The schema is as follows:
 - Command: String
 
 #### Country Database
+##### This site or product includes IP2Location LITE data available from http://www.ip2location.com.
 - Primary Key: Integer
 - IP: String
 - Country: String
