@@ -2,13 +2,12 @@ from events_class import *
 
 from ui_elements import *
 
-from database_functions import *
+from country_database_functions import *
 
 import sys
 
-# print(ip_to_decimal("47.134.135.197"))
-country = get_ip_country("47.134.135.197")
-print("Country: {}".format(country))
+# country = get_ip_country("47.134.135.197")
+# print("Country: {}".format(country))
 
 def graphWindow():
 	graphW = tk.Toplevel(root)
