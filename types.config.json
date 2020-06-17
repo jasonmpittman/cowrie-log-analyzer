@@ -1,0 +1,14 @@
+{
+	"cowrie.session.connect": "Connect",
+	"cowrie.client.version": "Version",
+	"cowrie.session.closed": "Closed",
+	"cowrie.login.success": "Login",
+	"cowrie.session.params": "Params",
+	"cowrie.command.input": "Command",
+	"cowrie.session.file_upload": "Upload",
+	"cowrie.client.kex": "SSH",
+	"cowrie.session.file_download": "Download",
+	"cowrie.login.failed": "Login",
+	"cowrie.command.failed": "Command",
+	"cowrie.log.closed": "Log"
+}

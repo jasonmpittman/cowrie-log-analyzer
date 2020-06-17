@@ -61,15 +61,15 @@ Concurrently, CLA persists data to a sqlite3 database. The schema is as follows:
 
 #### Main Database
 - id: Integer
-- type: String
-- ip address: String
-- username: String
-- password: String
-- filename: String
-- country: String
+- type: Text
+- ip address: Text
+- username: Text
+- password: Text
+- filename: Text
+- country: Text
 - duration: Real
 - date/time: datetime
-- message: String
+- message: Text
 
 #### Commands Database
 - Foreign id: Integer
@@ -77,6 +77,8 @@ Concurrently, CLA persists data to a sqlite3 database. The schema is as follows:
 
 #### Country Database
 ##### This site or product includes IP2Location LITE data available from http://www.ip2location.com.
-- Primary Key: Integer
-- IP: String
-- Country: String
+
+- ip_from: Integer
+- ip_to: Integer
+- country_code: Text
+- country_name: Text

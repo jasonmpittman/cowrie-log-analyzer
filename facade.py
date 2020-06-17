@@ -1,13 +1,21 @@
+'''
+TODO:
+	- get the download file names --> thing at the end of the path
+	- top 10 countries
+
+
+'''
+
+
 from events_class import *
 
 from ui_elements import *
 
 from country_database_functions import *
 
+from events_database_functions import *
 import sys
 
-# country = get_ip_country("47.134.135.197")
-# print("Country: {}".format(country))
 
 def graphWindow():
 	graphW = tk.Toplevel(root)
@@ -37,6 +45,11 @@ def update_screen():
 	session_duration.Append(sess_res)
 
 	overall_one.Append(f"ip: {ip1}\nusr: {usr1}\npass: {pass1}\nUser/Pass: {usr_pass_1} \nDownloads: {download1}\nCountry: {country1}")
+	config_dict = get_config()
+
+	for e in E.events:
+		get_type(e.event["eventid"], config_dict)
+
 
 root = tk.Tk()
 root.title("Cowrie Log Analyzer")

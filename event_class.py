@@ -29,10 +29,14 @@ class Event:
 			except:
 				return ""
 
+	def Get(key):
+		try:
+			return self.event[key]
+		except:
+			return None
+
 	def get_command_list(self):
 		commandLine = self.event["message"]
 		commandLine = commandLine.replace("CMD: ", "")
-		commandLine = commandLine.replace(" ||", ";")
-
 		commands = commandLine.split("; ")
 		return commands
