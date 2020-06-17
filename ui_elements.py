@@ -12,6 +12,8 @@ from matplotlib.figure import Figure
 
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
+from events_database_functions import *
+
 
 class standardButton:
 	def __init__(self, parent, commandFunction, buttonText):

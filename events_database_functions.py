@@ -33,8 +33,10 @@ def create_table(conn):
 						country TEXT,
 						duration REAL,
 						timestamp TEXT,
-						message TEXT
+						message TEXT,
+						constraint event_unique unique(type, ip_address, username, password, country, duration, timestamp, message)
 						);"""
+
 	try:
 		c = conn.cursor()
 		#executes the phrase
@@ -83,12 +85,25 @@ def get_data_touple(event):
 	message = event.Get("message")
 	return (type, ip, username, password, filename, country, duration, date_time, message)
 
+'''
+def create_row(conn, x, y):
+	sql = r"INSERT INTO table1(x, y) VALUES(?,?)"
+	cur = conn.cursor()
+	try:
+		cur.execute(sql, (x, y))
+		return cur.lastrowid
+	except:
+		return None
+'''
 
-def add_event(data):
-	pass
 
-conn = create_connection(events_db)
-get_file_name("http://45.148.10.95/dlrdlrdlrdlr00001/d4mnasdasd4mn.x86")
+def add_event(conn, event):
+	sql = """INSERT INTO events(type, ip_address, username, password, filename, country, duration, timestamp, message) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)  """
+	preped_data = get_data_touple(event)
+	cur = conn.cursor()
 
-E = Event({"eventid":"cowrie.session.connect","src_ip":"193.142.146.21","src_port":43854,"timestamp":"2020-03-19T00:44:31.639222Z","message":"New connection: 193.142.146.21:43854 (10.1.1.3:2222) [session: cafb43d1579d]","dst_ip":"10.1.1.3","protocol":"ssh","session":"cafb43d1579d","dst_port":2222,"sensor":"svrvmcw"})
-print(get_data_touple(E))
+	try:
+		cur.execute(sql, preped_data)
+		return cur.lastrowid
+	except:
+		return None

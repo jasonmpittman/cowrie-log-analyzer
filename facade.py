@@ -2,6 +2,8 @@
 TODO:
 	- get the download file names --> thing at the end of the path
 	- top 10 countries
+	- fix date time
+	- rework database stuff
 
 
 '''
@@ -14,7 +16,19 @@ from ui_elements import *
 from country_database_functions import *
 
 from events_database_functions import *
+
 import sys
+
+
+def select_all_tasks(conn):
+
+	cur = conn.cursor()
+	cur.execute("SELECT * FROM events")
+
+	rows = cur.fetchall()
+
+	for row in rows:
+		print(row)
 
 
 def graphWindow():
@@ -22,6 +36,15 @@ def graphWindow():
 	graphW.title("Graph")
 
 def update_screen():
+	conn = create_connection("events.db")
+
+	for event in E.events:
+		add_event(conn, event)
+
+	conn.commit()
+	conn = create_connection("events.db")
+	select_all_tasks(conn)
+
 	ip_res, ip1 = E.topTen("src_ip")
 	IP_Address.Append(ip_res)
 
@@ -47,8 +70,8 @@ def update_screen():
 	overall_one.Append(f"ip: {ip1}\nusr: {usr1}\npass: {pass1}\nUser/Pass: {usr_pass_1} \nDownloads: {download1}\nCountry: {country1}")
 	config_dict = get_config()
 
-	for e in E.events:
-		get_type(e.event["eventid"], config_dict)
+	# for e in E.events:
+	# 	get_type(e.event["eventid"], config_dict)
 
 
 root = tk.Tk()
