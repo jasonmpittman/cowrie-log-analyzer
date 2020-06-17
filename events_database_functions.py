@@ -4,6 +4,12 @@ from sqlite3 import Error
 
 import json
 
+from country_database_functions import *
+
+import datetime
+
+from event_class import *
+
 events_db = "events.db"
 
 def create_connection(db_file):
@@ -64,7 +70,18 @@ def get_data_touple(event):
 	username = event.Get("username")
 	password = event.Get("password")
 	filename = get_file_name(event.Get("url"))
-	# country =
+	country = get_ip_country(event.Get("src_ip"))
+
+	duration = event.Get("duration")
+	if duration != None:
+		duration = float(duration)
+
+	timestamp = event.Get("timestamp")
+
+	dt_obj = datetime.datetime.strptime(timestamp, '%Y-%m-%dT%H:%M:%S.%fZ')
+	date_time = f"datetime({dt_obj})"
+	message = event.Get("message")
+	return (type, ip, username, password, filename, country, duration, date_time, message)
 
 
 def add_event(data):
@@ -72,3 +89,6 @@ def add_event(data):
 
 conn = create_connection(events_db)
 get_file_name("http://45.148.10.95/dlrdlrdlrdlr00001/d4mnasdasd4mn.x86")
+
+E = Event({"eventid":"cowrie.session.connect","src_ip":"193.142.146.21","src_port":43854,"timestamp":"2020-03-19T00:44:31.639222Z","message":"New connection: 193.142.146.21:43854 (10.1.1.3:2222) [session: cafb43d1579d]","dst_ip":"10.1.1.3","protocol":"ssh","session":"cafb43d1579d","dst_port":2222,"sensor":"svrvmcw"})
+print(get_data_touple(E))

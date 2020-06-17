@@ -29,7 +29,7 @@ class Event:
 			except:
 				return ""
 
-	def Get(key):
+	def Get(self, key):
 		try:
 			return self.event[key]
 		except:
