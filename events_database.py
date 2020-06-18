@@ -4,7 +4,7 @@ from sqlite3 import Error
 
 import json
 
-from country_database_functions import *
+from country_database import *
 
 import datetime
 
@@ -97,16 +97,21 @@ def add_event(conn, event):
 	except:
 		return None
 
-def query_top_ten(conn, col):
-	sql = f"""SELECT {col},COUNT({col}) AS cnt FROM events
-			GROUP BY {col}
+#SELECT ("test" || " " || "test2") AS expr1 ;
+# || {col2}
+def query_top_ten(conn, col1):
+	sql = f"""SELECT {col1},COUNT({col1}) AS cnt FROM events
+			GROUP BY {col1}
 			ORDER BY cnt DESC;"""
+
 	cur = conn.cursor()
 
 	try:
 		i = 0
 		cur.execute(sql)
 		res = cur.fetchall()
+		print("fetchall")
+		print(res)
 
 		strReturn = ""
 		while i < 10 and i < len(res):
@@ -117,6 +122,24 @@ def query_top_ten(conn, col):
 				strReturn += str(i+1) + ".  " + str(key) + "\n"
 			i += 1
 		first, _ = res[0]
-		return strReturn, first
+		cur.close()
+		return (strReturn, first)
 	except:
+		print("Failed")
 		return None
+
+def top_ten_user_pass(conn):
+	sql = f"""SELECT username, password FROM events;"""
+	cur = conn.cursor()
+	i = 0
+	cur.execute(sql)
+	res = cur.fetchall()
+	for pair in res:
+		usr, p = pair
+		if usr != None:
+			print(f"{usr}: {p}")
+
+	return
+				# COUNT(usr_pass) AS cnt
+				# GROUP BY usr_pass
+				# ORDER BY cnt DESC;"""

@@ -13,66 +13,63 @@ from events_class import *
 
 from ui_elements import *
 
-from country_database_functions import *
+# from country_database_functions import *
 
-from events_database_functions import *
+from events_database import *
 
 import sys
-
-
-def select_all_tasks(conn):
-
-	cur = conn.cursor()
-	cur.execute("SELECT * FROM events")
-
-	rows = cur.fetchall()
-
-	for row in rows:
-		print(row)
-
 
 def graphWindow():
 	graphW = tk.Toplevel(root)
 	graphW.title("Graph")
 
-def update_screen():
-	conn = create_connection("events.db")
 
+def update_data():
+	conn = create_connection("events.db")
+	config_dict = get_config()
 	for event in E.events:
 		add_event(conn, event)
 
 	conn.commit()
 	conn = create_connection("events.db")
-	select_all_tasks(conn)
-	print("outputed all")
+	update_screen()
 
-	ip_res, ip1 = E.topTen("src_ip")
+def update_screen():
+	conn = create_connection("events.db")
+
+	ip_res, ip1 = query_top_ten(conn, "ip_address")
+	IP_Address.Clear()
 	IP_Address.Append(ip_res)
 
-	usr_res, usr1 = E.topTen("username")
+	usr_res, usr1 = query_top_ten(conn, "username")
+	User_names.Clear()
 	User_names.Append(usr_res)
 
-	pass_res, pass1 = E.topTen("password")
+	pass_res, pass1 = query_top_ten(conn, "password")
+	Passwords.Clear()
 	Passwords.Append(pass_res)
 
-	user_pass_res, usr_pass_1 = E.topTen("username", "password")
+	user_pass_res, usr_pass_1 = top_ten_user_pass(conn)
+	user_and_pass.Clear()
 	user_and_pass.Append(user_pass_res)
 
+
 	#more information needed
-	download_res, download1 = E.topTen("destfile")
+	download_res, download1 = query_top_ten(conn, "filename")
+	download_file.Clear()
 	download_file.Append(download_res)
 
-	country_res, country1 = ("CO\nCO\nCO\nCO\nCO\nCO\nCO\nCO\nCO\nCO", "CO1")
+	country_res, country1 = query_top_ten(conn, "country")
+	origin_country.Clear()
 	origin_country.Append(country_res)
 
-	sess_res, sess1 = E.topTen("duration")
+	sess_res, sess1 = query_top_ten(conn, "duration")
+	session_duration.Clear()
 	session_duration.Append(sess_res)
 
+	overall_one.Clear()
 	overall_one.Append(f"ip: {ip1}\nusr: {usr1}\npass: {pass1}\nUser/Pass: {usr_pass_1} \nDownloads: {download1}\nCountry: {country1}")
-	config_dict = get_config()
 
-	# for e in E.events:
-	# 	get_type(e.event["eventid"], config_dict)
 
 
 root = tk.Tk()
@@ -86,7 +83,7 @@ fileName = "cowrie.json.2020-03-19"
 E = Events()
 #E.getDataFromFile(fileName)
 
-import_pop = PopUp(E.get_data, update_screen, root, "Import", "Import", "Not a file or directory", "File or directory name: ")
+import_pop = PopUp(E.get_data, update_data, root, "Import", "Import", "Not a file or directory", "File or directory name: ")
 
 first_row = tk.Frame()
 first_row.pack(side="top")
@@ -131,6 +128,8 @@ Graph.Pack("right")
 
 Import = standardButton(BottomBar, import_pop.pop_up, "Import")
 Import.Pack("right")
+
+update_screen()
 
 # Export = standardButton(BottomBar, , "Export")
 

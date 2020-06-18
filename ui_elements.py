@@ -12,7 +12,7 @@ from matplotlib.figure import Figure
 
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
-from events_database_functions import *
+from events_database import *
 
 
 class standardButton:
@@ -44,6 +44,11 @@ class ScrollSection:
 	def Append(self, text):
 		self.scrollText.configure(state="normal")
 		self.scrollText.insert(tk.END, text)
+		self.scrollText.configure(state="disabled")
+
+	def Clear(self):
+		self.scrollText.configure(state="normal")
+		self.scrollText.delete("1.0", tk.END)
 		self.scrollText.configure(state="disabled")
 
 	def export_md(self):
