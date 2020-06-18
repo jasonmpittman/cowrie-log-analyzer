@@ -44,6 +44,7 @@ def update_screen():
 	conn.commit()
 	conn = create_connection("events.db")
 	select_all_tasks(conn)
+	print("outputed all")
 
 	ip_res, ip1 = E.topTen("src_ip")
 	IP_Address.Append(ip_res)

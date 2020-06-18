@@ -81,20 +81,9 @@ def get_data_touple(event):
 	timestamp = event.Get("timestamp")
 
 	dt_obj = datetime.datetime.strptime(timestamp, '%Y-%m-%dT%H:%M:%S.%fZ')
-	date_time = f"datetime({dt_obj})"
+	date_time = dt_obj
 	message = event.Get("message")
 	return (type, ip, username, password, filename, country, duration, date_time, message)
-
-'''
-def create_row(conn, x, y):
-	sql = r"INSERT INTO table1(x, y) VALUES(?,?)"
-	cur = conn.cursor()
-	try:
-		cur.execute(sql, (x, y))
-		return cur.lastrowid
-	except:
-		return None
-'''
 
 
 def add_event(conn, event):
@@ -105,5 +94,29 @@ def add_event(conn, event):
 	try:
 		cur.execute(sql, preped_data)
 		return cur.lastrowid
+	except:
+		return None
+
+def query_top_ten(conn, col):
+	sql = f"""SELECT {col},COUNT({col}) AS cnt FROM events
+			GROUP BY {col}
+			ORDER BY cnt DESC;"""
+	cur = conn.cursor()
+
+	try:
+		i = 0
+		cur.execute(sql)
+		res = cur.fetchall()
+
+		strReturn = ""
+		while i < 10 and i < len(res):
+			key, _ = res[i]
+			if i == 9:
+				strReturn += str(i+1) + ". " + str(key) + "\n"
+			else:
+				strReturn += str(i+1) + ".  " + str(key) + "\n"
+			i += 1
+		first, _ = res[0]
+		return strReturn, first
 	except:
 		return None
