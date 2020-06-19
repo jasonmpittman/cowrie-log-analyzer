@@ -2,7 +2,8 @@
 TODO:
 	- fix date time
 	- rework database stuff
-
+	- exclude "-" for username, password, ect.
+		- However keep it for country
 
 '''
 
@@ -147,8 +148,10 @@ Graph.Pack("right")
 Import = standardButton(BottomBar, import_pop.pop_up, "Import")
 Import.Pack("right")
 
-update_screen()
-
 Export = standardButton(BottomBar, export_pop.pop_up, "Export")
 Export.Pack("right")
+
+
+update_screen()
+
 root.mainloop()

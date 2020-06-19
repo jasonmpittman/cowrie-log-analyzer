@@ -10,9 +10,8 @@ import datetime
 
 from event_class import *
 
-events_db = "events.db"
 
-def create_connection(db_file):
+def create_connection(db_file="events.db"):
 	""" create a database connection to a SQLite database """
 	conn = None
 
@@ -23,6 +22,22 @@ def create_connection(db_file):
 		print(e)
 		return conn
 
+def create_command_table(conn):
+	create_command_sql = """CREATE TABLE IF NOT EXISTS commands (
+						foreign_key INTEGER,
+						command TEXT);
+						"""
+	try:
+		c = conn.cursor()
+		#executes the phrase
+		c.execute(create_command_sql)
+		c.close()
+		conn.commit()
+	except Error as e:
+		print(e)
+
+
+#create unique index unq_notify_users_2 on notify_users(language_code, username);
 def create_table(conn):
 	create_table_sql = """CREATE TABLE IF NOT EXISTS events (
 						type TEXT,
@@ -34,7 +49,7 @@ def create_table(conn):
 						duration REAL,
 						timestamp TEXT,
 						message TEXT,
-						constraint event_unique unique(type, ip_address, username, password, country, duration, timestamp, message)
+						constraint event_unique unique(type, ip_address, username, password, filename, country, duration, timestamp, message)
 						);"""
 
 	try:
@@ -61,8 +76,8 @@ def get_type(event_id):
 		return event_id
 
 def get_file_name(file_path):
-	if file_path == None:
-		return None
+	if file_path == "-":
+		return "-"
 	path = file_path.split("/")
 	return path[-1]
 
@@ -75,13 +90,13 @@ def get_data_touple(event):
 	country = get_ip_country(event.Get("src_ip"))
 
 	duration = event.Get("duration")
-	if duration != None:
+	if duration != "-":
 		duration = float(duration)
 
 	timestamp = event.Get("timestamp")
 
 	dt_obj = datetime.datetime.strptime(timestamp, '%Y-%m-%dT%H:%M:%S.%fZ')
-	date_time = dt_obj
+	date_time = str(dt_obj)
 	message = event.Get("message")
 	return (type, ip, username, password, filename, country, duration, date_time, message)
 
@@ -93,12 +108,12 @@ def add_event(conn, event):
 
 	try:
 		cur.execute(sql, preped_data)
+		print(cur.lastrowid)
 		return cur.lastrowid
 	except:
+		print("nothing was inserted")
 		return None
 
-#SELECT ("test" || " " || "test2") AS expr1 ;
-# || {col2}
 def query_top_ten(conn, col1):
 	sql = f"""SELECT {col1},COUNT({col1}) AS cnt FROM events
 			GROUP BY {col1}
@@ -156,3 +171,6 @@ def top_ten_user_pass(conn):
 		i += 1
 	first, val = sortedDictionary[0]
 	return strReturn, first
+
+conn = create_connection()
+create_table(conn)

@@ -33,7 +33,7 @@ class Event:
 		try:
 			return self.event[key]
 		except:
-			return None
+			return "-"
 
 	def get_command_list(self):
 		commandLine = self.event["message"]
