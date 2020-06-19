@@ -110,8 +110,6 @@ def query_top_ten(conn, col1):
 		i = 0
 		cur.execute(sql)
 		res = cur.fetchall()
-		print("fetchall")
-		print(res)
 
 		strReturn = ""
 		while i < 10 and i < len(res):
@@ -134,12 +132,27 @@ def top_ten_user_pass(conn):
 	i = 0
 	cur.execute(sql)
 	res = cur.fetchall()
+
+	strReturn = ""
+	totals = {}
+
 	for pair in res:
 		usr, p = pair
-		if usr != None:
-			print(f"{usr}: {p}")
+		if usr != None and p != None:
+			combined = usr + ": " + p
+			if combined not in totals:
+				totals.update({combined : 1})
+			else:
+				totals[combined] += 1
 
-	return
-				# COUNT(usr_pass) AS cnt
-				# GROUP BY usr_pass
-				# ORDER BY cnt DESC;"""
+	sortedDictionary = sorted(totals.items(), key = lambda x : x[1], reverse=True)
+
+	while i < 10 and i < len(sortedDictionary):
+		key, value = sortedDictionary[i]
+		if i == 9:
+			strReturn += str(i + 1) + ". " + str(key) + "\n"
+		else:
+			strReturn += str(i + 1) + ".  " + str(key) + "\n"
+		i += 1
+	first, val = sortedDictionary[0]
+	return strReturn, first

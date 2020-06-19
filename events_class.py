@@ -56,30 +56,6 @@ class Events:
 		for event in self.events:
 			event.print_src_port()
 
-	def topTen(self, category1, category2=""):
-		totals = {}
-		for event in self.events:
-			res = event.getEventValue(category1, category2)
-			if res != "":
-				if res not in totals:
-					totals.update({res : 1})
-				else:
-					totals[res] += 1
-
-		sortedDictionary = sorted(totals.items(), key = lambda x : x[1], reverse=True)
-
-		i = 0
-		strReturn = ""
-		while i < 10 and i < len(sortedDictionary):
-			key, value = sortedDictionary[i]
-			if i == 9:
-				strReturn += str(i + 1) + ". " + str(key) + "\n"
-			else:
-				strReturn += str(i + 1) + ".  " + str(key) + "\n"
-			i += 1
-		first, val = sortedDictionary[0]
-		return strReturn, first
-
 	def getEventCategory(self, eventid):
 		ret = []
 		for ev in self.events:
