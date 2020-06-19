@@ -34,6 +34,19 @@ def update_data():
 	conn = create_connection("events.db")
 	update_screen()
 
+def Export(filename):
+	str_output = ""
+	str_output += IP_Address.export_md()
+	str_output += User_names.export_md()
+	str_output += Passwords.export_md()
+	str_output += user_and_pass.export_md()
+	str_output += download_file.export_md()
+	str_output += origin_country.export_md()
+	str_output += session_duration.export_md()
+	str_output += overall_one.export_md()
+	with open(filename, "w") as f:
+		f.write(str_output)
+
 def update_screen():
 	conn = create_connection("events.db")
 
@@ -70,6 +83,7 @@ def update_screen():
 	overall_one.Clear()
 	overall_one.Append(f"ip: {ip1}\nusr: {usr1}\npass: {pass1}\nUser/Pass: {usr_pass_1} \nDownloads: {download1}\nCountry: {country1}")
 
+	Export("test.md")
 
 
 root = tk.Tk()
@@ -84,6 +98,9 @@ E = Events()
 #E.getDataFromFile(fileName)
 
 import_pop = PopUp(E.get_data, update_data, root, "Import", "Import", "Not a file or directory", "File or directory name: ")
+
+# export_pop = PopUp()
+
 
 first_row = tk.Frame()
 first_row.pack(side="top")

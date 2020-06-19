@@ -52,7 +52,7 @@ class ScrollSection:
 		self.scrollText.configure(state="disabled")
 
 	def export_md(self):
-		string = "## " + self.title.text
+		string = "## " + self.title["text"] + "\n"
 		string += self.scrollText.get("1.0", tk.END)
 		return string
 
