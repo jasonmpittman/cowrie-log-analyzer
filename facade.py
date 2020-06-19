@@ -1,7 +1,5 @@
 '''
 TODO:
-	- get the download file names --> thing at the end of the path
-	- top 10 countries
 	- fix date time
 	- rework database stuff
 
@@ -46,6 +44,10 @@ def Export(filename):
 	str_output += overall_one.export_md()
 	with open(filename, "w") as f:
 		f.write(str_output)
+	return True
+
+def no_update():
+	print("")
 
 def update_screen():
 	conn = create_connection("events.db")
@@ -81,9 +83,8 @@ def update_screen():
 	session_duration.Append(sess_res)
 
 	overall_one.Clear()
-	overall_one.Append(f"ip: {ip1}\nusr: {usr1}\npass: {pass1}\nUser/Pass: {usr_pass_1} \nDownloads: {download1}\nCountry: {country1}")
+	overall_one.Append(f"- ip: {ip1}\n- usr: {usr1}\n- pass: {pass1}\n- User/Pass: {usr_pass_1} \n- Downloads: {download1}\n- Country: {country1}")
 
-	Export("test.md")
 
 
 root = tk.Tk()
@@ -99,7 +100,7 @@ E = Events()
 
 import_pop = PopUp(E.get_data, update_data, root, "Import", "Import", "Not a file or directory", "File or directory name: ")
 
-# export_pop = PopUp()
+export_pop = PopUp(Export, no_update, root, "Export", "Export", "", "Name of markdown file: ")
 
 
 first_row = tk.Frame()
@@ -108,7 +109,7 @@ first_row.pack(side="top")
 second_row = tk.Frame()
 second_row.pack(side="top")
 
-scroll_section_col = 29
+scroll_section_col = 35
 scroll_section_row = 10
 
 IP_Address = ScrollSection(first_row, scroll_section_row, scroll_section_col, "Top 10 IP Addresses")
@@ -148,6 +149,6 @@ Import.Pack("right")
 
 update_screen()
 
-# Export = standardButton(BottomBar, , "Export")
-
+Export = standardButton(BottomBar, export_pop.pop_up, "Export")
+Export.Pack("right")
 root.mainloop()
