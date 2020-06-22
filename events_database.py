@@ -75,6 +75,8 @@ def get_type(event_id):
 		print(f"Missing from config file: {event_id}, full event id will be used")
 		return event_id
 
+unknown_res = "[]"
+
 def get_file_name(file_path):
 	if file_path == "-":
 		return "-"
