@@ -102,19 +102,42 @@ def get_data_touple(event):
 	message = event.Get("message")
 	return (type, ip, username, password, filename, country, duration, date_time, message)
 
+def get_command_list(command_line):
+	command_line = command_line.replace("CMD: ", "")
+	command_line = command_line.split("; ")
+	return command_line
 
 def add_event(conn, event):
 	sql = """INSERT INTO events(type, ip_address, username, password, filename, country, duration, timestamp, message) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)  """
 	preped_data = get_data_touple(event)
 	cur = conn.cursor()
+	type, _, _, _, _, _, _, _, message = preped_data
+	rowid = 0
 
 	try:
 		cur.execute(sql, preped_data)
-		print(cur.lastrowid)
-		return cur.lastrowid
+		# print(cur.lastrowid)
+		rowid = cur.lastrowid
 	except:
 		print("nothing was inserted")
 		return None
+
+	if type == "Command":
+		foreign_key = cur.lastrowid
+		cur.close()
+		commands_list = get_command_list(message)
+		sql = """INSERT INTO commands(foreign_key, command) VALUES(?, ?)"""
+		cur = conn.cursor()
+		for com in commands_list:
+			data = (foreign_key, com)
+			try:
+				cur.execute(sql, data)
+				rowid = cur.lastrowid
+			except:
+				print("Failed to insert command")
+				return None
+	return rowid
+
 
 def query_top_ten(conn, col1):
 	sql = f"""SELECT {col1},COUNT({col1}) AS cnt FROM events
@@ -174,5 +197,6 @@ def top_ten_user_pass(conn):
 	first, val = sortedDictionary[0]
 	return strReturn, first
 
-conn = create_connection()
-create_table(conn)
+# conn = create_connection()
+# create_table(conn)
+# create_command_table(conn)

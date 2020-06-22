@@ -2,8 +2,7 @@
 TODO:
 	- fix date time
 	- rework database stuff
-	- exclude "-" for username, password, ect.
-		- However keep it for country
+	- Longest duration!
 
 '''
 
@@ -52,40 +51,41 @@ def no_update():
 
 def update_screen():
 	conn = create_connection("events.db")
+	try:
+		ip_res, ip1 = query_top_ten(conn, "ip_address")
+		IP_Address.Clear()
+		IP_Address.Append(ip_res)
 
-	ip_res, ip1 = query_top_ten(conn, "ip_address")
-	IP_Address.Clear()
-	IP_Address.Append(ip_res)
+		usr_res, usr1 = query_top_ten(conn, "username")
+		User_names.Clear()
+		User_names.Append(usr_res)
 
-	usr_res, usr1 = query_top_ten(conn, "username")
-	User_names.Clear()
-	User_names.Append(usr_res)
+		pass_res, pass1 = query_top_ten(conn, "password")
+		Passwords.Clear()
+		Passwords.Append(pass_res)
 
-	pass_res, pass1 = query_top_ten(conn, "password")
-	Passwords.Clear()
-	Passwords.Append(pass_res)
-
-	user_pass_res, usr_pass_1 = top_ten_user_pass(conn)
-	user_and_pass.Clear()
-	user_and_pass.Append(user_pass_res)
+		user_pass_res, usr_pass_1 = top_ten_user_pass(conn)
+		user_and_pass.Clear()
+		user_and_pass.Append(user_pass_res)
 
 
-	#more information needed
-	download_res, download1 = query_top_ten(conn, "filename")
-	download_file.Clear()
-	download_file.Append(download_res)
+		#more information needed
+		download_res, download1 = query_top_ten(conn, "filename")
+		download_file.Clear()
+		download_file.Append(download_res)
 
-	country_res, country1 = query_top_ten(conn, "country")
-	origin_country.Clear()
-	origin_country.Append(country_res)
+		country_res, country1 = query_top_ten(conn, "country")
+		origin_country.Clear()
+		origin_country.Append(country_res)
 
-	sess_res, sess1 = query_top_ten(conn, "duration")
-	session_duration.Clear()
-	session_duration.Append(sess_res)
+		sess_res, sess1 = query_top_ten(conn, "duration")
+		session_duration.Clear()
+		session_duration.Append(sess_res)
 
-	overall_one.Clear()
-	overall_one.Append(f"- ip: {ip1}\n- usr: {usr1}\n- pass: {pass1}\n- User/Pass: {usr_pass_1} \n- Downloads: {download1}\n- Country: {country1}")
-
+		overall_one.Clear()
+		overall_one.Append(f"- ip: {ip1}\n- usr: {usr1}\n- pass: {pass1}\n- User/Pass: {usr_pass_1} \n- Downloads: {download1}\n- Country: {country1}")
+	except:
+		print("Import Data")
 
 
 root = tk.Tk()
