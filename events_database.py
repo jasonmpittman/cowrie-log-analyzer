@@ -10,9 +10,9 @@ import datetime
 
 from event_class import *
 
-
+'''Creates a database connection to a SQLite database '''
 def create_connection(db_file="events.db"):
-	""" create a database connection to a SQLite database """
+
 	conn = None
 
 	try:
@@ -22,22 +22,38 @@ def create_connection(db_file="events.db"):
 		print(e)
 		return conn
 
+'''
+Creates the command table
+'''
+
 def create_command_table(conn):
 	create_command_sql = """CREATE TABLE IF NOT EXISTS commands (
 						foreign_key INTEGER,
 						command TEXT);
 						"""
+	run_sql(conn, create_command_sql)
+
+'''
+Input: conn --> connection, sql --> sql query
+Output: res --> results of the query
+'''
+
+def run_sql(conn, sql):
 	try:
 		c = conn.cursor()
 		#executes the phrase
-		c.execute(create_command_sql)
+		c.execute(sql)
+		res = c.fetchall()
 		c.close()
 		conn.commit()
+		return res
 	except Error as e:
 		print(e)
 
-
-#create unique index unq_notify_users_2 on notify_users(language_code, username);
+'''
+Creates the events table
+Input: conn --> a connection
+'''
 def create_table(conn):
 	create_table_sql = """CREATE TABLE IF NOT EXISTS events (
 						type TEXT,
@@ -52,21 +68,22 @@ def create_table(conn):
 						constraint event_unique unique(type, ip_address, username, password, filename, country, duration, timestamp, message)
 						);"""
 
-	try:
-		c = conn.cursor()
-		#executes the phrase
-		c.execute(create_table_sql)
-		c.close()
-		conn.commit()
-	except Error as e:
-		print(e)
-
+	run_sql(conn, create_table_sql)
+'''
+Loads the configuration file (json) into a python dictionary
+Output: config_dict --> a dictionary
+'''
 def get_config():
 	with open('types.config.json', 'r') as config_file:
   		config = config_file.read()
 	config_dict = json.loads(config)
 	return config_dict
 
+'''
+Uses the configuration dictionary to categorize the type of event
+Input: event_id
+Outputs: categorization
+'''
 def get_type(event_id):
 	config_dict = get_config()
 	try:
@@ -75,14 +92,22 @@ def get_type(event_id):
 		print(f"Missing from config file: {event_id}, full event id will be used")
 		return event_id
 
-unknown_res = "[]"
-
+'''
+Takes in a file_path and gets the actual file name from the path
+Input: file path
+Output: file name
+'''
 def get_file_name(file_path):
 	if file_path == "-":
 		return "-"
 	path = file_path.split("/")
 	return path[-1]
 
+'''
+Takes in an event and prepares the data before returning it as a touple for sql
+Input: event
+Output: touple of information
+'''
 def get_data_touple(event):
 	type = get_type(event.event["eventid"])
 	ip = event.Get("src_ip")
@@ -102,11 +127,21 @@ def get_data_touple(event):
 	message = event.Get("message")
 	return (type, ip, username, password, filename, country, duration, date_time, message)
 
+'''
+Splits a line of commands into their compenents
+Input: command_line -> a line with commands
+Output: command_line -> list of commands
+'''
 def get_command_list(command_line):
 	command_line = command_line.replace("CMD: ", "")
 	command_line = command_line.split("; ")
 	return command_line
 
+'''
+Inserts and event into the events database
+Input: conn, event
+Output: rowid -> unique row identifier
+'''
 def add_event(conn, event):
 	sql = """INSERT INTO events(type, ip_address, username, password, filename, country, duration, timestamp, message) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)  """
 	preped_data = get_data_touple(event)
@@ -132,15 +167,19 @@ def add_event(conn, event):
 			data = (foreign_key, com)
 			try:
 				cur.execute(sql, data)
-				rowid = cur.lastrowid
 			except:
 				print("Failed to insert command")
 				return None
 	return rowid
 
-
+'''
+Returns a string that lists the top 10 most frequent data for a given column and the #1 (these are returned as a touple)
+Input: conn, col1 --> a column name to run top 10 on
+Output: (strReturn -> top 10 string, first -> #1)
+'''
 def query_top_ten(conn, col1):
 	sql = f"""SELECT {col1},COUNT({col1}) AS cnt FROM events
+			WHERE {col1} NOT IN ('-')
 			GROUP BY {col1}
 			ORDER BY cnt DESC;"""
 
@@ -156,26 +195,28 @@ def query_top_ten(conn, col1):
 		print_num = 1
 		while i < stop_val and i < len(res):
 			key, _ = res[i]
-			if key != "-":
-				if print_num == 10:
-					strReturn += str(print_num) + ". " + str(key) + "\n"
-				else:
-					strReturn += str(print_num) + ".  " + str(key) + "\n"
-				print_num += 1
+
+			if print_num == 10:
+				strReturn += str(print_num) + ". " + str(key) + "\n"
 			else:
-				stop_val += 1
+				strReturn += str(print_num) + ".  " + str(key) + "\n"
+			print_num += 1
+
 			i += 1
 		first, _ = res[0]
-		if first == "-":
-			first = res[1]
 		cur.close()
 		return (strReturn, first)
 	except:
 		print("Failed")
 		return None
 
+'''
+A special function that does the same as the other top ten but customized for username and password pair
+Input: conn
+Output: strReturn -> top 10 string, first -> #1
+'''
 def top_ten_user_pass(conn):
-	sql = f"""SELECT username, password FROM events;"""
+	sql = f"""SELECT username, password FROM events WHERE username NOT IN ('-') and password NOT IN ('-');"""
 	cur = conn.cursor()
 	i = 0
 	cur.execute(sql)
@@ -186,12 +227,11 @@ def top_ten_user_pass(conn):
 
 	for pair in res:
 		usr, p = pair
-		if usr != "-" and p != "-":
-			combined = usr + ": " + p
-			if combined not in totals:
-				totals.update({combined : 1})
-			else:
-				totals[combined] += 1
+		combined = usr + ": " + p
+		if combined not in totals:
+			totals.update({combined : 1})
+		else:
+			totals[combined] += 1
 
 	sortedDictionary = sorted(totals.items(), key = lambda x : x[1], reverse=True)
 
@@ -204,6 +244,28 @@ def top_ten_user_pass(conn):
 		i += 1
 	first, val = sortedDictionary[0]
 	return strReturn, first
+
+'''
+Gets the top 10 and #1 longest duration (not by frequency)
+Output: (output_str -> top 10 string, first -> #1)
+'''
+def longest_durations():
+	output_str = ""
+	sql = """SELECT duration FROM events
+			WHERE duration NOT IN ('-')
+			ORDER BY duration DESC;"""
+	conn = create_connection()
+	res = run_sql(conn, sql)
+	i = 0
+	first, = res[0]
+	while i < 10 and i < len(res):
+		val, = res[i]
+		if i == 9:
+			output_str = output_str + f"{i+1}. {val}"
+		else:
+			output_str = output_str + f"{i+1}.  {val}\n"
+		i += 1
+	return output_str, first
 
 # conn = create_connection()
 # create_table(conn)

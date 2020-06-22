@@ -6,7 +6,6 @@ TODO:
 
 '''
 
-
 from events_class import *
 
 from ui_elements import *
@@ -33,6 +32,10 @@ def update_data():
 	update_screen()
 
 def Export(filename):
+	extention = filename[-3::]
+	if extention != ".md":
+		filename = filename + ".md"
+
 	str_output = ""
 	str_output += IP_Address.export_md()
 	str_output += User_names.export_md()
@@ -78,14 +81,14 @@ def update_screen():
 		origin_country.Clear()
 		origin_country.Append(country_res)
 
-		sess_res, sess1 = query_top_ten(conn, "duration")
+		sess_res, sess1 = longest_durations()
 		session_duration.Clear()
 		session_duration.Append(sess_res)
 
 		overall_one.Clear()
-		overall_one.Append(f"- ip: {ip1}\n- usr: {usr1}\n- pass: {pass1}\n- User/Pass: {usr_pass_1} \n- Downloads: {download1}\n- Country: {country1}")
+		overall_one.Append(f"- ip: {ip1}\n- usr: {usr1}\n- pass: {pass1}\n- User/Pass: {usr_pass_1} \n- Downloads: {download1}\n- Country: {country1}\n- Duration: {sess1}")
 	except:
-		print("Import Data")
+		print("Please Import Data")
 
 
 root = tk.Tk()
