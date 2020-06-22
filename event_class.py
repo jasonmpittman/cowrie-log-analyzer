@@ -34,9 +34,3 @@ class Event:
 			return self.event[key]
 		except:
 			return "-"
-
-	def get_command_list(self):
-		commandLine = self.event["message"]
-		commandLine = commandLine.replace("CMD: ", "")
-		commands = commandLine.split("; ")
-		return commands

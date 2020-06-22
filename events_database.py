@@ -152,14 +152,22 @@ def query_top_ten(conn, col1):
 		res = cur.fetchall()
 
 		strReturn = ""
-		while i < 10 and i < len(res):
+		stop_val = 10
+		print_num = 1
+		while i < stop_val and i < len(res):
 			key, _ = res[i]
-			if i == 9:
-				strReturn += str(i+1) + ". " + str(key) + "\n"
+			if key != "-":
+				if print_num == 10:
+					strReturn += str(print_num) + ". " + str(key) + "\n"
+				else:
+					strReturn += str(print_num) + ".  " + str(key) + "\n"
+				print_num += 1
 			else:
-				strReturn += str(i+1) + ".  " + str(key) + "\n"
+				stop_val += 1
 			i += 1
 		first, _ = res[0]
+		if first == "-":
+			first = res[1]
 		cur.close()
 		return (strReturn, first)
 	except:
@@ -178,7 +186,7 @@ def top_ten_user_pass(conn):
 
 	for pair in res:
 		usr, p = pair
-		if usr != None and p != None:
+		if usr != "-" and p != "-":
 			combined = usr + ": " + p
 			if combined not in totals:
 				totals.update({combined : 1})
@@ -199,4 +207,6 @@ def top_ten_user_pass(conn):
 
 # conn = create_connection()
 # create_table(conn)
+# conn.commit()
 # create_command_table(conn)
+# conn.commit()
