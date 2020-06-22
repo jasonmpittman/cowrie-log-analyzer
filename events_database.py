@@ -106,7 +106,7 @@ def get_file_name(file_path):
 '''
 Takes in an event and prepares the data before returning it as a touple for sql
 Input: event
-Output: touple of information
+Output: touple of all event information
 '''
 def get_data_touple(event):
 	type = get_type(event.event["eventid"])
