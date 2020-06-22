@@ -10,6 +10,10 @@ class Events:
 	def __init__(self, events=[]):
 		self.events = events
 
+	'''
+	Gets data from a file and puts it into the events list
+	Input: filename
+	'''
 	def getDataFromFile(self, fileName):
 		file = open(fileName, "r")
 
@@ -27,10 +31,18 @@ class Events:
 			obj = Event(json_line_dict)
 			self.events.append(obj)
 
+	'''
+	Runs the getDataFromFile function repeatedly on all files in a given directory
+	Input: dir_name -> directory name
+	'''
 	def get_data_from_dir(self, dir_name):
 		for filename in os.listdir(dir_name):
 			self.getDataFromFile(dir_name + "/" + filename)
 
+	'''
+	Determines if it is a file or directory name and acts accordingly
+	Input: name
+	'''
 	def get_data(self, name):
 		file = pathlib.Path(name)
 		if file.exists():
@@ -43,33 +55,23 @@ class Events:
 			print("Not a file or directory with that path")
 			return False
 
-
+	'''
+	Prints all events in the events list
+	'''
 	def printEvents(self):
 		for event in self.events:
 			event.printEvent()
 
-	def print_all_src_ips(self):
-		for event in self.events:
-			event.print_src_ip()
-
-	def print_all_src_ports(self):
-		for event in self.events:
-			event.print_src_port()
-
+	'''
+	Returns all rows with columns with a given value
+	Input: eventid --> category
+	'''
 	def getEventCategory(self, eventid):
 		ret = []
 		for ev in self.events:
 			if eventid == ev.event["eventid"]:
 				ret.append(ev)
 		return ret
-
-
-
-
-
-
-
-
 
 
 #
