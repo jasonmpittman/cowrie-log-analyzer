@@ -267,8 +267,11 @@ def longest_durations():
 		i += 1
 	return output_str, first
 
-# conn = create_connection()
-# create_table(conn)
-# conn.commit()
-# create_command_table(conn)
-# conn.commit()
+
+if __name__ == '__main__':
+	# conn = create_connection()
+	# create_table(conn)
+	# conn.commit()
+	# create_command_table(conn)
+	# conn.commit()
+	pass
