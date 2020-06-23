@@ -31,6 +31,7 @@ CLA captures and deconstructs *messages*. The message types CLA targets are:
 CLA offers two types of data analysis: text and graph.
 
 #### Text Analysis Output:
+**Top Tens**
 1. Top 10 source IP Addresses
 2. Top 10 attempted usernames
 3. Top 10 attempted passwords
@@ -39,7 +40,7 @@ CLA offers two types of data analysis: text and graph.
 6. Top 10 source countries (geoip lookup on source IP)
 7. Top 10 session durations
 
-Overall--
+**Overall**
 1. Most common source IP (frequency)
 2. Most common username (frequency)
 3. Most common password (frequency)
@@ -48,7 +49,10 @@ Overall--
 6. Longest session duration
 
 #### Graph Analysis Output:
-TBD
+**Histograms**
+1. Source IP addresses by frequency (top ten)
+2. Source countries by frequency (top ten)
+3. Session duration by duration (top ten)
 
 ## Artifacts
 CLA tracks file downloads but does not *download* artifacts.
