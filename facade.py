@@ -1,8 +1,5 @@
 '''
 TODO:
-	- fix date time
-	- rework database stuff
-	- Longest duration!
 
 '''
 
