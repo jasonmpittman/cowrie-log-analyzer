@@ -5,9 +5,10 @@ class Event:
 	def printEvent(self):
 		print(self.event)
 
-'''
-returns the value for the given key or "-" if it does not have one
-'''
+	'''
+	returns the value for the given key or "-" if it does not have one
+	'''
+	
 	def Get(self, key):
 		try:
 			return self.event[key]

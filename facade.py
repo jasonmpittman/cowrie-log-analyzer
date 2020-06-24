@@ -17,6 +17,11 @@ def graphWindow():
 	graphW = tk.Toplevel(root)
 	graphW.title("Graph")
 
+	G = Graph(graphW, 8, 5, "Test1", "Test2", "Woo test")
+	G.pd_data()
+	G.Pack("top")
+	G.draw()
+
 
 def update_data():
 	conn = create_connection("events.db")
@@ -142,8 +147,8 @@ BottomBar.pack(side="bottom")
 Exit = standardButton(BottomBar, sys.exit, "Exit")
 Exit.Pack("right")
 
-Graph = standardButton(BottomBar, graphWindow, "Graph")
-Graph.Pack("right")
+Graph_button = standardButton(BottomBar, graphWindow, "Graph")
+Graph_button.Pack("right")
 
 Import = standardButton(BottomBar, import_pop.pop_up, "Import")
 Import.Pack("right")

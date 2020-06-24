@@ -6,11 +6,16 @@ import sys
 
 import matplotlib
 
+import pandas as pd
+
 matplotlib.use("TkAgg")
 
 from matplotlib.figure import Figure
 
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
+import matplotlib.pyplot as plt
+
 
 from events_database import *
 
@@ -61,12 +66,17 @@ class Graph:
 	def __init__(self, parent, widthIn, heightIn, xLabel, yLabel, title="Title"):
 		self.data = []
 		self.figure = Figure(figsize=(widthIn, heightIn), dpi=100)
-		self.graph = self.figure.add_subplot(1, 1, 1, label=title)
+		self.figure.tight_layout()
 		self.canvas = FigureCanvasTkAgg(self.figure, parent)
+		self.graph = self.figure.add_subplot(1, 1, 1, label=title)
 		self.Widget = self.canvas.get_tk_widget()
 		self.title = title
 		self.xLabel = xLabel
 		self.yLabel = yLabel
+		matplotlib.rc('xtick', labelsize=10)
+
+		# matplotlib.rc('ytick', labelsize=20)
+		# plt.gcf().subplots_adjust(bottom=0.1)
 		# xlabel=axisLabel[0], ylabel=axisLabel[1]
 
 	def Grid(self, r, c, colSpan=2, px=10, py=10):
@@ -83,12 +93,32 @@ class Graph:
 
 	def draw(self):
 		self.graph.cla()
-		xAxis = self.data.pop(0)
-		for axis in self.data:
-			self.graph.plot(xAxis)
-		self.graph.set_title(self.title)
-		self.graph.set_xlabel(self.xLabel)
-		self.graph.set_ylabel(self.yLabel)
+		# self.graph.hist(, self.data.cnt)
+		# self.graph.set_title(self.title)
+		# self.graph.set_xlabel(self.xLabel)
+		# self.graph.set_ylabel(self.yLabel)
+		#d = {"ip_address": self.data.ip_address, "count": self.data.count}
+		#self.data = pd.DataFrame(d)
+		# self.data.graph.bar(x="ip_address", y="count", rot=70, title="ip address frequency")
+		self.graph.set_xticklabels(self.data[0], rotation=90)
+		self.graph.bar(self.data[0], self.data[1])
+		self.figure.set_tight_layout(tight=True)
+
+
+		# plt.gcf().subplots_adjust(bottom=0.2)
+
+	def pd_data(self):
+		conn = create_connection()
+		col1 = "ip_address"
+		sql = f"""SELECT {col1},COUNT({col1}) AS cnt FROM events
+				WHERE {col1} NOT IN ('-')
+				GROUP BY {col1}
+				ORDER BY cnt DESC;"""
+		self.data = pd.read_sql(sql, conn).head(10)
+		x_list = self.data.ip_address.tolist()
+		y_list = self.data.cnt.tolist()
+		self.data = [x_list, y_list]
+
 
 class Text_Input_Section:
 	def __init__(self, parent, label_text):
@@ -144,7 +174,6 @@ class PopUp:
 			self.window.destroy()
 		else:
 			self.error_message.set(self.error_message)
-
 
 
 #
