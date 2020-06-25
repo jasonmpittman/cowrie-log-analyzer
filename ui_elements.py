@@ -16,7 +16,6 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 import matplotlib.pyplot as plt
 
-
 from events_database import *
 
 
@@ -85,39 +84,31 @@ class Graph:
 	def Pack(self, Side, px=10, py=10):
 		self.Widget.pack(side=Side, padx=px, pady=py)
 
-	def Data(self, data): #add labels as well
-		if len(data) < 2 or not isinstance(data[0], list):
-			print("Needs more than one axis in order to draw the graph")
-			return
-		self.data = data
-
 	def draw(self):
 		self.graph.cla()
-		# self.graph.hist(, self.data.cnt)
-		# self.graph.set_title(self.title)
-		# self.graph.set_xlabel(self.xLabel)
-		# self.graph.set_ylabel(self.yLabel)
-		#d = {"ip_address": self.data.ip_address, "count": self.data.count}
-		#self.data = pd.DataFrame(d)
-		# self.data.graph.bar(x="ip_address", y="count", rot=70, title="ip address frequency")
-		self.graph.set_xticklabels(self.data[0], rotation=90)
+		self.graph.set_xticklabels(self.data[0], rotation=70)
 		self.graph.bar(self.data[0], self.data[1])
 		self.figure.set_tight_layout(tight=True)
-
+		self.graph.set_title(self.title)
+		self.graph.set_xlabel(self.xLabel)
+		self.graph.set_ylabel(self.yLabel)
 
 		# plt.gcf().subplots_adjust(bottom=0.2)
 
-	def pd_data(self):
+	def pd_data(self, col):
 		conn = create_connection()
-		col1 = "ip_address"
-		sql = f"""SELECT {col1},COUNT({col1}) AS cnt FROM events
-				WHERE {col1} NOT IN ('-')
-				GROUP BY {col1}
+		sql = f"""SELECT {col},COUNT({col}) AS cnt FROM events
+				WHERE {col} NOT IN ('-')
+				GROUP BY {col}
 				ORDER BY cnt DESC;"""
 		self.data = pd.read_sql(sql, conn).head(10)
-		x_list = self.data.ip_address.tolist()
+		x_list = self.data.iloc[:,0].tolist()
 		y_list = self.data.cnt.tolist()
 		self.data = [x_list, y_list]
+
+	def graph_export(self, filename):
+		self.figure.savefig(filename)
+		return True
 
 
 class Text_Input_Section:
@@ -174,6 +165,87 @@ class PopUp:
 			self.window.destroy()
 		else:
 			self.error_message.set(self.error_message)
+
+'''
+# the constructor syntax is:
+# OptionMenu(master, variable, *values)
+
+OPTIONS = [
+    "egg",
+    "bunny",
+    "chicken"
+]
+
+master = Tk()
+
+variable = StringVar(master)
+variable.set(OPTIONS[0]) # default value
+
+w = apply(OptionMenu, (master, variable) + tuple(OPTIONS))
+w.pack()
+
+1. Source IP addresses by frequency (top ten)
+2. Source countries by frequency (top ten)
+3. Session duration by duration (top ten)
+'''
+
+class Selection_menu:
+	def __init__(self, parent):
+		self.parent = parent
+
+	def Pack(self, side="top"):
+		self.menu.pack(side=side, padx=0, pady=0)
+
+	def Grid(self, r, c):
+		self.menu.grid(row=r, column=c, padx=0, pady=0)
+
+	def Graph_It(self):
+		#duration is going to change
+		self.dict = {"IP Address": {"category": "ip_address", "x_label": "IP Addresses", "y_label": "Frequency", "title": "IP Address Graph"},
+					"Countries": {"category": "country", "x_label": "Country", "y_label": "Frequency", "title": "Country Graph"},
+					"Session Duration": {"category": "duration", "x_label": "Time(s)", "y_label": "Longest Durations", "title": "Time Duration Graph"}}
+		graph_type = self.string_var.get()
+		print(graph_type)
+		graphWindow(self.parent, self.dict[graph_type]["category"], self.dict[graph_type]["x_label"], self.dict[graph_type]["y_label"], self.dict[graph_type]["title"])
+
+	def Pop(self):
+		self.window = tk.Toplevel(self.parent)
+		self.string_var = tk.StringVar(self.window)
+		self.menu = tk.OptionMenu(self.window, self.string_var, "IP Address", "Countries", "Session Duration")
+		self.menu.config(width=15)
+		self.menu.pack(side="top")
+		self.button_bar = tk.Frame(self.window)
+		self.button_bar.pack(side="bottom")
+
+		self.button = standardButton(self.button_bar, self.Graph_It, "Graph it!")
+		self.button.Pack("right")
+		self.cancel = standardButton(self.button_bar, self.window.destroy, "Cancel")
+		self.cancel.Pack("right")
+
+def no_update():
+	print("")
+
+def graphWindow(parent, category, x_label, y_label, title):
+	graphW = tk.Toplevel(parent)
+
+	graphW.title("Graph")
+	bar = tk.Frame(graphW)
+	bar.pack(side="bottom")
+
+	#self.window.destroy()
+	Exit_button = standardButton(bar, graphW.destroy, "Exit")
+	Exit_button.Pack("right")
+
+
+	G = Graph(graphW, 8, 5, x_label, y_label, title)
+	G.pd_data(category)
+	G.Pack("top")
+	G.draw()
+
+	graph_export_popup = PopUp(G.graph_export, no_update, graphW, "Export Graph", "Export", "", "Name of PNG file")
+
+	Export_graph = standardButton(bar, graph_export_popup.pop_up, "Export")
+	Export_graph.Pack("right")
 
 
 #
