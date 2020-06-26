@@ -93,7 +93,15 @@ class Graph:
 		self.graph.set_xlabel(self.xLabel)
 		self.graph.set_ylabel(self.yLabel)
 
-		# plt.gcf().subplots_adjust(bottom=0.2)
+	def draw_histogram(self):
+		self.graph.cla()
+		# self.graph.set_xticklabels(rotation=70)
+		self.graph.hist(self.data[0], bins=5)
+		self.figure.set_tight_layout(tight=True)
+		self.graph.set_title(self.title)
+		self.graph.set_xlabel(self.xLabel)
+		self.graph.set_ylabel(self.yLabel)
+
 
 	def pd_data(self, col):
 		conn = create_connection()
@@ -240,7 +248,10 @@ def graphWindow(parent, category, x_label, y_label, title):
 	G = Graph(graphW, 8, 5, x_label, y_label, title)
 	G.pd_data(category)
 	G.Pack("top")
-	G.draw()
+	if category == "duration":
+		G.draw_histogram()
+	else:
+		G.draw()
 
 	graph_export_popup = PopUp(G.graph_export, no_update, graphW, "Export Graph", "Export", "", "Name of PNG file")
 
