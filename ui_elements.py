@@ -41,8 +41,7 @@ class ScrollSection:
 		self.scrollFrame = tk.Frame(parent, bg="white", bd=5, relief="groove", width=w, height=h)
 		self.title = tk.Label(self.scrollFrame, text=title)
 		self.title.pack(side="top", padx=10, pady=2)
-		self.scroll = tk.Scrollbar(self.scrollFrame)
-		self.scrollText = tk.Text(self.scrollFrame, yscrollcommand=self.scroll.set, height=h, width=w)
+		self.scrollText = tk.Text(self.scrollFrame, height=h, width=w)
 		self.scrollText.configure(state="disabled")
 		self.scrollText.pack(side="left", padx=5, pady=10)
 

@@ -25,7 +25,6 @@ def create_connection(db_file="events.db"):
 '''
 Creates the command table
 '''
-
 def create_command_table(conn):
 	create_command_sql = """CREATE TABLE IF NOT EXISTS commands (
 						foreign_key INTEGER,
@@ -37,7 +36,6 @@ def create_command_table(conn):
 Input: conn --> connection, sql --> sql query
 Output: res --> results of the query
 '''
-
 def run_sql(conn, sql):
 	try:
 		c = conn.cursor()
@@ -69,6 +67,7 @@ def create_table(conn):
 						);"""
 
 	run_sql(conn, create_table_sql)
+
 '''
 Loads the configuration file (json) into a python dictionary
 Output: config_dict --> a dictionary
