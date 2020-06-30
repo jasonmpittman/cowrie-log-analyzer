@@ -1,20 +1,22 @@
 '''
-TODO:
-- Fix time durations graph
-
+TODO
+	- de-activate scrolling
+	- add the .png autocheck support
+	- remove extraineous print statements
+	- add comments
 '''
 
 from events_class import *
 
 from ui_elements import *
 
-# from country_database_functions import *
-
 from events_database import *
 
 import sys
 
-
+'''
+update_data function creates updates the database then the screen
+'''
 def update_data():
 	conn = create_connection("events.db")
 	config_dict = get_config()
@@ -25,6 +27,10 @@ def update_data():
 	conn = create_connection("events.db")
 	update_screen()
 
+'''
+Exports the information to a file that the user specifies
+Input: filename --> name of file with or without .md on the end --> it will handle it either way
+'''
 def Export(filename):
 	extention = filename[-3::]
 	if extention != ".md":
@@ -43,6 +49,9 @@ def Export(filename):
 		f.write(str_output)
 	return True
 
+'''
+update_screen --> updates all the visible data with what is in the datebase
+'''
 def update_screen():
 	conn = create_connection("events.db")
 	try:
@@ -81,73 +90,91 @@ def update_screen():
 	except:
 		print("Please Import Data")
 
-
+'''
+The main window!
+'''
 root = tk.Tk()
 root.title("Cowrie Log Analyzer")
 root.configure()
 
-
-
-fileName = "cowrie.json.2020-03-19"
-
 E = Events()
-#E.getDataFromFile(fileName)
 
+'''
+Import and Export pop-up window
+'''
 import_pop = PopUp(E.get_data, update_data, root, "Import", "Import", "Not a file or directory", "File or directory name: ")
 
 export_pop = PopUp(Export, no_update, root, "Export", "Export", "", "Name of markdown file: ")
 
-
+'''
+Creation of the rows, so it can be organized
+'''
 first_row = tk.Frame()
 first_row.pack(side="top")
 
 second_row = tk.Frame()
 second_row.pack(side="top")
 
+'''
+Constant variables that control the size of the top 10 boxes
+'''
 scroll_section_col = 35
 scroll_section_row = 10
 
+'''
+First row of boxes
+'''
 IP_Address = ScrollSection(first_row, scroll_section_row, scroll_section_col, "Top 10 IP Addresses")
 User_names = ScrollSection(first_row, scroll_section_row, scroll_section_col, "Top 10 Usernames")
 Passwords = ScrollSection(first_row, scroll_section_row, scroll_section_col, "Top 10 Passwords")
 user_and_pass = ScrollSection(first_row, scroll_section_row, scroll_section_col, "Top 10 User/Pass Pairs")
 
+'''
+Second row of boxes
+'''
 download_file = ScrollSection(second_row, scroll_section_row, scroll_section_col, "Top 10 Downloads")
 origin_country = ScrollSection(second_row, scroll_section_row, scroll_section_col, "Top 10 Countries")
 session_duration = ScrollSection(second_row, scroll_section_row, scroll_section_col, "Top 10 Session Durations")
 overall_one = ScrollSection(second_row, scroll_section_row, scroll_section_col, "Overall #1")
 
-#in first_row
+'''
+Placing the first row in position
+'''
 IP_Address.Grid(0, 1)
 User_names.Grid(0, 2)
 Passwords.Grid(0, 3)
 user_and_pass.Grid(0,4)
 
-#in second_row
+'''
+Placing the second row in position
+'''
 download_file.Grid(0, 0)
 origin_country.Grid(0, 1)
 session_duration.Grid(0, 2)
 overall_one.Grid(0, 3)
 
-#bottom buttons
+'''
+Creation of a bottom bar of buttons
+'''
 BottomBar = tk.Frame(root)
 BottomBar.pack(side="bottom")
 
+#Exit button creation and placement
 Exit = standardButton(BottomBar, sys.exit, "Exit")
 Exit.Pack("right")
 
+#Graph selection creation and button creation
 Graph_selection_menu = Selection_menu(root)
-
 Graph_button = standardButton(BottomBar, Graph_selection_menu.Pop, "Graph")
 Graph_button.Pack("right")
 
+#Import button and placement
 Import = standardButton(BottomBar, import_pop.pop_up, "Import")
 Import.Pack("right")
 
-
+#Export button creation
 Export = standardButton(BottomBar, export_pop.pop_up, "Export")
 Export.Pack("right")
-
 
 update_screen()
 

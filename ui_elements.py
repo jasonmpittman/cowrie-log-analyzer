@@ -174,29 +174,6 @@ class PopUp:
 		else:
 			self.error_message.set(self.error_message)
 
-'''
-# the constructor syntax is:
-# OptionMenu(master, variable, *values)
-
-OPTIONS = [
-    "egg",
-    "bunny",
-    "chicken"
-]
-
-master = Tk()
-
-variable = StringVar(master)
-variable.set(OPTIONS[0]) # default value
-
-w = apply(OptionMenu, (master, variable) + tuple(OPTIONS))
-w.pack()
-
-1. Source IP addresses by frequency (top ten)
-2. Source countries by frequency (top ten)
-3. Session duration by duration (top ten)
-'''
-
 class Selection_menu:
 	def __init__(self, parent):
 		self.parent = parent
@@ -220,7 +197,7 @@ class Selection_menu:
 		self.window = tk.Toplevel(self.parent)
 		self.string_var = tk.StringVar(self.window)
 		self.menu = tk.OptionMenu(self.window, self.string_var, "IP Address", "Countries", "Session Duration")
-		self.menu.config(width=15)
+		self.menu.config(width=16)
 		self.menu.pack(side="top")
 		self.button_bar = tk.Frame(self.window)
 		self.button_bar.pack(side="bottom")
