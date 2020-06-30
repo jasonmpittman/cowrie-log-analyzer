@@ -34,7 +34,11 @@ class standardButton:
 
 '''
 These are the boxes that display the top 10 information
-	- The functions were made to save time
+	- Init --> creates the box
+	- Pack and Grid --> for placement
+	- Append --> add text to the box (at the end)
+	- Clear --> remove text from the box
+	- export_md --> returns a string with the data from the box
 '''
 class ScrollSection:
 	def __init__(self, parent, h, w, title, px=10, py=10):
@@ -68,6 +72,12 @@ class ScrollSection:
 
 '''
 This allows for the creation and drawing of graphs (bar and histograms)
+	- init --> initializes variables
+	- Grid and Pack --> allow for placement
+	- draw --> actually draws the graph with labels
+	- draw_histogram --> draws a histogram with the data instead of a bar graph
+	- pd_data --> loads the data from the database
+	- graph_export --> saves the graph as a .png
 '''
 class Graph:
 	def __init__(self, parent, widthIn, heightIn, xLabel, yLabel, title="Title"):
@@ -124,6 +134,9 @@ class Graph:
 
 '''
 This is used to allow the user to input things into the program
+	- init --> initializes the pop-up box and places everything in it
+	- Pack and Grid --> for placement
+	- Get --> returns the text that was typed into the textbox
 '''
 class Text_Input_Section:
 	def __init__(self, parent, label_text):
@@ -145,6 +158,9 @@ class Text_Input_Section:
 
 '''
 A class that handles all of the pop-up boxes and deals with all of that functionality (in partuclare the popups where the user types information in)
+	- init --> initializes variables
+	- pop_up --> creates the pop-up box
+	- btn_cmd --> when the button is pressed this is what runs
 '''
 class PopUp:
 	def __init__(self, cmd, update, parent, title, action_name, error_message, label_text):
@@ -184,6 +200,10 @@ class PopUp:
 
 '''
 The selection menu for the graphs
+	- init --> keeps track of the parent
+	- Pack and Grid --> for placement
+	- Graph_It --> determines what graph to draw and then calls the needed functions to do so
+	- Pop --> this is the pop-up menu with the options
 '''
 class Selection_menu:
 	def __init__(self, parent):
