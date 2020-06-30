@@ -18,7 +18,9 @@ import matplotlib.pyplot as plt
 
 from events_database import *
 
-
+'''
+A button class with basic functionality
+'''
 class standardButton:
 	def __init__(self, parent, commandFunction, buttonText):
 		self.button = tk.Button(parent, text=buttonText, command=commandFunction, width=10)
@@ -29,6 +31,11 @@ class standardButton:
 	def Pack(self, Side, px=10, py=10):
 		self.button.pack(side=Side, padx=px, pady=py)
 
+
+'''
+These are the boxes that display the top 10 information
+	- The functions were made to save time
+'''
 class ScrollSection:
 	def __init__(self, parent, h, w, title, px=10, py=10):
 		self.scrollFrame = tk.Frame(parent, bg="white", bd=5, relief="groove", width=w, height=h)
@@ -60,7 +67,9 @@ class ScrollSection:
 		string += self.scrollText.get("1.0", tk.END)
 		return string
 
-
+'''
+This allows for the creation and drawing of graphs (bar and histograms)
+'''
 class Graph:
 	def __init__(self, parent, widthIn, heightIn, xLabel, yLabel, title="Title"):
 		self.data = []
@@ -73,10 +82,6 @@ class Graph:
 		self.xLabel = xLabel
 		self.yLabel = yLabel
 		matplotlib.rc('xtick', labelsize=10)
-
-		# matplotlib.rc('ytick', labelsize=20)
-		# plt.gcf().subplots_adjust(bottom=0.1)
-		# xlabel=axisLabel[0], ylabel=axisLabel[1]
 
 	def Grid(self, r, c, colSpan=2, px=10, py=10):
 		self.Widget.grid(row=r, column=c, columnspan=colSpan, padx=px, pady=py)
@@ -118,7 +123,9 @@ class Graph:
 		self.figure.savefig(filename)
 		return True
 
-
+'''
+This is used to allow the user to input things into the program
+'''
 class Text_Input_Section:
 	def __init__(self, parent, label_text):
 		self.frame = tk.Frame(parent)
@@ -137,7 +144,9 @@ class Text_Input_Section:
 	def Get(self):
 		return self.text.get()
 
-
+'''
+A class that handles all of the pop-up boxes and deals with all of that functionality (in partuclare the popups where the user types information in)
+'''
 class PopUp:
 	def __init__(self, cmd, update, parent, title, action_name, error_message, label_text):
 		self.cmd = cmd
@@ -174,6 +183,9 @@ class PopUp:
 		else:
 			self.error_message.set(self.error_message)
 
+'''
+The selection menu for the graphs
+'''
 class Selection_menu:
 	def __init__(self, parent):
 		self.parent = parent
@@ -207,9 +219,15 @@ class Selection_menu:
 		self.cancel = standardButton(self.button_bar, self.window.destroy, "Cancel")
 		self.cancel.Pack("right")
 
+'''
+A fuction that does nothing (so it can be passed to a class in the event nothing needs to be done)
+'''
 def no_update():
 	print("")
 
+'''
+Everything the graph window needs to be shown is done in here
+'''
 def graphWindow(parent, category, x_label, y_label, title):
 	graphW = tk.Toplevel(parent)
 
