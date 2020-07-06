@@ -1,9 +1,6 @@
 '''
 TODO
-	- de-activate scrolling
-	- add the .png autocheck support
-	- remove extraineous print statements
-	- add comments
+
 '''
 
 from events_class import *
@@ -31,12 +28,14 @@ def update_data():
 Exports the information to a file that the user specifies
 Input: filename --> name of file with or without .md on the end --> it will handle it either way
 '''
+
+#this would be in facade
 def Export(filename):
 	extention = filename[-3::]
 	if extention != ".md":
 		filename = filename + ".md"
 
-	str_output = ""
+	str_output = "#Text Output\n"
 	str_output += IP_Address.export_md()
 	str_output += User_names.export_md()
 	str_output += Passwords.export_md()
@@ -44,6 +43,7 @@ def Export(filename):
 	str_output += download_file.export_md()
 	str_output += origin_country.export_md()
 	str_output += session_duration.export_md()
+	str_output += "\n"
 	str_output += overall_one.export_md()
 	with open(filename, "w") as f:
 		f.write(str_output)
@@ -101,6 +101,7 @@ E = Events()
 
 '''
 Import and Export pop-up window
+should be in a client class
 '''
 import_pop = PopUp(E.get_data, update_data, root, "Import", "Import", "Not a file or directory", "File or directory name: ")
 

@@ -150,7 +150,6 @@ def add_event(conn, event):
 
 	try:
 		cur.execute(sql, preped_data)
-		# print(cur.lastrowid)
 		rowid = cur.lastrowid
 	except:
 		print("nothing was inserted")

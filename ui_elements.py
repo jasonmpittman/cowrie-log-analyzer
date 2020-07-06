@@ -129,6 +129,10 @@ class Graph:
 		self.data = [x_list, y_list]
 
 	def graph_export(self, filename):
+		extention = filename[-4::]
+		if extention != ".png":
+			filename = filename + ".png"
+
 		self.figure.savefig(filename)
 		return True
 

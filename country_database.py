@@ -93,7 +93,6 @@ Strips newline character from coutry names
 def strip():
 	sql = """UPDATE ip_lookup SET country_name = REPLACE(country_name, '\n', '') """
 	run_sql(sql)
-	print("strip ran")
 
 '''
 Takes an ip address as a string and converts it to decimal format
