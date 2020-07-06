@@ -2,13 +2,30 @@ from ui_elements import *
 
 from events_class import *
 
+'''
+# imports from main
+from events_class import *
+
+from ui_elements import *
+
+from events_database import *
+
+import sys
+'''
+
+
 class Facade:
 	def __init__(self, root):
+		'''
+		Constant variables that control the size of the top 10 boxes
+		'''
+		self.scroll_section_col = 35
+		self.scroll_section_row = 10
+
 		self.root = root
 		self.E = Events()
 		'''
 		Import and Export pop-up window
-		should be in a client class
 		'''
 		self.import_pop = PopUp(self.E.get_data, self.update_data, self.root, "Import", "Import", "Not a file or directory", "File or directory name: ")
 		self.export_pop = PopUp(self.export, self.no_update, self.root, "Export", "Export", "", "Name of markdown file: ")
@@ -17,12 +34,6 @@ class Facade:
 		'''
 		self.first_row = tk.Frame()
 		self.second_row = tk.Frame()
-
-		'''
-		Constant variables that control the size of the top 10 boxes
-		'''
-		self.scroll_section_col = 35
-		self.scroll_section_row = 10
 
 		'''
 		First row of boxes
@@ -38,10 +49,12 @@ class Facade:
 		self.download_file = ScrollSection(self.second_row, self.scroll_section_row, self.scroll_section_col, "Top 10 Downloads")
 		self.origin_country = ScrollSection(self.second_row, self.scroll_section_row, self.scroll_section_col, "Top 10 Countries")
 		self.session_duration = ScrollSection(self.second_row, self.scroll_section_row, self.scroll_section_col, "Top 10 Session Durations")
-		self.overall_one = ScrollSection(self.second_row, self.scroll_section_row, self.scroll_section_col, "Overall #1")
+		self.overall_one = ScrollSection(self.second_row, self.scroll_section_row, self.scroll_section_col, "Overall Number 1")
+
 
 		#Exit button creation and placement
 		self.bottom_bar = tk.Frame(self.root)
+
 		self.exit_button = standardButton(self.bottom_bar, sys.exit, "Exit")
 
 
@@ -89,8 +102,6 @@ class Facade:
 	Exports the information to a file that the user specifies
 	Input: filename --> name of file with or without .md on the end --> it will handle it either way
 	'''
-
-	#this would be in facade
 	def export(self, filename):
 		extention = filename[-3::]
 		if extention != ".md":
