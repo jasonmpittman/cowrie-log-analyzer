@@ -1,6 +1,8 @@
 from ui_elements import *
 
-class facade:
+from events_class import *
+
+class Facade:
 	def __init__(self, root):
 		self.root = root
 		self.E = Events()
@@ -8,14 +10,12 @@ class facade:
 		Import and Export pop-up window
 		should be in a client class
 		'''
-		self.import_pop = PopUp(self.E.get_data, update_data, self.root, "Import", "Import", "Not a file or directory", "File or directory name: ")
-		self.export_pop = PopUp(Export, no_update, self.root, "Export", "Export", "", "Name of markdown file: ")
+		self.import_pop = PopUp(self.E.get_data, self.update_data, self.root, "Import", "Import", "Not a file or directory", "File or directory name: ")
+		self.export_pop = PopUp(self.export, self.no_update, self.root, "Export", "Export", "", "Name of markdown file: ")
 		'''
 		Creation of the rows, so it can be organized
 		'''
 		self.first_row = tk.Frame()
-
-
 		self.second_row = tk.Frame()
 
 		'''
@@ -27,21 +27,22 @@ class facade:
 		'''
 		First row of boxes
 		'''
-		self.ip_address = ScrollSection(self.first_row, self.scroll_section_row, scroll_section_col, "Top 10 IP Addresses")
-		self.user_names = ScrollSection(self.first_row, self.scroll_section_row, scroll_section_col, "Top 10 Usernames")
-		self.passwords = ScrollSection(self.first_row, self.scroll_section_row, scroll_section_col, "Top 10 Passwords")
-		self.user_and_pass = ScrollSection(self.first_row, self.scroll_section_row, scroll_section_col, "Top 10 User/Pass Pairs")
+		self.ip_address = ScrollSection(self.first_row, self.scroll_section_row, self.scroll_section_col, "Top 10 IP Addresses")
+		self.user_names = ScrollSection(self.first_row, self.scroll_section_row, self.scroll_section_col, "Top 10 Usernames")
+		self.passwords = ScrollSection(self.first_row, self.scroll_section_row, self.scroll_section_col, "Top 10 Passwords")
+		self.user_and_pass = ScrollSection(self.first_row, self.scroll_section_row, self.scroll_section_col, "Top 10 User/Pass Pairs")
 
 		'''
 		Second row of boxes
 		'''
-		self.download_file = ScrollSection(self.second_row, self.scroll_section_row, scroll_section_col, "Top 10 Downloads")
-		self.origin_country = ScrollSection(self.second_row, self.scroll_section_row, scroll_section_col, "Top 10 Countries")
-		self.session_duration = ScrollSection(self.second_row, self.scroll_section_row, scroll_section_col, "Top 10 Session Durations")
-		self.overall_one = ScrollSection(self.second_row, self.scroll_section_row, scroll_section_col, "Overall #1")
+		self.download_file = ScrollSection(self.second_row, self.scroll_section_row, self.scroll_section_col, "Top 10 Downloads")
+		self.origin_country = ScrollSection(self.second_row, self.scroll_section_row, self.scroll_section_col, "Top 10 Countries")
+		self.session_duration = ScrollSection(self.second_row, self.scroll_section_row, self.scroll_section_col, "Top 10 Session Durations")
+		self.overall_one = ScrollSection(self.second_row, self.scroll_section_row, self.scroll_section_col, "Overall #1")
 
 		#Exit button creation and placement
-		self.exit = standardButton(self.bottom_bar, sys.exit, "Exit")
+		self.bottom_bar = tk.Frame(self.root)
+		self.exit_button = standardButton(self.bottom_bar, sys.exit, "Exit")
 
 
 		#Graph selection creation and button creation
@@ -50,11 +51,9 @@ class facade:
 
 
 		#Import button and placement
-		self.import = standardButton(self.bottom_bar, self.import_pop.pop_up, "Import")
-
-
+		self.import_button = standardButton(self.bottom_bar, self.import_pop.pop_up, "Import")
 		#Export button creation
-		self.export = standardButton(self.bottom_bar, self.export_pop.pop_up, "Export")
+		self.export_button = standardButton(self.bottom_bar, self.export_pop.pop_up, "Export")
 
 	def place_first_row(self):
 		'''
@@ -80,9 +79,93 @@ class facade:
 		'''
 		Creation of a bottom bar of buttons
 		'''
-		self.bottom_bar = tk.Frame(self.root)
 		self.bottom_bar.pack(side="bottom")
-		self.exit.Pack("right")
+		self.exit_button.Pack("right")
 		self.graph_button.Pack("right")
-		self.import.Pack("right")
-		self.export.Pack("right")
+		self.import_button.Pack("right")
+		self.export_button.Pack("right")
+
+	'''
+	Exports the information to a file that the user specifies
+	Input: filename --> name of file with or without .md on the end --> it will handle it either way
+	'''
+
+	#this would be in facade
+	def export(self, filename):
+		extention = filename[-3::]
+		if extention != ".md":
+			filename = filename + ".md"
+
+		str_output = "#Text Output\n"
+		str_output += self.ip_address.export_md()
+		str_output += self.user_names.export_md()
+		str_output += self.passwords.export_md()
+		str_output += self.user_and_pass.export_md()
+		str_output += self.download_file.export_md()
+		str_output += self.origin_country.export_md()
+		str_output += self.session_duration.export_md()
+		str_output += "\n"
+		str_output += self.overall_one.export_md()
+
+		with open(filename, "w") as f:
+			f.write(str_output)
+		return True
+
+	'''
+	update_screen --> updates all the visible data with what is in the datebase
+	'''
+	def update_screen(self):
+		conn = create_connection("events.db")
+		try:
+			ip_res, ip1 = query_top_ten(conn, "ip_address")
+			self.ip_address.Clear()
+			self.ip_address.Append(ip_res)
+
+			usr_res, usr1 = query_top_ten(conn, "username")
+			self.user_names.Clear()
+			self.user_names.Append(usr_res)
+
+			pass_res, pass1 = query_top_ten(conn, "password")
+			self.passwords.Clear()
+			self.passwords.Append(pass_res)
+
+			user_pass_res, usr_pass_1 = top_ten_user_pass(conn)
+			self.user_and_pass.Clear()
+			self.user_and_pass.Append(user_pass_res)
+
+			#more information needed
+			download_res, download1 = query_top_ten(conn, "filename")
+			self.download_file.Clear()
+			self.download_file.Append(download_res)
+
+			country_res, country1 = query_top_ten(conn, "country")
+			self.origin_country.Clear()
+			self.origin_country.Append(country_res)
+
+			sess_res, sess1 = longest_durations()
+			self.session_duration.Clear()
+			self.session_duration.Append(sess_res)
+
+			self.overall_one.Clear()
+			self.overall_one.Append(f"- ip: {ip1}\n- usr: {usr1}\n- pass: {pass1}\n- User/Pass: {usr_pass_1} \n- Downloads: {download1}\n- Country: {country1}\n- Duration: {sess1}")
+		except:
+			print("Please Import Data")
+
+	def no_update(self):
+		pass
+
+	def start_up(self):
+		self.place_first_row()
+		self.place_second_row()
+		self.place_button_bar()
+		self.update_screen()
+
+	def update_data(self):
+		conn = create_connection("events.db")
+		config_dict = get_config()
+		for event in E.events:
+			add_event(conn, event)
+
+		conn.commit()
+		conn = create_connection("events.db")
+		update_screen()
