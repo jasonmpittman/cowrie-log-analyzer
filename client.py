@@ -1,12 +1,17 @@
-import facade
-
 import tkinter as tk
 
-root = tk.Tk()
-root.title("Cowrie Log Analyzer")
-root.configure()
+import ui_class
 
-F = facade.Facade(root)
-F.start_up()
+def main():
+	root = tk.Tk()
+	root.title("Cowrie Log Analyzer")
+	root.configure()
 
-root.mainloop()
+	user_interface = ui_class.ui(root)
+	
+	user_interface.start_up()
+
+	root.mainloop()
+
+if __name__ == '__main__':
+	main()
