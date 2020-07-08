@@ -2,9 +2,10 @@ from system import *
 from ui_class import *
 
 class event_handler:
-	def __init__(self, update_screen):
+	def __init__(self, update_screen, export):
 		self.logic = logic()
 		self.update_screen = update_screen
+		self.export = export
 
 	def import_pop_get_data(self, name):
 		print("facade")
@@ -14,8 +15,8 @@ class event_handler:
 		self.logic.update_database()
 		self.update_screen()
 
-	def export_pop_export_data(self):
-		return self.logic.export()
+	def export_pop_export_data(self, filename):
+		return self.export(filename)
 
 	def export_pop_no_update(self):
 		self.logic.no_update()

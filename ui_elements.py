@@ -19,26 +19,26 @@ from events_database import *
 '''
 A button class with basic functionality
 '''
-class standardButton:
+class standard_button:
 	def __init__(self, parent, commandFunction, buttonText):
 		self.button = tk.Button(parent, text=buttonText, command=commandFunction, width=10)
 
-	def Grid(self, r, c, px=10, py=10):
+	def grid(self, r, c, px=10, py=10):
 		self.button.grid(row=r, column=c, padx=px, pady=py)
 
-	def Pack(self, Side, px=10, py=10):
+	def pack(self, Side, px=10, py=10):
 		self.button.pack(side=Side, padx=px, pady=py)
 
 
 '''
 These are the boxes that display the top 10 information
 	- Init --> creates the box
-	- Pack and Grid --> for placement
+	- Pack and grid --> for placement
 	- Append --> add text to the box (at the end)
 	- Clear --> remove text from the box
 	- export_md --> returns a string with the data from the box
 '''
-class ScrollSection:
+class scroll_section:
 	def __init__(self, parent, h, w, title, px=10, py=10):
 		self.scrollFrame = tk.Frame(parent, bg="white", bd=5, relief="groove", width=w, height=h)
 		self.title = tk.Label(self.scrollFrame, text=title)
@@ -47,18 +47,18 @@ class ScrollSection:
 		self.scrollText.configure(state="disabled")
 		self.scrollText.pack(side="left", padx=5, pady=10)
 
-	def Grid(self, r, c, px=10, py=10):
+	def grid(self, r, c, px=10, py=10):
 		self.scrollFrame.grid(row=r, column=c, padx=px, pady=py)
 
-	def Pack(self, Side, px=10, py=10):
+	def pack(self, Side, px=10, py=10):
 		self.scrollFrame.pack(side=Side, padx=px, pady=py)
 
-	def Append(self, text):
+	def append(self, text):
 		self.scrollText.configure(state="normal")
 		self.scrollText.insert(tk.END, text)
 		self.scrollText.configure(state="disabled")
 
-	def Clear(self):
+	def clear(self):
 		self.scrollText.configure(state="normal")
 		self.scrollText.delete("1.0", tk.END)
 		self.scrollText.configure(state="disabled")
@@ -71,7 +71,7 @@ class ScrollSection:
 '''
 This allows for the creation and drawing of graphs (bar and histograms)
 	- init --> initializes variables
-	- Grid and Pack --> allow for placement
+	- grid and Pack --> allow for placement
 	- draw --> actually draws the graph with labels
 	- draw_histogram --> draws a histogram with the data instead of a bar graph
 	- pd_data --> loads the data from the database
@@ -90,10 +90,10 @@ class Graph:
 		self.yLabel = yLabel
 		matplotlib.rc('xtick', labelsize=10)
 
-	def Grid(self, r, c, colSpan=2, px=10, py=10):
+	def grid(self, r, c, colSpan=2, px=10, py=10):
 		self.Widget.grid(row=r, column=c, columnspan=colSpan, padx=px, pady=py)
 
-	def Pack(self, Side, px=10, py=10):
+	def pack(self, Side, px=10, py=10):
 		self.Widget.pack(side=Side, padx=px, pady=py)
 
 	def draw(self):
@@ -137,10 +137,10 @@ class Graph:
 '''
 This is used to allow the user to input things into the program
 	- init --> initializes the pop-up box and places everything in it
-	- Pack and Grid --> for placement
+	- Pack and grid --> for placement
 	- Get --> returns the text that was typed into the textbox
 '''
-class Text_Input_Section:
+class text_input_section:
 	def __init__(self, parent, label_text):
 		self.frame = tk.Frame(parent)
 		self.label = tk.Label(self.frame, text=label_text)
@@ -149,13 +149,13 @@ class Text_Input_Section:
 		self.text.focus_set()
 		self.text.pack(side="left", padx=5)
 
-	def Pack(self, Side, px=0, py=0):
+	def pack(self, Side, px=0, py=0):
 		self.frame.pack(side=Side, padx=px, pady=py)
 
-	def Grid(self, r, c, px=0, py=0):
+	def grid(self, r, c, px=0, py=0):
 		self.frame.grid(row=r, column=c, padx=px, pady=py)
 
-	def Get(self):
+	def get(self):
 		return self.text.get()
 
 '''
@@ -164,7 +164,7 @@ A class that handles all of the pop-up boxes and deals with all of that function
 	- pop_up --> creates the pop-up box
 	- btn_cmd --> when the button is pressed this is what runs
 '''
-class PopUp:
+class pop_up:
 	def __init__(self, cmd, update, parent, title, action_name, error_message, label_text):
 		self.cmd = cmd
 		self.update = update
@@ -175,27 +175,26 @@ class PopUp:
 		self.input_text = ""
 		self.label_text = label_text
 
-	def pop_up(self):
+	def pop_up_box(self):
 		self.window = tk.Toplevel(self.parent)
 		self.window.title(self.title)
 		self.window.bind('<Return>', self.btn_cmd)
-		self.input_box = Text_Input_Section(self.window, self.label_text)
-		self.input_box.Pack("top", 20, 30)
-		self.cancel = standardButton(self.window, self.window.destroy, "Cancel")
-		self.cancel.Pack("right")
+		self.input_box = text_input_section(self.window, self.label_text)
+		self.input_box.pack("top", 20, 30)
+		self.cancel = standard_button(self.window, self.window.destroy, "Cancel")
+		self.cancel.pack("right")
 		self.error_message = tk.StringVar()
 		self.error_message.set("")
 		self.error_label = tk.Label(self.window, textvariable=self.error_message)
-		self.button = standardButton(self.window, self.btn_cmd, self.action_name)
-		self.button.Pack("right")
+		self.button = standard_button(self.window, self.btn_cmd, self.action_name)
+		self.button.pack("right")
 		self.error_label.pack(side="bottom")
 
 
 	def btn_cmd(self, event=None):
-		self.input_text = self.input_box.Get()
+		self.input_text = self.input_box.get()
 		succ = self.cmd(self.input_text)
 		if succ:
-			print("succ")
 			self.update()
 			self.window.destroy()
 		else:
@@ -204,30 +203,30 @@ class PopUp:
 '''
 The selection menu for the graphs
 	- init --> keeps track of the parent
-	- Pack and Grid --> for placement
-	- Graph_It --> determines what graph to draw and then calls the needed functions to do so
-	- Pop --> this is the pop-up menu with the options
+	- Pack and grid --> for placement
+	- graph_it --> determines what graph to draw and then calls the needed functions to do so
+	- pop --> this is the pop-up menu with the options
 '''
-class Selection_menu:
+class selection_menu:
 	def __init__(self, parent):
 		self.parent = parent
 
-	def Pack(self, side="top"):
+	def pack(self, side="top"):
 		self.menu.pack(side=side, padx=0, pady=0)
 
-	def Grid(self, r, c):
+	def grid(self, r, c):
 		self.menu.grid(row=r, column=c, padx=0, pady=0)
 
-	def Graph_It(self):
+	def graph_it(self):
 		#duration is going to change
 		self.dict = {"IP Address": {"category": "ip_address", "x_label": "IP Addresses", "y_label": "Frequency", "title": "IP Address Graph"},
 					"Countries": {"category": "country", "x_label": "Country", "y_label": "Frequency", "title": "Country Graph"},
 					"Session Duration": {"category": "duration", "x_label": "Time(s)", "y_label": "Longest Durations", "title": "Time Duration Graph"}}
 		graph_type = self.string_var.get()
 		print(graph_type)
-		graphWindow(self.parent, self.dict[graph_type]["category"], self.dict[graph_type]["x_label"], self.dict[graph_type]["y_label"], self.dict[graph_type]["title"])
+		graph_window(self.parent, self.dict[graph_type]["category"], self.dict[graph_type]["x_label"], self.dict[graph_type]["y_label"], self.dict[graph_type]["title"])
 
-	def Pop(self):
+	def pop(self):
 		self.window = tk.Toplevel(self.parent)
 		self.string_var = tk.StringVar(self.window)
 		self.menu = tk.OptionMenu(self.window, self.string_var, "IP Address", "Countries", "Session Duration")
@@ -236,10 +235,10 @@ class Selection_menu:
 		self.button_bar = tk.Frame(self.window)
 		self.button_bar.pack(side="bottom")
 
-		self.button = standardButton(self.button_bar, self.Graph_It, "Graph it!")
-		self.button.Pack("right")
-		self.cancel = standardButton(self.button_bar, self.window.destroy, "Cancel")
-		self.cancel.Pack("right")
+		self.button = standard_button(self.button_bar, self.graph_it, "Graph it!")
+		self.button.pack("right")
+		self.cancel = standard_button(self.button_bar, self.window.destroy, "Cancel")
+		self.cancel.pack("right")
 
 '''
 A fuction that does nothing (so it can be passed to a class in the event nothing needs to be done)
@@ -250,7 +249,7 @@ def no_update():
 '''
 Everything the graph window needs to be shown is done in here
 '''
-def graphWindow(parent, category, x_label, y_label, title):
+def graph_window(parent, category, x_label, y_label, title):
 	graphW = tk.Toplevel(parent)
 
 	graphW.title("Graph")
@@ -258,22 +257,22 @@ def graphWindow(parent, category, x_label, y_label, title):
 	bar.pack(side="bottom")
 
 	#self.window.destroy()
-	Exit_button = standardButton(bar, graphW.destroy, "Exit")
-	Exit_button.Pack("right")
+	exit_button = standard_button(bar, graphW.destroy, "Cancel")
+	exit_button.pack("right")
 
 
 	G = Graph(graphW, 8, 5, x_label, y_label, title)
 	G.pd_data(category)
-	G.Pack("top")
+	G.pack("top")
 	if category == "duration":
 		G.draw_histogram()
 	else:
 		G.draw()
 
-	graph_export_popup = PopUp(G.graph_export, no_update, graphW, "Export Graph", "Export", "", "Name of PNG file")
+	graph_export_popup = pop_up(G.graph_export, no_update, graphW, "Export Graph", "Export", "", "Name of PNG file")
 
-	Export_graph = standardButton(bar, graph_export_popup.pop_up, "Export")
-	Export_graph.Pack("right")
+	export_graph = standard_button(bar, graph_export_popup.pop_up_box, "Export")
+	export_graph.pack("right")
 
 
 #

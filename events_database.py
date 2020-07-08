@@ -109,21 +109,21 @@ Output: touple of all event information
 '''
 def get_data_touple(event):
 	type = get_type(event.event["eventid"])
-	ip = event.Get("src_ip")
-	username = event.Get("username")
-	password = event.Get("password")
-	filename = get_file_name(event.Get("url"))
-	country = get_ip_country(event.Get("src_ip"))
+	ip = event.get("src_ip")
+	username = event.get("username")
+	password = event.get("password")
+	filename = get_file_name(event.get("url"))
+	country = get_ip_country(event.get("src_ip"))
 
-	duration = event.Get("duration")
+	duration = event.get("duration")
 	if duration != "-":
 		duration = float(duration)
 
-	timestamp = event.Get("timestamp")
+	timestamp = event.get("timestamp")
 
 	dt_obj = datetime.datetime.strptime(timestamp, '%Y-%m-%dT%H:%M:%S.%fZ')
 	date_time = str(dt_obj)
-	message = event.Get("message")
+	message = event.get("message")
 	return (type, ip, username, password, filename, country, duration, date_time, message)
 
 '''

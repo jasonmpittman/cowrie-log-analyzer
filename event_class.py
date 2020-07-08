@@ -8,8 +8,8 @@ class Event:
 	'''
 	returns the value for the given key or "-" if it does not have one
 	'''
-	
-	def Get(self, key):
+
+	def get(self, key):
 		try:
 			return self.event[key]
 		except:

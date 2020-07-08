@@ -19,7 +19,7 @@ class logic:
 
 		conn.commit()
 		conn = create_connection("events.db")
-		
+
 		# self.update_screen()
 
 	# '''
@@ -62,25 +62,6 @@ class logic:
 	# 	except:
 	# 		print("Please Import Data")
 
-	def export(self, filename):
-		extention = filename[-3::]
-		if extention != ".md":
-			filename = filename + ".md"
-
-		str_output = "#Text Output\n"
-		str_output += self.ip_address.export_md()
-		str_output += self.user_names.export_md()
-		str_output += self.passwords.export_md()
-		str_output += self.user_and_pass.export_md()
-		str_output += self.download_file.export_md()
-		str_output += self.origin_country.export_md()
-		str_output += self.session_duration.export_md()
-		str_output += "\n"
-		str_output += self.overall_one.export_md()
-
-		with open(filename, "w") as f:
-			f.write(str_output)
-		return True
 
 	def no_update(self):
 		pass

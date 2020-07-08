@@ -14,7 +14,7 @@ class Events:
 	Gets data from a file and puts it into the events list
 	Input: filename
 	'''
-	def getDataFromFile(self, fileName):
+	def get_data_from_file(self, fileName):
 		file = open(fileName, "r")
 
 		#Gets the lines from the log file
@@ -33,12 +33,12 @@ class Events:
 
 
 	'''
-	Runs the getDataFromFile function repeatedly on all files in a given directory
+	Runs the get_data_from_file function repeatedly on all files in a given directory
 	Input: dir_name -> directory name
 	'''
 	def get_data_from_dir(self, dir_name):
 		for filename in os.listdir(dir_name):
-			self.getDataFromFile(dir_name + "/" + filename)
+			self.get_data_from_file(dir_name + "/" + filename)
 
 	'''
 	Determines if it is a file or directory name and acts accordingly
@@ -48,7 +48,7 @@ class Events:
 		file = pathlib.Path(name)
 		if file.exists():
 			if os.path.isfile(name):
-				self.getDataFromFile(name)
+				self.get_data_from_file(name)
 			else:
 				self.get_data_from_dir(name)
 			return True
@@ -59,7 +59,7 @@ class Events:
 	'''
 	Prints all events in the events list
 	'''
-	def printEvents(self):
+	def print_events(self):
 		for event in self.events:
 			event.printEvent()
 
@@ -67,7 +67,7 @@ class Events:
 	Returns all rows with columns with a given value
 	Input: eventid --> category
 	'''
-	def getEventCategory(self, eventid):
+	def get_event_category(self, eventid):
 		ret = []
 		for ev in self.events:
 			if eventid == ev.event["eventid"]:
