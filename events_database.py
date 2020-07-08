@@ -73,7 +73,7 @@ Loads the configuration file (json) into a python dictionary
 Output: config_dict --> a dictionary
 '''
 def get_config():
-	with open('types.config.json', 'r') as config_file:
+	with open("config/types.config.json", "r") as config_file:
   		config = config_file.read()
 	config_dict = json.loads(config)
 	return config_dict
