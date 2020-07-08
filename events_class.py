@@ -31,6 +31,7 @@ class Events:
 			obj = Event(json_line_dict)
 			self.events.append(obj)
 
+
 	'''
 	Runs the getDataFromFile function repeatedly on all files in a given directory
 	Input: dir_name -> directory name

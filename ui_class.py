@@ -10,15 +10,14 @@ class ui:
 		self.scroll_section_col = 35
 		self.scroll_section_row = 10
 
-		self.eh = event_handler()
+		self.eh = event_handler(self.update_screen)
 
 		self.root = root
-		self.E = Events()
 		'''
 		Import and Export pop-up window
 		'''
-		self.import_pop = PopUp(self.eh.import_pop_get_data(), self.eh.import_pop_update_database(), self.root, "Import", "Import", "Not a file or directory", "File or directory name: ")
-		self.export_pop = PopUp(self.eh.export_pop_export_data(), self.eh.export_pop_no_update(), self.root, "Export", "Export", "", "Name of markdown file: ")
+		self.import_pop = PopUp(self.eh.import_pop_get_data, self.eh.import_pop_update_database, self.root, "Import", "Import", "Not a file or directory", "File or directory name: ")
+		self.export_pop = PopUp(self.eh.export_pop_export_data, self.eh.export_pop_no_update, self.root, "Export", "Export", "", "Name of markdown file: ")
 		'''
 		Creation of the rows, so it can be organized
 		'''
@@ -45,7 +44,7 @@ class ui:
 		#Exit button creation and placement
 		self.bottom_bar = tk.Frame(self.root)
 
-		self.exit_button = standardButton(self.bottom_bar, self.eh.exit_button_press(), "Exit")
+		self.exit_button = standardButton(self.bottom_bar, self.eh.exit_button_press, "Exit")
 
 
 		#Graph selection creation and button creation
@@ -152,21 +151,9 @@ class ui:
 		except:
 			print("Please Import Data")
 
-	# def no_update(self):
-	# 	pass
 
 	def start_up(self):
 		self.place_first_row()
 		self.place_second_row()
 		self.place_button_bar()
 		self.update_screen()
-
-	# def update_data(self):
-	# 	conn = create_connection("events.db")
-	# 	config_dict = get_config()
-	# 	for event in E.events:
-	# 		add_event(conn, event)
-	#
-	# 	conn.commit()
-	# 	conn = create_connection("events.db")
-	# 	update_screen()

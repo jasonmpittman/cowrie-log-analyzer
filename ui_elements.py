@@ -195,6 +195,7 @@ class PopUp:
 		self.input_text = self.input_box.Get()
 		succ = self.cmd(self.input_text)
 		if succ:
+			print("succ")
 			self.update()
 			self.window.destroy()
 		else:
