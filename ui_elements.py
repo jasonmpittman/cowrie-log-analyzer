@@ -1,5 +1,7 @@
 import tkinter as tk
 
+from tkinter import ttk
+
 import sys
 
 import matplotlib
@@ -21,7 +23,17 @@ A button class with basic functionality
 '''
 class standard_button:
 	def __init__(self, parent, commandFunction, buttonText):
-		self.button = tk.Button(parent, text=buttonText, command=commandFunction, width=10)
+		self.blue = "blue"
+		self.style = ttk.Style()
+		self.style.theme_use('classic')
+		self.style.map("BW.TButton",
+	    foreground=[('pressed', 'white'), ('active', self.blue)],
+	    background=[('pressed', '!disabled', self.blue), ('active', 'white')],
+		relief=[('pressed', 'flat'), ('!pressed', 'flat')]
+		)
+		self.style.configure("BW.TButton", background="blue", foreground="white", relief="flat", bordercolor="blue")
+
+		self.button = ttk.Button(parent, text=buttonText, command=commandFunction, width=10, style="BW.TButton")
 
 	def grid(self, r, c, px=10, py=10):
 		self.button.grid(row=r, column=c, padx=px, pady=py)
@@ -261,7 +273,6 @@ def graph_window(parent, category, x_label, y_label, title):
 	#self.window.destroy()
 	exit_button = standard_button(bar, graphW.destroy, "Cancel")
 	exit_button.pack("right")
-
 
 	G = Graph(graphW, 8, 5, x_label, y_label, title)
 	G.pd_data(category)
