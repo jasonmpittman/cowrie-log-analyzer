@@ -4,11 +4,12 @@ import ui_class
 
 def main():
 	root = tk.Tk()
+	root.resizable(False, False)
 	root.title("Cowrie Log Analyzer")
 	root.configure()
 
 	user_interface = ui_class.ui(root)
-	
+
 	user_interface.start_up()
 
 	root.mainloop()
