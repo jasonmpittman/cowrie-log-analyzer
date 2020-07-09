@@ -27,11 +27,11 @@ class standard_button:
 		self.style = ttk.Style()
 		self.style.theme_use('classic')
 		self.style.map("BW.TButton",
-	    foreground=[('pressed', 'white'), ('active', self.blue)],
-	    background=[('pressed', '!disabled', self.blue), ('active', 'white')],
+	    foreground=[('pressed', '!disabled', self.blue), ('active', self.blue)],
+	    background=[('pressed', '!disabled', "white"), ('active', 'white')],
 		relief=[('pressed', 'flat'), ('!pressed', 'flat')]
 		)
-		self.style.configure("BW.TButton", background="blue", foreground="white", relief="flat", bordercolor="blue")
+		self.style.configure("BW.TButton", background="blue", foreground="white", relief="flat", bordercolor="red", borderwidth=3, font=('Helvetica', 14, 'bold') )
 
 		self.button = ttk.Button(parent, text=buttonText, command=commandFunction, width=10, style="BW.TButton")
 
