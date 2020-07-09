@@ -18,20 +18,23 @@ import matplotlib.pyplot as plt
 
 from events_database import *
 
+import color_palette
+
 '''
 A button class with basic functionality
 '''
 class standard_button:
-	def __init__(self, parent, commandFunction, buttonText):
-		self.blue = "blue"
+	def __init__(self, parent, commandFunction, buttonText, palette):
+		self.palette = palette
+		# self.blue = "#1600bd"
 		self.style = ttk.Style()
 		self.style.theme_use('classic')
 		self.style.map("BW.TButton",
-	    foreground=[('pressed', '!disabled', self.blue), ('active', self.blue)],
-	    background=[('pressed', '!disabled', "white"), ('active', 'white')],
+	    foreground=[('pressed', '!disabled', self.palette.accent_a), ('active', self.palette.accent_a)],
+	    background=[('pressed', '!disabled', self.palette.accent_b), ('active', self.palette.accent_b)],
 		relief=[('pressed', 'flat'), ('!pressed', 'flat')]
 		)
-		self.style.configure("BW.TButton", background="blue", foreground="white", relief="flat", bordercolor="red", borderwidth=3, font=('Helvetica', 14, 'bold') )
+		self.style.configure("BW.TButton", background=self.palette.accent_a, foreground=self.palette.accent_b, relief="flat", borderwidth=3, font=('Helvetica', 14, 'bold') )
 
 		self.button = ttk.Button(parent, text=buttonText, command=commandFunction, width=10, style="BW.TButton")
 
@@ -51,11 +54,21 @@ These are the boxes that display the top 10 information
 	- export_md --> returns a string with the data from the box
 '''
 class scroll_section:
-	def __init__(self, parent, h, w, title, px=10, py=10):
-		self.scrollFrame = tk.Frame(parent, bg="white", bd=5, relief="groove", width=w, height=h)
-		self.title = tk.Label(self.scrollFrame, text=title)
-		self.title.pack(side="top", padx=10, pady=2)
-		self.scrollText = tk.Text(self.scrollFrame, height=h, width=w)
+	def __init__(self, parent, h, w, title, palette, px=10, py=10):
+		self.palette = palette
+		self.style_label = ttk.Style()
+		self.style_label.theme_use('classic')
+		self.style_label.configure("TextBox.TLabel", background= self.palette.secondary_a, foreground= self.palette.secondary_b)
+		self.style_text = ttk.Style()
+		self.style_text.theme_use('classic')
+		#you need to update this style stuff
+		self.style_text.configure("Textbox.LabelFrame")
+
+
+		self.scrollFrame = ttk.Frame(parent, relief="groove", width=w, height=h, style=self.style)
+		self.title = ttk.Label(self.scrollFrame, text=title, style="TextBox.TLabel")
+		self.title.pack(side="top", padx=10, pady=2, style=self.style)
+		self.scrollText = ttk.Text(self.scrollFrame, height=h, width=w, style=self.style)
 		self.scrollText.configure(state="disabled")
 		self.scrollText.pack(side="left", padx=5, pady=10)
 
