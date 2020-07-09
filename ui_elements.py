@@ -177,6 +177,7 @@ class pop_up:
 
 	def pop_up_box(self):
 		self.window = tk.Toplevel(self.parent)
+		self.window.resizable(False, False)
 		self.window.title(self.title)
 		self.window.bind('<Return>', self.btn_cmd)
 		self.input_box = text_input_section(self.window, self.label_text)
@@ -228,6 +229,7 @@ class selection_menu:
 
 	def pop(self):
 		self.window = tk.Toplevel(self.parent)
+		self.window.resizable(False, False)
 		self.string_var = tk.StringVar(self.window)
 		self.menu = tk.OptionMenu(self.window, self.string_var, "IP Address", "Countries", "Session Duration")
 		self.menu.config(width=16)
@@ -251,7 +253,7 @@ Everything the graph window needs to be shown is done in here
 '''
 def graph_window(parent, category, x_label, y_label, title):
 	graphW = tk.Toplevel(parent)
-
+	graphW.resizable(False, False)
 	graphW.title("Graph")
 	bar = tk.Frame(graphW)
 	bar.pack(side="bottom")
