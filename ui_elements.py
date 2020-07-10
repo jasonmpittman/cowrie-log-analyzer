@@ -189,7 +189,7 @@ class pop_up:
 		self.parent = parent
 		self.title = title
 		self.action_name = action_name
-		self.error_message = error_message
+		self.error_message_on_screen = error_message
 		self.input_text = ""
 		self.label_text = label_text
 
@@ -218,7 +218,7 @@ class pop_up:
 			self.update()
 			self.window.destroy()
 		else:
-			self.error_message.set(self.error_message)
+			self.error_message.set(self.error_message_on_screen)
 
 '''
 The selection menu for the graphs
