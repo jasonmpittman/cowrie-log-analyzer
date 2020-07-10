@@ -56,9 +56,9 @@ class scroll_section:
 	def __init__(self, parent, h, w, title, palette, px=10, py=10):
 		self.palette = palette
 		self.scrollFrame = tk.Frame(parent, bg=self.palette.secondary_b, bd=5, relief="groove", width=w, height=h)
-		self.title = tk.Label(self.scrollFrame, text=title, bg=self.palette.secondary_b, fg=self.palette.secondary_a)
+		self.title = tk.Label(self.scrollFrame, text=title, bg=self.palette.secondary_b, fg=self.palette.secondary_a, font=('Helvetica', 16, 'bold'))
 		self.title.pack(side="top", padx=10, pady=2)
-		self.scrollText = tk.Text(self.scrollFrame, height=h, width=w, bg=self.palette.secondary_b, fg=self.palette.secondary_a, highlightbackground=self.palette.secondary_b)
+		self.scrollText = tk.Text(self.scrollFrame, height=h, width=w, bg=self.palette.secondary_b, fg=self.palette.secondary_a, highlightbackground=self.palette.secondary_b, font=('Helvetica', 14,))
 		self.scrollText.configure(state="disabled")
 		self.scrollText.pack(side="left", padx=5, pady=10)
 
