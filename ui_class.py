@@ -1,12 +1,13 @@
 from ui_elements import *
 from facade import *
 import tkinter as tk
-
+import color_palette
 class ui:
 	def __init__(self, root):
 		'''
 		Constant variables that control the size of the top 10 boxes
 		'''
+		self.palette = color_palette.color("#161925","#23395b","#406e8e","#8ea8c3","#cbf7ed")
 		self.scroll_section_col = 35
 		self.scroll_section_row = 10
 
@@ -27,35 +28,35 @@ class ui:
 		'''
 		First row of boxes
 		'''
-		self.ip_address = scroll_section(self.first_row, self.scroll_section_row, self.scroll_section_col, "Top 10 IP Addresses")
-		self.user_names = scroll_section(self.first_row, self.scroll_section_row, self.scroll_section_col, "Top 10 Usernames")
-		self.passwords = scroll_section(self.first_row, self.scroll_section_row, self.scroll_section_col, "Top 10 Passwords")
-		self.user_and_pass = scroll_section(self.first_row, self.scroll_section_row, self.scroll_section_col, "Top 10 User/Pass Pairs")
+		self.ip_address = scroll_section(self.first_row, self.scroll_section_row, self.scroll_section_col, "Top 10 IP Addresses", self.palette)
+		self.user_names = scroll_section(self.first_row, self.scroll_section_row, self.scroll_section_col, "Top 10 Usernames", self.palette)
+		self.passwords = scroll_section(self.first_row, self.scroll_section_row, self.scroll_section_col, "Top 10 Passwords", self.palette)
+		self.user_and_pass = scroll_section(self.first_row, self.scroll_section_row, self.scroll_section_col, "Top 10 User/Pass Pairs", self.palette)
 
 		'''
 		Second row of boxes
 		'''
-		self.download_file = scroll_section(self.second_row, self.scroll_section_row, self.scroll_section_col, "Top 10 Downloads")
-		self.origin_country = scroll_section(self.second_row, self.scroll_section_row, self.scroll_section_col, "Top 10 Countries")
-		self.session_duration = scroll_section(self.second_row, self.scroll_section_row, self.scroll_section_col, "Top 10 Session Durations")
-		self.overall_one = scroll_section(self.second_row, self.scroll_section_row, self.scroll_section_col, "Overall Number 1")
+		self.download_file = scroll_section(self.second_row, self.scroll_section_row, self.scroll_section_col, "Top 10 Downloads", self.palette)
+		self.origin_country = scroll_section(self.second_row, self.scroll_section_row, self.scroll_section_col, "Top 10 Countries", self.palette)
+		self.session_duration = scroll_section(self.second_row, self.scroll_section_row, self.scroll_section_col, "Top 10 Session Durations", self.palette)
+		self.overall_one = scroll_section(self.second_row, self.scroll_section_row, self.scroll_section_col, "Overall Number 1", self.palette)
 
 
 		#Exit button creation and placement
 		self.bottom_bar = tk.Frame(self.root)
 
-		self.exit_button = standard_button(self.bottom_bar, self.eh.exit_button_press, "Exit")
+		self.exit_button = standard_button(self.bottom_bar, self.eh.exit_button_press, "Exit", self.palette)
 
 
 		#Graph selection creation and button creation
 		self.graph_selection_menu = selection_menu(self.root)
-		self.graph_button = standard_button(self.bottom_bar, self.graph_selection_menu.pop, "Graph")
+		self.graph_button = standard_button(self.bottom_bar, self.graph_selection_menu.pop, "Graph", self.palette)
 
 
 		#Import button and placement
-		self.import_button = standard_button(self.bottom_bar, self.import_pop.pop_up_box, "Import")
+		self.import_button = standard_button(self.bottom_bar, self.import_pop.pop_up_box, "Import", self.palette)
 		#Export button creation
-		self.export_button = standard_button(self.bottom_bar, self.export_pop.pop_up_box, "Export")
+		self.export_button = standard_button(self.bottom_bar, self.export_pop.pop_up_box, "Export", self.palette)
 
 	def place_first_row(self):
 		'''

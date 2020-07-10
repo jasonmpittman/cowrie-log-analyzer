@@ -18,22 +18,24 @@ import matplotlib.pyplot as plt
 
 from events_database import *
 
+
+
 '''
 A button class with basic functionality
 '''
 class standard_button:
-	def __init__(self, parent, commandFunction, buttonText):
-		self.blue = "blue"
+	def __init__(self, parent, commandFunction, buttonText, palette):
+		self.palette = palette
 		self.style = ttk.Style()
 		self.style.theme_use('classic')
-		self.style.map("BW.TButton",
-	    foreground=[('pressed', '!disabled', self.blue), ('active', self.blue)],
-	    background=[('pressed', '!disabled', "white"), ('active', 'white')],
+		self.style.map("Accent.TButton",
+	    foreground=[('pressed', '!disabled', self.palette.accent_a), ('active', self.palette.accent_a)],
+	    background=[('pressed', '!disabled', self.palette.accent_b), ('active', self.palette.accent_b)],
 		relief=[('pressed', 'flat'), ('!pressed', 'flat')]
 		)
-		self.style.configure("BW.TButton", background="blue", foreground="white", relief="flat", bordercolor="red", borderwidth=3, font=('Helvetica', 14, 'bold') )
+		self.style.configure("Accent.TButton", background=self.palette.accent_a, foreground=self.palette.accent_b, relief="flat", borderwidth=0, font=('Helvetica', 14, 'bold') )
 
-		self.button = ttk.Button(parent, text=buttonText, command=commandFunction, width=10, style="BW.TButton")
+		self.button = ttk.Button(parent, text=buttonText, command=commandFunction, width=10, style="Accent.TButton")
 
 	def grid(self, r, c, px=10, py=10):
 		self.button.grid(row=r, column=c, padx=px, pady=py)
@@ -51,11 +53,12 @@ These are the boxes that display the top 10 information
 	- export_md --> returns a string with the data from the box
 '''
 class scroll_section:
-	def __init__(self, parent, h, w, title, px=10, py=10):
-		self.scrollFrame = tk.Frame(parent, bg="white", bd=5, relief="groove", width=w, height=h)
+	def __init__(self, parent, h, w, title, palette, px=10, py=10):
+		self.palette = palette
+		self.scrollFrame = tk.Frame(parent, bg="red", bd=5, relief="groove", width=w, height=h)
 		self.title = tk.Label(self.scrollFrame, text=title)
 		self.title.pack(side="top", padx=10, pady=2)
-		self.scrollText = tk.Text(self.scrollFrame, height=h, width=w)
+		self.scrollText = tk.Text(self.scrollFrame, height=h, width=w, bg="blue", fg="purple")
 		self.scrollText.configure(state="disabled")
 		self.scrollText.pack(side="left", padx=5, pady=10)
 
