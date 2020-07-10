@@ -14,6 +14,7 @@ class ui:
 		self.eh = event_handler(self.update_screen, self.export)
 
 		self.root = root
+		self.root.configure(bg=self.palette.primary)
 		'''
 		Import and Export pop-up window
 		'''
@@ -23,7 +24,9 @@ class ui:
 		Creation of the rows, so it can be organized
 		'''
 		self.first_row = tk.Frame()
+		self.first_row.configure(bg=self.palette.primary)
 		self.second_row = tk.Frame()
+		self.second_row.configure(bg=self.palette.primary)
 
 		'''
 		First row of boxes
@@ -44,6 +47,7 @@ class ui:
 
 		#Exit button creation and placement
 		self.bottom_bar = tk.Frame(self.root)
+		self.bottom_bar.configure(bg=self.palette.primary)
 
 		self.exit_button = standard_button(self.bottom_bar, self.eh.exit_button_press, "Exit", self.palette)
 
