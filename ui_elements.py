@@ -245,7 +245,7 @@ class selection_menu:
 					"Session Duration": {"category": "duration", "x_label": "Time(s)", "y_label": "Longest Durations", "title": "Time Duration Graph"}}
 		graph_type = self.string_var.get()
 		print(graph_type)
-		graph_window(self.parent, self.dict[graph_type]["category"], self.dict[graph_type]["x_label"], self.dict[graph_type]["y_label"], self.dict[graph_type]["title"])
+		graph_window(self.parent, self.dict[graph_type]["category"], self.dict[graph_type]["x_label"], self.dict[graph_type]["y_label"], self.dict[graph_type]["title"], self.palette)
 
 	def pop(self):
 		self.window = tk.Toplevel(self.parent)
@@ -273,7 +273,8 @@ def no_update():
 '''
 Everything the graph window needs to be shown is done in here
 '''
-def graph_window(parent, category, x_label, y_label, title):
+def graph_window(parent, category, x_label, y_label, title, palette):
+
 	graphW = tk.Toplevel(parent)
 	graphW.resizable(False, False)
 	graphW.title("Graph")
@@ -281,7 +282,7 @@ def graph_window(parent, category, x_label, y_label, title):
 	bar.pack(side="bottom")
 
 	#self.window.destroy()
-	exit_button = standard_button(bar, graphW.destroy, "Cancel")
+	exit_button = standard_button(bar, graphW.destroy, "Cancel", palette)
 	exit_button.pack("right")
 
 	G = Graph(graphW, 8, 5, x_label, y_label, title)
@@ -292,9 +293,9 @@ def graph_window(parent, category, x_label, y_label, title):
 	else:
 		G.draw()
 
-	graph_export_popup = pop_up(G.graph_export, no_update, graphW, "Export Graph", "Export", "", "Name of PNG file")
+	graph_export_popup = pop_up(G.graph_export, no_update, graphW, "Export Graph", "Export", "", "Name of PNG file", palette)
 
-	export_graph = standard_button(bar, graph_export_popup.pop_up_box, "Export")
+	export_graph = standard_button(bar, graph_export_popup.pop_up_box, "Export", palette)
 	export_graph.pack("right")
 
 

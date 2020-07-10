@@ -123,9 +123,7 @@ class ui:
 		conn = create_connection("events.db")
 		try:
 			ip_res, ip1 = query_top_ten(conn, "ip_address")
-			print("clear failed")
 			self.ip_address.clear()
-			print("clear passed")
 			self.ip_address.append(ip_res)
 
 			usr_res, usr1 = query_top_ten(conn, "username")
