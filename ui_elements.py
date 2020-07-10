@@ -156,11 +156,13 @@ This is used to allow the user to input things into the program
 	- Get --> returns the text that was typed into the textbox
 '''
 class text_input_section:
-	def __init__(self, parent, label_text):
+	def __init__(self, parent, label_text, palette):
+		self.palette = palette
 		self.frame = tk.Frame(parent)
-		self.label = tk.Label(self.frame, text=label_text)
+		self.frame.configure(bg=self.palette.secondary_b)
+		self.label = tk.Label(self.frame, text=label_text, bg=self.palette.secondary_b, fg=self.palette.primary)
 		self.label.pack(side="left")
-		self.text = tk.Entry(self.frame, bd=2)
+		self.text = tk.Entry(self.frame, bd=2, bg=self.palette.accent_a, fg=self.palette.primary)
 		self.text.focus_set()
 		self.text.pack(side="left", padx=5)
 
@@ -180,7 +182,8 @@ A class that handles all of the pop-up boxes and deals with all of that function
 	- btn_cmd --> when the button is pressed this is what runs
 '''
 class pop_up:
-	def __init__(self, cmd, update, parent, title, action_name, error_message, label_text):
+	def __init__(self, cmd, update, parent, title, action_name, error_message, label_text, palette):
+		self.palette = palette
 		self.cmd = cmd
 		self.update = update
 		self.parent = parent
@@ -192,17 +195,18 @@ class pop_up:
 
 	def pop_up_box(self):
 		self.window = tk.Toplevel(self.parent)
+		self.window.configure(bg=self.palette.secondary_b)
 		self.window.resizable(False, False)
 		self.window.title(self.title)
 		self.window.bind('<Return>', self.btn_cmd)
-		self.input_box = text_input_section(self.window, self.label_text)
+		self.input_box = text_input_section(self.window, self.label_text, self.palette)
 		self.input_box.pack("top", 20, 30)
-		self.cancel = standard_button(self.window, self.window.destroy, "Cancel")
+		self.cancel = standard_button(self.window, self.window.destroy, "Cancel", self.palette)
 		self.cancel.pack("right")
 		self.error_message = tk.StringVar()
 		self.error_message.set("")
-		self.error_label = tk.Label(self.window, textvariable=self.error_message)
-		self.button = standard_button(self.window, self.btn_cmd, self.action_name)
+		self.error_label = tk.Label(self.window, textvariable=self.error_message, bg=self.palette.secondary_b)
+		self.button = standard_button(self.window, self.btn_cmd, self.action_name, self.palette)
 		self.button.pack("right")
 		self.error_label.pack(side="bottom")
 
@@ -224,8 +228,9 @@ The selection menu for the graphs
 	- pop --> this is the pop-up menu with the options
 '''
 class selection_menu:
-	def __init__(self, parent):
+	def __init__(self, parent, palette):
 		self.parent = parent
+		self.palette = palette
 
 	def pack(self, side="top"):
 		self.menu.pack(side=side, padx=0, pady=0)
@@ -244,17 +249,19 @@ class selection_menu:
 
 	def pop(self):
 		self.window = tk.Toplevel(self.parent)
+		self.window.configure(bg=self.palette.secondary_b)
 		self.window.resizable(False, False)
 		self.string_var = tk.StringVar(self.window)
 		self.menu = tk.OptionMenu(self.window, self.string_var, "IP Address", "Countries", "Session Duration")
-		self.menu.config(width=16)
+		self.menu.config(width=16, bg=self.palette.secondary_b)
 		self.menu.pack(side="top")
 		self.button_bar = tk.Frame(self.window)
+		self.button_bar.configure(bg=self.palette.secondary_b)
 		self.button_bar.pack(side="bottom")
 
-		self.button = standard_button(self.button_bar, self.graph_it, "Graph it!")
+		self.button = standard_button(self.button_bar, self.graph_it, "Graph it!", self.palette)
 		self.button.pack("right")
-		self.cancel = standard_button(self.button_bar, self.window.destroy, "Cancel")
+		self.cancel = standard_button(self.button_bar, self.window.destroy, "Cancel", self.palette)
 		self.cancel.pack("right")
 
 '''

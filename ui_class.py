@@ -18,8 +18,8 @@ class ui:
 		'''
 		Import and Export pop-up window
 		'''
-		self.import_pop = pop_up(self.eh.import_pop_get_data, self.eh.import_pop_update_database, self.root, "Import", "Import", "Not a file or directory", "File or directory name: ")
-		self.export_pop = pop_up(self.eh.export_pop_export_data, self.eh.export_pop_no_update, self.root, "Export", "Export", "", "Name of markdown file: ")
+		self.import_pop = pop_up(self.eh.import_pop_get_data, self.eh.import_pop_update_database, self.root, "Import", "Import", "Not a file or directory", "File or directory name: ", self.palette)
+		self.export_pop = pop_up(self.eh.export_pop_export_data, self.eh.export_pop_no_update, self.root, "Export", "Export", "", "Name of markdown file: ", self.palette)
 		'''
 		Creation of the rows, so it can be organized
 		'''
@@ -53,7 +53,7 @@ class ui:
 
 
 		#Graph selection creation and button creation
-		self.graph_selection_menu = selection_menu(self.root)
+		self.graph_selection_menu = selection_menu(self.root, self.palette)
 		self.graph_button = standard_button(self.bottom_bar, self.graph_selection_menu.pop, "Graph", self.palette)
 
 
