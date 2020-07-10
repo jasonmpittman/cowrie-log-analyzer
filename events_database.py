@@ -10,6 +10,7 @@ import datetime
 
 from event_class import *
 
+
 '''Creates a database connection to a SQLite database '''
 def create_connection(db_file="events.db"):
 
