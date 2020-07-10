@@ -7,9 +7,7 @@ class logic:
 		self.events_object = Events()
 
 	def get_data(self, name):
-		print("system")
-		self.events_object.get_data(name)
-		return True
+		return self.events_object.get_data(name)
 
 	def update_database(self):
 		conn = create_connection("events.db")

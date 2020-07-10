@@ -2,30 +2,31 @@ from ui_elements import *
 from facade import *
 import tkinter as tk
 import color_palette
-
 class ui:
 	def __init__(self, root):
 		'''
 		Constant variables that control the size of the top 10 boxes
 		'''
-		self.palette = color_palette.colors("#161925","#23395b","#406e8e","#5F83AB","#83ECD3")
-
+		self.palette = color_palette.color("#161925","#23395b","#406e8e","#8ea8c3","#cbf7ed")
 		self.scroll_section_col = 35
 		self.scroll_section_row = 10
 
 		self.eh = event_handler(self.update_screen, self.export)
 
 		self.root = root
+		self.root.configure(bg=self.palette.primary)
 		'''
 		Import and Export pop-up window
 		'''
-		self.import_pop = pop_up(self.eh.import_pop_get_data, self.eh.import_pop_update_database, self.root, "Import", "Import", "Not a file or directory", "File or directory name: ")
-		self.export_pop = pop_up(self.eh.export_pop_export_data, self.eh.export_pop_no_update, self.root, "Export", "Export", "", "Name of markdown file: ")
+		self.import_pop = pop_up(self.eh.import_pop_get_data, self.eh.import_pop_update_database, self.root, "Import", "Import", "Not a file or directory", "File or directory name: ", self.palette)
+		self.export_pop = pop_up(self.eh.export_pop_export_data, self.eh.export_pop_no_update, self.root, "Export", "Export", "", "Name of markdown file: ", self.palette)
 		'''
 		Creation of the rows, so it can be organized
 		'''
 		self.first_row = tk.Frame()
+		self.first_row.configure(bg=self.palette.primary)
 		self.second_row = tk.Frame()
+		self.second_row.configure(bg=self.palette.primary)
 
 		'''
 		First row of boxes
@@ -46,12 +47,13 @@ class ui:
 
 		#Exit button creation and placement
 		self.bottom_bar = tk.Frame(self.root)
+		self.bottom_bar.configure(bg=self.palette.primary)
 
 		self.exit_button = standard_button(self.bottom_bar, self.eh.exit_button_press, "Exit", self.palette)
 
 
 		#Graph selection creation and button creation
-		self.graph_selection_menu = selection_menu(self.root)
+		self.graph_selection_menu = selection_menu(self.root, self.palette)
 		self.graph_button = standard_button(self.bottom_bar, self.graph_selection_menu.pop, "Graph", self.palette)
 
 
@@ -121,7 +123,9 @@ class ui:
 		conn = create_connection("events.db")
 		try:
 			ip_res, ip1 = query_top_ten(conn, "ip_address")
+			print("clear failed")
 			self.ip_address.clear()
+			print("clear passed")
 			self.ip_address.append(ip_res)
 
 			usr_res, usr1 = query_top_ten(conn, "username")

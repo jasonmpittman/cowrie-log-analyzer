@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 
 from events_database import *
 
-import color_palette
+
 
 '''
 A button class with basic functionality
@@ -26,17 +26,16 @@ A button class with basic functionality
 class standard_button:
 	def __init__(self, parent, commandFunction, buttonText, palette):
 		self.palette = palette
-		# self.blue = "#1600bd"
 		self.style = ttk.Style()
 		self.style.theme_use('classic')
-		self.style.map("BW.TButton",
+		self.style.map("Accent.TButton",
 	    foreground=[('pressed', '!disabled', self.palette.accent_a), ('active', self.palette.accent_a)],
 	    background=[('pressed', '!disabled', self.palette.accent_b), ('active', self.palette.accent_b)],
 		relief=[('pressed', 'flat'), ('!pressed', 'flat')]
 		)
-		self.style.configure("BW.TButton", background=self.palette.accent_a, foreground=self.palette.accent_b, relief="flat", borderwidth=3, font=('Helvetica', 14, 'bold') )
+		self.style.configure("Accent.TButton", background=self.palette.accent_a, foreground=self.palette.accent_b, relief="flat", borderwidth=0, font=('Helvetica', 14, 'bold') )
 
-		self.button = ttk.Button(parent, text=buttonText, command=commandFunction, width=10, style="BW.TButton")
+		self.button = ttk.Button(parent, text=buttonText, command=commandFunction, width=10, style="Accent.TButton")
 
 	def grid(self, r, c, px=10, py=10):
 		self.button.grid(row=r, column=c, padx=px, pady=py)
@@ -56,19 +55,10 @@ These are the boxes that display the top 10 information
 class scroll_section:
 	def __init__(self, parent, h, w, title, palette, px=10, py=10):
 		self.palette = palette
-		self.style_label = ttk.Style()
-		self.style_label.theme_use('classic')
-		self.style_label.configure("TextBox.TLabel", background= self.palette.secondary_a, foreground= self.palette.secondary_b)
-		self.style_text = ttk.Style()
-		self.style_text.theme_use('classic')
-		#you need to update this style stuff
-		self.style_text.configure("TextBox.TEntry", background= self.palette.secondary_a, foreground= self.palette.secondary_b)
-
-		self.scrollFrame = ttk.Frame(parent, relief="groove", width=w, height=h)
-		self.title = ttk.Label(self.scrollFrame, text=title, style="TextBox.TLabel")
+		self.scrollFrame = tk.Frame(parent, bg=self.palette.secondary_b, bd=5, relief="groove", width=w, height=h)
+		self.title = tk.Label(self.scrollFrame, text=title, bg=self.palette.secondary_b, fg=self.palette.secondary_a, font=('Helvetica', 16, 'bold'))
 		self.title.pack(side="top", padx=10, pady=2)
-		self.scrollText_text = tk.StringVar()
-		self.scrollText = ttk.Entry(self.scrollFrame, textvariable=self.scrollText_text, style="TextBox.TEntry")
+		self.scrollText = tk.Text(self.scrollFrame, height=h, width=w, bg=self.palette.secondary_b, fg=self.palette.secondary_a, highlightbackground=self.palette.secondary_b, font=('Helvetica', 14,))
 		self.scrollText.configure(state="disabled")
 		self.scrollText.pack(side="left", padx=5, pady=10)
 
@@ -80,12 +70,12 @@ class scroll_section:
 
 	def append(self, text):
 		self.scrollText.configure(state="normal")
-		self.scrollText_text.set(self.scrollText_text.get() + text)
+		self.scrollText.insert(tk.END, text)
 		self.scrollText.configure(state="disabled")
 
 	def clear(self):
 		self.scrollText.configure(state="normal")
-		self.scrollText.set("")
+		self.scrollText.delete("1.0", tk.END)
 		self.scrollText.configure(state="disabled")
 
 	def export_md(self):
@@ -166,11 +156,13 @@ This is used to allow the user to input things into the program
 	- Get --> returns the text that was typed into the textbox
 '''
 class text_input_section:
-	def __init__(self, parent, label_text):
+	def __init__(self, parent, label_text, palette):
+		self.palette = palette
 		self.frame = tk.Frame(parent)
-		self.label = tk.Label(self.frame, text=label_text)
+		self.frame.configure(bg=self.palette.secondary_b)
+		self.label = tk.Label(self.frame, text=label_text, bg=self.palette.secondary_b, fg=self.palette.primary)
 		self.label.pack(side="left")
-		self.text = tk.Entry(self.frame, bd=2)
+		self.text = tk.Entry(self.frame, bd=2, bg=self.palette.accent_a, fg=self.palette.primary)
 		self.text.focus_set()
 		self.text.pack(side="left", padx=5)
 
@@ -190,29 +182,31 @@ A class that handles all of the pop-up boxes and deals with all of that function
 	- btn_cmd --> when the button is pressed this is what runs
 '''
 class pop_up:
-	def __init__(self, cmd, update, parent, title, action_name, error_message, label_text):
+	def __init__(self, cmd, update, parent, title, action_name, error_message, label_text, palette):
+		self.palette = palette
 		self.cmd = cmd
 		self.update = update
 		self.parent = parent
 		self.title = title
 		self.action_name = action_name
-		self.error_message = error_message
+		self.error_message_on_screen = error_message
 		self.input_text = ""
 		self.label_text = label_text
 
 	def pop_up_box(self):
 		self.window = tk.Toplevel(self.parent)
+		self.window.configure(bg=self.palette.secondary_b)
 		self.window.resizable(False, False)
 		self.window.title(self.title)
 		self.window.bind('<Return>', self.btn_cmd)
-		self.input_box = text_input_section(self.window, self.label_text)
+		self.input_box = text_input_section(self.window, self.label_text, self.palette)
 		self.input_box.pack("top", 20, 30)
-		self.cancel = standard_button(self.window, self.window.destroy, "Cancel")
+		self.cancel = standard_button(self.window, self.window.destroy, "Cancel", self.palette)
 		self.cancel.pack("right")
 		self.error_message = tk.StringVar()
 		self.error_message.set("")
-		self.error_label = tk.Label(self.window, textvariable=self.error_message)
-		self.button = standard_button(self.window, self.btn_cmd, self.action_name)
+		self.error_label = tk.Label(self.window, textvariable=self.error_message, bg=self.palette.secondary_b)
+		self.button = standard_button(self.window, self.btn_cmd, self.action_name, self.palette)
 		self.button.pack("right")
 		self.error_label.pack(side="bottom")
 
@@ -224,7 +218,7 @@ class pop_up:
 			self.update()
 			self.window.destroy()
 		else:
-			self.error_message.set(self.error_message)
+			self.error_message.set(self.error_message_on_screen)
 
 '''
 The selection menu for the graphs
@@ -234,8 +228,9 @@ The selection menu for the graphs
 	- pop --> this is the pop-up menu with the options
 '''
 class selection_menu:
-	def __init__(self, parent):
+	def __init__(self, parent, palette):
 		self.parent = parent
+		self.palette = palette
 
 	def pack(self, side="top"):
 		self.menu.pack(side=side, padx=0, pady=0)
@@ -254,17 +249,19 @@ class selection_menu:
 
 	def pop(self):
 		self.window = tk.Toplevel(self.parent)
+		self.window.configure(bg=self.palette.secondary_b)
 		self.window.resizable(False, False)
 		self.string_var = tk.StringVar(self.window)
 		self.menu = tk.OptionMenu(self.window, self.string_var, "IP Address", "Countries", "Session Duration")
-		self.menu.config(width=16)
+		self.menu.config(width=16, bg=self.palette.secondary_b)
 		self.menu.pack(side="top")
 		self.button_bar = tk.Frame(self.window)
+		self.button_bar.configure(bg=self.palette.secondary_b)
 		self.button_bar.pack(side="bottom")
 
-		self.button = standard_button(self.button_bar, self.graph_it, "Graph it!")
+		self.button = standard_button(self.button_bar, self.graph_it, "Graph it!", self.palette)
 		self.button.pack("right")
-		self.cancel = standard_button(self.button_bar, self.window.destroy, "Cancel")
+		self.cancel = standard_button(self.button_bar, self.window.destroy, "Cancel", self.palette)
 		self.cancel.pack("right")
 
 '''

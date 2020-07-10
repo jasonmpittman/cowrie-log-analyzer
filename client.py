@@ -2,6 +2,7 @@ import tkinter as tk
 
 import ui_class
 
+
 def main():
 	root = tk.Tk()
 	root.resizable(False, False)
