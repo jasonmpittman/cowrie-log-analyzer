@@ -62,13 +62,13 @@ class scroll_section:
 		self.style_text = ttk.Style()
 		self.style_text.theme_use('classic')
 		#you need to update this style stuff
-		self.style_text.configure("Textbox.LabelFrame")
+		self.style_text.configure("TextBox.TEntry", background= self.palette.secondary_a, foreground= self.palette.secondary_b)
 
-
-		self.scrollFrame = ttk.Frame(parent, relief="groove", width=w, height=h, style=self.style)
+		self.scrollFrame = ttk.Frame(parent, relief="groove", width=w, height=h)
 		self.title = ttk.Label(self.scrollFrame, text=title, style="TextBox.TLabel")
-		self.title.pack(side="top", padx=10, pady=2, style=self.style)
-		self.scrollText = ttk.Text(self.scrollFrame, height=h, width=w, style=self.style)
+		self.title.pack(side="top", padx=10, pady=2)
+		self.scrollText_text = tk.StringVar()
+		self.scrollText = ttk.Entry(self.scrollFrame, textvariable=self.scrollText_text, style="TextBox.TEntry")
 		self.scrollText.configure(state="disabled")
 		self.scrollText.pack(side="left", padx=5, pady=10)
 
@@ -80,12 +80,12 @@ class scroll_section:
 
 	def append(self, text):
 		self.scrollText.configure(state="normal")
-		self.scrollText.insert(tk.END, text)
+		self.scrollText_text.set(self.scrollText_text.get() + text)
 		self.scrollText.configure(state="disabled")
 
 	def clear(self):
 		self.scrollText.configure(state="normal")
-		self.scrollText.delete("1.0", tk.END)
+		self.scrollText.set("")
 		self.scrollText.configure(state="disabled")
 
 	def export_md(self):
