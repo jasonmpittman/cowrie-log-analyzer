@@ -2,21 +2,25 @@ import tkinter as tk
 
 import ui_class
 
-import logging
+#import logging
+
+#logging.basicConfig(filename="log_file.log", level=logging.DEBUG, format="%(levelname)s:%(name)s:%(message)s")
+
+import log
 
 def main():
-	logging.basicConfig(level=logging.DEBUG)
+	c_logger = log.Logger("client")
 	root = tk.Tk()
-	logging.info("Root window created")
+	c_logger.info("Root window created")
 	root.resizable(False, False)
 	root.title("Cowrie Log Analyzer")
 	root.configure()
 
 
 	user_interface = ui_class.ui(root)
-	logging.info("UI created")
+	c_logger.info("UI created")
 	user_interface.start_up()
-	logging.info("UI drawn")
+	c_logger.info("UI drawn")
 	root.mainloop()
 
 if __name__ == '__main__':
