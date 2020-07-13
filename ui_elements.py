@@ -226,10 +226,10 @@ The selection menu for the graphs
 	- graph_it --> determines what graph to draw and then calls the needed functions to do so
 	- pop --> this is the pop-up menu with the options
 '''
-class selection_menu:
+class SelectionMenu:
 	def __init__(self, parent, palette):
-		self.parent = parent
-		self.palette = palette
+		self._parent = parent
+		self._palette = palette
 
 	def pack(self, side="top"):
 		self.menu.pack(side=side, padx=0, pady=0)
@@ -244,23 +244,23 @@ class selection_menu:
 					"Session Duration": {"category": "duration", "x_label": "Time(s)", "y_label": "Longest Durations", "title": "Time Duration Graph"}}
 		graph_type = self.string_var.get()
 		print(graph_type)
-		graph_window(self.parent, self.dict[graph_type]["category"], self.dict[graph_type]["x_label"], self.dict[graph_type]["y_label"], self.dict[graph_type]["title"], self.palette)
+		graph_window(self._parent, self.dict[graph_type]["category"], self.dict[graph_type]["x_label"], self.dict[graph_type]["y_label"], self.dict[graph_type]["title"], self._palette)
 
 	def pop(self):
-		self.window = tk.Toplevel(self.parent)
-		self.window.configure(bg=self.palette.secondary_b)
+		self.window = tk.Toplevel(self._parent)
+		self.window.configure(bg=self._palette.secondary_b)
 		self.window.resizable(False, False)
 		self.string_var = tk.StringVar(self.window)
 		self.menu = tk.OptionMenu(self.window, self.string_var, "IP Address", "Countries", "Session Duration")
-		self.menu.config(width=16, bg=self.palette.secondary_b)
+		self.menu.config(width=16, bg=self._palette.secondary_b)
 		self.menu.pack(side="top")
 		self.button_bar = tk.Frame(self.window)
-		self.button_bar.configure(bg=self.palette.secondary_b)
+		self.button_bar.configure(bg=self._palette.secondary_b)
 		self.button_bar.pack(side="bottom")
 
-		self.button = StandardButton(self.button_bar, self.graph_it, "Graph it!", self.palette)
+		self.button = StandardButton(self.button_bar, self.graph_it, "Graph it!", self._palette)
 		self.button.pack("right")
-		self.cancel = StandardButton(self.button_bar, self.window.destroy, "Cancel", self.palette)
+		self.cancel = StandardButton(self.button_bar, self.window.destroy, "Cancel", self._palette)
 		self.cancel.pack("right")
 
 '''

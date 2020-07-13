@@ -53,7 +53,7 @@ class ui:
 
 
 		#Graph selection creation and button creation
-		self.graph_selection_menu = selection_menu(self.root, self.palette)
+		self.graph_selection_menu = SelectionMenu(self.root, self.palette)
 		self.graph_button = StandardButton(self.bottom_bar, self.graph_selection_menu.pop, "Graph", self.palette)
 
 
@@ -62,7 +62,7 @@ class ui:
 		#Export button creation
 		self.export_button = StandardButton(self.bottom_bar, self.export_pop.pop_up_box, "Export", self.palette)
 
-	def place_first_row(self):
+	def _place_first_row(self):
 		'''
 		Placing the first row in position
 		'''
@@ -72,7 +72,7 @@ class ui:
 		self.passwords.grid(0, 3)
 		self.user_and_pass.grid(0,4)
 
-	def place_second_row(self):
+	def _place_second_row(self):
 		'''
 		Placing the second row in position
 		'''
@@ -82,7 +82,7 @@ class ui:
 		self.session_duration.grid(0, 2)
 		self.overall_one.grid(0, 3)
 
-	def place_button_bar(self):
+	def _place_button_bar(self):
 		'''
 		Creation of a bottom bar of buttons
 		'''
@@ -158,7 +158,7 @@ class ui:
 
 
 	def start_up(self):
-		self.place_first_row()
-		self.place_second_row()
-		self.place_button_bar()
+		self._place_first_row()
+		self._place_second_row()
+		self._place_button_bar()
 		self.update_screen()
