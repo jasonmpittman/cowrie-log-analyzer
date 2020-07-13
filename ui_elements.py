@@ -155,25 +155,25 @@ This is used to allow the user to input things into the program
 	- Pack and grid --> for placement
 	- Get --> returns the text that was typed into the textbox
 '''
-class text_input_section:
+class TextInputSection:
 	def __init__(self, parent, label_text, palette):
-		self.palette = palette
-		self.frame = tk.Frame(parent)
-		self.frame.configure(bg=self.palette.secondary_b)
-		self.label = tk.Label(self.frame, text=label_text, bg=self.palette.secondary_b, fg=self.palette.primary)
-		self.label.pack(side="left")
-		self.text = tk.Entry(self.frame, bd=2, bg=self.palette.accent_a, fg=self.palette.primary)
-		self.text.focus_set()
-		self.text.pack(side="left", padx=5)
+		self._palette = palette
+		self._frame = tk.Frame(parent)
+		self._frame.configure(bg=self._palette.secondary_b)
+		self._label = tk.Label(self._frame, text=label_text, bg=self._palette.secondary_b, fg=self._palette.primary)
+		self._label.pack(side="left")
+		self._text = tk.Entry(self._frame, bd=2, bg=self._palette.accent_a, fg=self._palette.primary)
+		self._text.focus_set()
+		self._text.pack(side="left", padx=5)
 
 	def pack(self, Side, px=0, py=0):
-		self.frame.pack(side=Side, padx=px, pady=py)
+		self._frame.pack(side=Side, padx=px, pady=py)
 
 	def grid(self, r, c, px=0, py=0):
-		self.frame.grid(row=r, column=c, padx=px, pady=py)
+		self._frame.grid(row=r, column=c, padx=px, pady=py)
 
 	def get(self):
-		return self.text.get()
+		return self._text.get()
 
 '''
 A class that handles all of the pop-up boxes and deals with all of that functionality (in partuclare the popups where the user types information in)
@@ -189,6 +189,8 @@ class pop_up:
 		self.parent = parent
 		self.title = title
 		self.action_name = action_name
+		self.error_message = tk.StringVar()
+		self.error_message.set("")
 		self.error_message_on_screen = error_message
 		self.input_text = ""
 		self.label_text = label_text
@@ -199,12 +201,10 @@ class pop_up:
 		self.window.resizable(False, False)
 		self.window.title(self.title)
 		self.window.bind('<Return>', self.btn_cmd)
-		self.input_box = text_input_section(self.window, self.label_text, self.palette)
+		self.input_box = TextInputSection(self.window, self.label_text, self.palette)
 		self.input_box.pack("top", 20, 30)
-		self.cancel = (self.window, self.window.destroy, "Cancel", self.palette)
+		self.cancel = StandardButton(self.window, self.window.destroy, "Cancel", self.palette)
 		self.cancel.pack("right")
-		self.error_message = tk.StringVar()
-		self.error_message.set("")
 		self.error_label = tk.Label(self.window, textvariable=self.error_message, bg=self.palette.secondary_b)
 		self.button = StandardButton(self.window, self.btn_cmd, self.action_name, self.palette)
 		self.button.pack("right")
