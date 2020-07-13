@@ -18,8 +18,8 @@ class ui:
 		'''
 		Import and Export pop-up window
 		'''
-		self.import_pop = pop_up(self.eh.import_pop_get_data, self.eh.import_pop_update_database, self.root, "Import", "Import", "Not a file or directory", "File or directory name: ", self.palette)
-		self.export_pop = pop_up(self.eh.export_pop_export_data, self.eh.export_pop_no_update, self.root, "Export", "Export", "", "Name of markdown file: ", self.palette)
+		self.import_pop = PopUp(self.eh.import_pop_get_data, self.eh.import_pop_update_database, self.root, "Import", "Import", "Not a file or directory", "File or directory name: ", self.palette)
+		self.export_pop = PopUp(self.eh.export_pop_export_data, self.eh.export_pop_no_update, self.root, "Export", "Export", "", "Name of markdown file: ", self.palette)
 		'''
 		Creation of the rows, so it can be organized
 		'''

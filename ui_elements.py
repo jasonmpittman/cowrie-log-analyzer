@@ -178,47 +178,46 @@ class TextInputSection:
 '''
 A class that handles all of the pop-up boxes and deals with all of that functionality (in partuclare the popups where the user types information in)
 	- init --> initializes variables
-	- pop_up --> creates the pop-up box
+	- pop_up_box --> creates the pop-up box
 	- btn_cmd --> when the button is pressed this is what runs
 '''
-class pop_up:
+class PopUp:
 	def __init__(self, cmd, update, parent, title, action_name, error_message, label_text, palette):
-		self.palette = palette
-		self.cmd = cmd
-		self.update = update
-		self.parent = parent
-		self.title = title
-		self.action_name = action_name
-		self.error_message = tk.StringVar()
-		self.error_message.set("")
-		self.error_message_on_screen = error_message
-		self.input_text = ""
-		self.label_text = label_text
+		self._palette = palette
+		self._cmd = cmd
+		self._update = update
+		self._parent = parent
+		self._title = title
+		self._action_name = action_name
+		self._error_message = tk.StringVar()
+		self._error_message.set("")
+		self._error_message_on_screen = error_message
+		self._label_text = label_text
 
 	def pop_up_box(self):
-		self.window = tk.Toplevel(self.parent)
-		self.window.configure(bg=self.palette.secondary_b)
+		self.window = tk.Toplevel(self._parent)
+		self.window.configure(bg=self._palette.secondary_b)
 		self.window.resizable(False, False)
-		self.window.title(self.title)
+		self.window.title(self._title)
 		self.window.bind('<Return>', self.btn_cmd)
-		self.input_box = TextInputSection(self.window, self.label_text, self.palette)
+		self.input_box = TextInputSection(self.window, self._label_text, self._palette)
 		self.input_box.pack("top", 20, 30)
-		self.cancel = StandardButton(self.window, self.window.destroy, "Cancel", self.palette)
+		self.cancel = StandardButton(self.window, self.window.destroy, "Cancel", self._palette)
 		self.cancel.pack("right")
-		self.error_label = tk.Label(self.window, textvariable=self.error_message, bg=self.palette.secondary_b)
-		self.button = StandardButton(self.window, self.btn_cmd, self.action_name, self.palette)
+		self.error_label = tk.Label(self.window, textvariable=self.error_message, bg=self._palette.secondary_b)
+		self.button = StandardButton(self.window, self.btn_cmd, self._action_name, self._palette)
 		self.button.pack("right")
 		self.error_label.pack(side="bottom")
 
 
 	def btn_cmd(self, event=None):
-		self.input_text = self.input_box.get()
-		succ = self.cmd(self.input_text)
+		input_text = self.input_box.get()
+		succ = self._cmd(input_text)
 		if succ:
-			self.update()
+			self._update()
 			self.window.destroy()
 		else:
-			self.error_message.set(self.error_message_on_screen)
+			self._error_message.set(self._error_message_on_screen)
 
 '''
 The selection menu for the graphs
@@ -293,7 +292,7 @@ def graph_window(parent, category, x_label, y_label, title, palette):
 	else:
 		G.draw()
 
-	graph_export_popup = pop_up(G.graph_export, no_update, graphW, "Export Graph", "Export", "", "Name of PNG file", palette)
+	graph_export_popup = PopUp(G.graph_export, no_update, graphW, "Export Graph", "Export", "", "Name of PNG file", palette)
 
 	export_graph = StandardButton(bar, graph_export_popup.pop_up_box, "Export", palette)
 	export_graph.pack("right")
