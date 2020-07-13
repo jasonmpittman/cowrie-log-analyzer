@@ -23,25 +23,25 @@ from events_database import *
 '''
 A button class with basic functionality
 '''
-class standard_button:
-	def __init__(self, parent, commandFunction, buttonText, palette):
-		self.palette = palette
-		self.style = ttk.Style()
-		self.style.theme_use('classic')
-		self.style.map("Accent.TButton",
-	    foreground=[('pressed', '!disabled', self.palette.accent_a), ('active', self.palette.accent_a)],
-	    background=[('pressed', '!disabled', self.palette.accent_b), ('active', self.palette.accent_b)],
+class StandardButton:
+	def __init__(self, parent, command_function, button_text, palette):
+		self._palette = palette
+		self._style = ttk.Style()
+		self._style.theme_use('classic')
+		self._style.map("Accent.TButton",
+	    foreground=[('pressed', '!disabled', self._palette.accent_a), ('active', self._palette.accent_a)],
+	    background=[('pressed', '!disabled', self._palette.accent_b), ('active', self._palette.accent_b)],
 		relief=[('pressed', 'flat'), ('!pressed', 'flat')]
 		)
-		self.style.configure("Accent.TButton", background=self.palette.accent_a, foreground=self.palette.accent_b, relief="flat", borderwidth=0, font=('Helvetica', 14, 'bold') )
+		self._style.configure("Accent.TButton", background=self._palette.accent_a, foreground=self._palette.accent_b, relief="flat", borderwidth=0, font=('Helvetica', 14, 'bold') )
 
-		self.button = ttk.Button(parent, text=buttonText, command=commandFunction, width=10, style="Accent.TButton")
+		self._button = ttk.Button(parent, text=button_text, command=command_function, width=10, style="Accent.TButton")
 
 	def grid(self, r, c, px=10, py=10):
-		self.button.grid(row=r, column=c, padx=px, pady=py)
+		self._button.grid(row=r, column=c, padx=px, pady=py)
 
 	def pack(self, Side, px=10, py=10):
-		self.button.pack(side=Side, padx=px, pady=py)
+		self._button.pack(side=Side, padx=px, pady=py)
 
 
 '''
@@ -201,12 +201,12 @@ class pop_up:
 		self.window.bind('<Return>', self.btn_cmd)
 		self.input_box = text_input_section(self.window, self.label_text, self.palette)
 		self.input_box.pack("top", 20, 30)
-		self.cancel = standard_button(self.window, self.window.destroy, "Cancel", self.palette)
+		self.cancel = (self.window, self.window.destroy, "Cancel", self.palette)
 		self.cancel.pack("right")
 		self.error_message = tk.StringVar()
 		self.error_message.set("")
 		self.error_label = tk.Label(self.window, textvariable=self.error_message, bg=self.palette.secondary_b)
-		self.button = standard_button(self.window, self.btn_cmd, self.action_name, self.palette)
+		self.button = StandardButton(self.window, self.btn_cmd, self.action_name, self.palette)
 		self.button.pack("right")
 		self.error_label.pack(side="bottom")
 
@@ -259,9 +259,9 @@ class selection_menu:
 		self.button_bar.configure(bg=self.palette.secondary_b)
 		self.button_bar.pack(side="bottom")
 
-		self.button = standard_button(self.button_bar, self.graph_it, "Graph it!", self.palette)
+		self.button = StandardButton(self.button_bar, self.graph_it, "Graph it!", self.palette)
 		self.button.pack("right")
-		self.cancel = standard_button(self.button_bar, self.window.destroy, "Cancel", self.palette)
+		self.cancel = StandardButton(self.button_bar, self.window.destroy, "Cancel", self.palette)
 		self.cancel.pack("right")
 
 '''
@@ -282,7 +282,7 @@ def graph_window(parent, category, x_label, y_label, title, palette):
 	bar.pack(side="bottom")
 
 	#self.window.destroy()
-	exit_button = standard_button(bar, graphW.destroy, "Cancel", palette)
+	exit_button = StandardButton(bar, graphW.destroy, "Cancel", palette)
 	exit_button.pack("right")
 
 	G = Graph(graphW, 8, 5, x_label, y_label, title)
@@ -295,7 +295,7 @@ def graph_window(parent, category, x_label, y_label, title, palette):
 
 	graph_export_popup = pop_up(G.graph_export, no_update, graphW, "Export Graph", "Export", "", "Name of PNG file", palette)
 
-	export_graph = standard_button(bar, graph_export_popup.pop_up_box, "Export", palette)
+	export_graph = StandardButton(bar, graph_export_popup.pop_up_box, "Export", palette)
 	export_graph.pack("right")
 
 

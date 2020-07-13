@@ -49,18 +49,18 @@ class ui:
 		self.bottom_bar = tk.Frame(self.root)
 		self.bottom_bar.configure(bg=self.palette.primary)
 
-		self.exit_button = standard_button(self.bottom_bar, self.eh.exit_button_press, "Exit", self.palette)
+		self.exit_button = StandardButton(self.bottom_bar, self.eh.exit_button_press, "Exit", self.palette)
 
 
 		#Graph selection creation and button creation
 		self.graph_selection_menu = selection_menu(self.root, self.palette)
-		self.graph_button = standard_button(self.bottom_bar, self.graph_selection_menu.pop, "Graph", self.palette)
+		self.graph_button = StandardButton(self.bottom_bar, self.graph_selection_menu.pop, "Graph", self.palette)
 
 
 		#Import button and placement
-		self.import_button = standard_button(self.bottom_bar, self.import_pop.pop_up_box, "Import", self.palette)
+		self.import_button = StandardButton(self.bottom_bar, self.import_pop.pop_up_box, "Import", self.palette)
 		#Export button creation
-		self.export_button = standard_button(self.bottom_bar, self.export_pop.pop_up_box, "Export", self.palette)
+		self.export_button = StandardButton(self.bottom_bar, self.export_pop.pop_up_box, "Export", self.palette)
 
 	def place_first_row(self):
 		'''
