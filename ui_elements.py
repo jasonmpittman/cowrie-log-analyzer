@@ -94,40 +94,40 @@ This allows for the creation and drawing of graphs (bar and histograms)
 '''
 class Graph:
 	def __init__(self, parent, widthIn, heightIn, xLabel, yLabel, title="Title"):
-		self.data = []
-		self.figure = Figure(figsize=(widthIn, heightIn), dpi=100)
-		self.figure.tight_layout()
-		self.canvas = FigureCanvasTkAgg(self.figure, parent)
-		self.graph = self.figure.add_subplot(1, 1, 1, label=title)
-		self.Widget = self.canvas.get_tk_widget()
-		self.title = title
-		self.xLabel = xLabel
-		self.yLabel = yLabel
+		self._data = []
+		self._figure = Figure(figsize=(widthIn, heightIn), dpi=100)
+		self._figure.tight_layout()
+		self._canvas = FigureCanvasTkAgg(self._figure, parent)
+		self._graph = self._figure.add_subplot(1, 1, 1, label=title)
+		self._widget = self._canvas.get_tk_widget()
+		self._title = title
+		self._xLabel = xLabel
+		self._yLabel = yLabel
 		matplotlib.rc('xtick', labelsize=10)
 
 	def grid(self, r, c, colSpan=2, px=10, py=10):
-		self.Widget.grid(row=r, column=c, columnspan=colSpan, padx=px, pady=py)
+		self._widget.grid(row=r, column=c, columnspan=colSpan, padx=px, pady=py)
 
 	def pack(self, Side, px=10, py=10):
-		self.Widget.pack(side=Side, padx=px, pady=py)
+		self._widget.pack(side=Side, padx=px, pady=py)
 
 	def draw(self):
-		self.graph.cla()
-		self.graph.set_xticklabels(self.data[0], rotation=70)
-		self.graph.bar(self.data[0], self.data[1])
-		self.figure.set_tight_layout(tight=True)
-		self.graph.set_title(self.title)
-		self.graph.set_xlabel(self.xLabel)
-		self.graph.set_ylabel(self.yLabel)
+		self._graph.cla()
+		self._graph.set_xticklabels(self._data[0], rotation=70)
+		self._graph.bar(self._data[0], self._data[1])
+		self._figure.set_tight_layout(tight=True)
+		self._graph.set_title(self._title)
+		self._graph.set_xlabel(self._xLabel)
+		self._graph.set_ylabel(self._yLabel)
 
 	def draw_histogram(self):
-		self.graph.cla()
-		# self.graph.set_xticklabels(rotation=70)
-		self.graph.hist(self.data[0], bins=5)
-		self.figure.set_tight_layout(tight=True)
-		self.graph.set_title(self.title)
-		self.graph.set_xlabel(self.xLabel)
-		self.graph.set_ylabel(self.yLabel)
+		self._graph.cla()
+		# self._graph.set_xticklabels(rotation=70)
+		self._graph.hist(self._data[0], bins=5)
+		self._figure.set_tight_layout(tight=True)
+		self._graph.set_title(self._title)
+		self._graph.set_xlabel(self._xLabel)
+		self._graph.set_ylabel(self._yLabel)
 
 
 	def pd_data(self, col):
@@ -136,17 +136,17 @@ class Graph:
 				WHERE {col} NOT IN ('-')
 				GROUP BY {col}
 				ORDER BY cnt DESC;"""
-		self.data = pd.read_sql(sql, conn).head(10)
-		x_list = self.data.iloc[:,0].tolist()
-		y_list = self.data.cnt.tolist()
-		self.data = [x_list, y_list]
+		self._data = pd.read_sql(sql, conn).head(10)
+		x_list = self._data.iloc[:,0].tolist()
+		y_list = self._data.cnt.tolist()
+		self._data = [x_list, y_list]
 
 	def graph_export(self, filename):
 		extention = filename[-4::]
 		if extention != ".png":
 			filename = filename + ".png"
 
-		self.figure.savefig(filename)
+		self._figure.savefig(filename)
 		return True
 
 '''
