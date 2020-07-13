@@ -8,8 +8,8 @@ class ui:
 		Constant variables that control the size of the top 10 boxes
 		'''
 		self.palette = color_palette.color("#161925","#23395b","#406e8e","#8ea8c3","#cbf7ed")
-		self.scroll_section_col = 35
-		self.scroll_section_row = 10
+		self._info_box_col = 35
+		self._info_box_row = 10
 
 		self.eh = event_handler(self.update_screen, self.export)
 
@@ -31,18 +31,18 @@ class ui:
 		'''
 		First row of boxes
 		'''
-		self.ip_address = scroll_section(self.first_row, self.scroll_section_row, self.scroll_section_col, "Top 10 IP Addresses", self.palette)
-		self.user_names = scroll_section(self.first_row, self.scroll_section_row, self.scroll_section_col, "Top 10 Usernames", self.palette)
-		self.passwords = scroll_section(self.first_row, self.scroll_section_row, self.scroll_section_col, "Top 10 Passwords", self.palette)
-		self.user_and_pass = scroll_section(self.first_row, self.scroll_section_row, self.scroll_section_col, "Top 10 User/Pass Pairs", self.palette)
+		self.ip_address = InfoBox(self.first_row, self._info_box_row, self._info_box_col, "Top 10 IP Addresses", self.palette)
+		self.user_names = InfoBox(self.first_row, self._info_box_row, self._info_box_col, "Top 10 Usernames", self.palette)
+		self.passwords = InfoBox(self.first_row, self._info_box_row, self._info_box_col, "Top 10 Passwords", self.palette)
+		self.user_and_pass = InfoBox(self.first_row, self._info_box_row, self._info_box_col, "Top 10 User/Pass Pairs", self.palette)
 
 		'''
 		Second row of boxes
 		'''
-		self.download_file = scroll_section(self.second_row, self.scroll_section_row, self.scroll_section_col, "Top 10 Downloads", self.palette)
-		self.origin_country = scroll_section(self.second_row, self.scroll_section_row, self.scroll_section_col, "Top 10 Countries", self.palette)
-		self.session_duration = scroll_section(self.second_row, self.scroll_section_row, self.scroll_section_col, "Top 10 Session Durations", self.palette)
-		self.overall_one = scroll_section(self.second_row, self.scroll_section_row, self.scroll_section_col, "Overall Number 1", self.palette)
+		self.download_file = InfoBox(self.second_row, self._info_box_row, self._info_box_col, "Top 10 Downloads", self.palette)
+		self.origin_country = InfoBox(self.second_row, self._info_box_row, self._info_box_col, "Top 10 Countries", self.palette)
+		self.session_duration = InfoBox(self.second_row, self._info_box_row, self._info_box_col, "Top 10 Session Durations", self.palette)
+		self.overall_one = InfoBox(self.second_row, self._info_box_row, self._info_box_col, "Overall Number 1", self.palette)
 
 
 		#Exit button creation and placement

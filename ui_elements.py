@@ -52,35 +52,35 @@ These are the boxes that display the top 10 information
 	- Clear --> remove text from the box
 	- export_md --> returns a string with the data from the box
 '''
-class scroll_section:
+class InfoBox:
 	def __init__(self, parent, h, w, title, palette, px=10, py=10):
-		self.palette = palette
-		self.scrollFrame = tk.Frame(parent, bg=self.palette.secondary_b, bd=5, relief="groove", width=w, height=h)
-		self.title = tk.Label(self.scrollFrame, text=title, bg=self.palette.secondary_b, fg=self.palette.secondary_a, font=('Helvetica', 16, 'bold'))
-		self.title.pack(side="top", padx=10, pady=2)
-		self.scrollText = tk.Text(self.scrollFrame, height=h, width=w, bg=self.palette.secondary_b, fg=self.palette.secondary_a, highlightbackground=self.palette.secondary_b, font=('Helvetica', 14,))
-		self.scrollText.configure(state="disabled")
-		self.scrollText.pack(side="left", padx=5, pady=10)
+		self._palette = palette
+		self._info_frame = tk.Frame(parent, bg=self._palette.secondary_b, bd=5, relief="groove", width=w, height=h)
+		self._title = tk.Label(self._info_frame, text=title, bg=self._palette.secondary_b, fg=self._palette.secondary_a, font=('Helvetica', 16, 'bold'))
+		self._title.pack(side="top", padx=10, pady=2)
+		self._box_text = tk.Text(self._info_frame, height=h, width=w, bg=self._palette.secondary_b, fg=self._palette.secondary_a, highlightbackground=self._palette.secondary_b, font=('Helvetica', 14,))
+		self._box_text.configure(state="disabled")
+		self._box_text.pack(side="left", padx=5, pady=10)
 
 	def grid(self, r, c, px=10, py=10):
-		self.scrollFrame.grid(row=r, column=c, padx=px, pady=py)
+		self._info_frame.grid(row=r, column=c, padx=px, pady=py)
 
 	def pack(self, Side, px=10, py=10):
-		self.scrollFrame.pack(side=Side, padx=px, pady=py)
+		self._info_frame.pack(side=Side, padx=px, pady=py)
 
 	def append(self, text):
-		self.scrollText.configure(state="normal")
-		self.scrollText.insert(tk.END, text)
-		self.scrollText.configure(state="disabled")
+		self._box_text.configure(state="normal")
+		self._box_text.insert(tk.END, text)
+		self._box_text.configure(state="disabled")
 
 	def clear(self):
-		self.scrollText.configure(state="normal")
-		self.scrollText.delete("1.0", tk.END)
-		self.scrollText.configure(state="disabled")
+		self._box_text.configure(state="normal")
+		self._box_text.delete("1.0", tk.END)
+		self._box_text.configure(state="disabled")
 
 	def export_md(self):
 		string = "## " + self.title["text"] + "\n"
-		string += self.scrollText.get("1.0", tk.END)
+		string += self._box_text.get("1.0", tk.END)
 		return string
 
 '''
