@@ -154,7 +154,7 @@ def add_event(conn, event):
 		rowid = cur.lastrowid
 	except:
 		print("nothing was inserted")
-		return None
+		return False
 
 	if type == "Command":
 		foreign_key = cur.lastrowid
@@ -168,8 +168,8 @@ def add_event(conn, event):
 				cur.execute(sql, data)
 			except:
 				print("Failed to insert command")
-				return None
-	return rowid
+				return False
+	return True
 
 '''
 Returns a string that lists the top 10 most frequent data for a given column and the #1 (these are returned as a touple)

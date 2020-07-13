@@ -190,11 +190,12 @@ class PopUp:
 		self._title = title
 		self._action_name = action_name
 		self._error_message = tk.StringVar()
-		self._error_message.set("")
+
 		self._error_message_on_screen = error_message
 		self._label_text = label_text
 
 	def pop_up_box(self):
+		self._error_message.set("")
 		self.window = tk.Toplevel(self._parent)
 		self.window.configure(bg=self._palette.secondary_b)
 		self.window.resizable(False, False)
@@ -204,7 +205,7 @@ class PopUp:
 		self.input_box.pack("top", 20, 30)
 		self.cancel = StandardButton(self.window, self.window.destroy, "Cancel", self._palette)
 		self.cancel.pack("right")
-		self.error_label = tk.Label(self.window, textvariable=self.error_message, bg=self._palette.secondary_b)
+		self.error_label = tk.Label(self.window, textvariable=self._error_message, bg=self._palette.secondary_b)
 		self.button = StandardButton(self.window, self.btn_cmd, self._action_name, self._palette)
 		self.button.pack("right")
 		self.error_label.pack(side="bottom")

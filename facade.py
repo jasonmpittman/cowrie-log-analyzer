@@ -8,11 +8,10 @@ class event_handler:
 		self.export = export
 
 	def import_pop_get_data(self, name):
-		print("facade")
 		return self.logic.get_data(name)
 
 	def import_pop_update_database(self):
-		self.logic.update_database()
+		res = self.logic.update_database()
 		self.update_screen()
 
 	def export_pop_export_data(self, filename):
