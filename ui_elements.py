@@ -232,31 +232,40 @@ class PopUp:
 
 		self._error_message_on_screen = error_message
 		self._label_text = label_text
+		ui_logger.info(self.__class__.__name__, self.__init__.__name__, f"{self._title} - initial variables setup")
 
 	def pop_up_box(self):
 		self._error_message.set("")
 		self.window = tk.Toplevel(self._parent)
+		ui_logger.info(self.__class__.__name__, self.pop_up_box.__name__, f"{self._title} - window popped up")
 		self.window.configure(bg=self._palette.secondary_b)
 		self.window.resizable(False, False)
 		self.window.title(self._title)
 		self.window.bind('<Return>', self.btn_cmd)
+		ui_logger.info(self.__class__.__name__, self.pop_up_box.__name__, f"{self._title} - window configured")
 		self.input_box = TextInputSection(self.window, self._label_text, self._palette)
 		self.input_box.pack("top", 20, 30)
+		ui_logger.info(self.__class__.__name__, self.pop_up_box.__name__, f"{self._title} - imput box created and placed")
 		self.cancel = StandardButton(self.window, self.window.destroy, "Cancel", self._palette)
 		self.cancel.pack("right")
 		self.error_label = tk.Label(self.window, textvariable=self._error_message, bg=self._palette.secondary_b)
 		self.button = StandardButton(self.window, self.btn_cmd, self._action_name, self._palette)
 		self.button.pack("right")
+		ui_logger.info(self.__class__.__name__, self.pop_up_box.__name__, f"{self._title} - cancel and action button created and placed")
 		self.error_label.pack(side="bottom")
+		ui_logger.info(self.__class__.__name__, self.pop_up_box.__name__, f"{self._title} - error label placed")
 
 
 	def btn_cmd(self, event=None):
+		ui_logger.info(self.__class__.__name__, self.pop_up_box.__name__, f"{self._title}: Button command running")
 		input_text = self.input_box.get()
 		succ = self._cmd(input_text)
 		if succ:
 			self._update()
 			self.window.destroy()
+			ui_logger.info(self.__class__.__name__, self.pop_up_box.__name__, f"{self._title}: bnt_cmd was successful")
 		else:
+			ui_logger.warning(self.__class__.__name__, self.pop_up_box.__name__, f"Failed: UI served warning --> {self._error_message_on_screen}")
 			self._error_message.set(self._error_message_on_screen)
 
 '''

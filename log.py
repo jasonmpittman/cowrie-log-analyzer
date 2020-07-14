@@ -13,8 +13,8 @@ class Logger:
 	def info(self, class_name, function_name, message):
 		self.logger.info(f"{class_name}.{function_name} - {message}")
 
-	def warning(self, message):
-		self.logger.warning(message)
+	def warning(self, class_name, function_name, message):
+		self.logger.warning(f"{class_name}.{function_name} - {message}")
 
 	def error(self, message):
 		self.logger.error(message)
