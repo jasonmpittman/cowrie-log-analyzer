@@ -193,19 +193,25 @@ class TextInputSection:
 		self._palette = palette
 		self._frame = tk.Frame(parent)
 		self._frame.configure(bg=self._palette.secondary_b)
+		ui_logger.info(self.__class__.__name__, self.__init__.__name__, f"{label_text}: Text input frame created and configured")
 		self._label = tk.Label(self._frame, text=label_text, bg=self._palette.secondary_b, fg=self._palette.primary)
 		self._label.pack(side="left")
+		ui_logger.info(self.__class__.__name__, self.__init__.__name__, f"{label_text}: Text input label created and configured")
 		self._text = tk.Entry(self._frame, bd=2, bg=self._palette.accent_a, fg=self._palette.primary)
 		self._text.focus_set()
 		self._text.pack(side="left", padx=5)
+		ui_logger.info(self.__class__.__name__, self.__init__.__name__, f"{label_text}: Text entry created, focus set, and placed")
 
 	def pack(self, Side, px=0, py=0):
 		self._frame.pack(side=Side, padx=px, pady=py)
+		ui_logger.info(self.__class__.__name__, self.pack.__name__, f"{label_text}: placed")
 
 	def grid(self, r, c, px=0, py=0):
 		self._frame.grid(row=r, column=c, padx=px, pady=py)
+		ui_logger.info(self.__class__.__name__, self.grid.__name__, f"{label_text}: placed")
 
 	def get(self):
+		ui_logger.info(self.__class__.__name__, self.get.__name__, f"{label_text}: text returned")
 		return self._text.get()
 
 '''
