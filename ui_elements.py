@@ -151,13 +151,13 @@ class Graph:
 		self._graph.cla()
 		# self._graph.set_xticklabels(rotation=70)
 		self._graph.hist(self._data[0], bins=5)
-		ui_logger.info(self.__class__.__name__, self.draw_histograph.__name__, f"histogram drawn")
+		ui_logger.info(self.__class__.__name__, self.draw_histogram.__name__, f"histogram drawn")
 		self._figure.set_tight_layout(tight=True)
-		ui_logger.info(self.__class__.__name__, self.draw_histograph.__name__, f"figure's layout is set")
+		ui_logger.info(self.__class__.__name__, self.draw_histogram.__name__, f"figure's layout is set")
 		self._graph.set_title(self._title)
 		self._graph.set_xlabel(self._xLabel)
 		self._graph.set_ylabel(self._yLabel)
-		ui_logger.info(self.__class__.__name__, self.draw_histograph.__name__, f"histogram title, x-labels, and y-labels are drawn onto the histogram")
+		ui_logger.info(self.__class__.__name__, self.draw_histogram.__name__, f"histogram title, x-labels, and y-labels are drawn onto the histogram")
 
 
 	def pd_data(self, col):
@@ -190,6 +190,7 @@ This is used to allow the user to input things into the program
 '''
 class TextInputSection:
 	def __init__(self, parent, label_text, palette):
+		self._label_text = label_text
 		self._palette = palette
 		self._frame = tk.Frame(parent)
 		self._frame.configure(bg=self._palette.secondary_b)
@@ -204,14 +205,14 @@ class TextInputSection:
 
 	def pack(self, Side, px=0, py=0):
 		self._frame.pack(side=Side, padx=px, pady=py)
-		ui_logger.info(self.__class__.__name__, self.pack.__name__, f"{label_text}: placed")
+		ui_logger.info(self.__class__.__name__, self.pack.__name__, f"{self._label_text}: placed")
 
 	def grid(self, r, c, px=0, py=0):
 		self._frame.grid(row=r, column=c, padx=px, pady=py)
-		ui_logger.info(self.__class__.__name__, self.grid.__name__, f"{label_text}: placed")
+		ui_logger.info(self.__class__.__name__, self.grid.__name__, f"{self._label_text}: placed")
 
 	def get(self):
-		ui_logger.info(self.__class__.__name__, self.get.__name__, f"{label_text}: text returned")
+		ui_logger.info(self.__class__.__name__, self.get.__name__, f"{self._label_text}: text returned")
 		return self._text.get()
 
 '''
@@ -356,7 +357,6 @@ def graph_window(parent, category, x_label, y_label, title, palette):
 	export_graph = StandardButton(bar, graph_export_popup.pop_up_box, "Export", palette)
 	export_graph.pack("right")
 	ui_logger.info("", graph_window.__name__, f"graph export pop-up displayed and button created")
-
 
 
 #
