@@ -10,8 +10,8 @@ class Logger:
 		self.file_handler.setFormatter(self.formatter)
 		self.logger.addHandler(self.file_handler)
 
-	def info(self, message):
-		self.logger.info(message)
+	def info(self, class_name, function_name, message):
+		self.logger.info(f"{class_name}.{function_name} - {message}")
 
 	def warning(self, message):
 		self.logger.warning(message)

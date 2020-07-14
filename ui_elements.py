@@ -18,8 +18,9 @@ import matplotlib.pyplot as plt
 
 from events_database import *
 
+import log
 
-
+ui_logger = log.Logger("ui_elements")
 '''
 A button class with basic functionality
 '''
@@ -34,15 +35,17 @@ class StandardButton:
 		relief=[('pressed', 'flat'), ('!pressed', 'flat')]
 		)
 		self._style.configure("Accent.TButton", background=self._palette.accent_a, foreground=self._palette.accent_b, relief="flat", borderwidth=0, font=('Helvetica', 14, 'bold') )
-
+		ui_logger.info("StandardButton.__init__() - Visual Design Configured")
 		self._button = ttk.Button(parent, text=button_text, command=command_function, width=10, style="Accent.TButton")
+		ui_logger.info("StandardButton.__init__() - Button initialized")
 
 	def grid(self, r, c, px=10, py=10):
 		self._button.grid(row=r, column=c, padx=px, pady=py)
+		ui_logger.info("StandardButton.grid() - Button placed")
 
 	def pack(self, Side, px=10, py=10):
 		self._button.pack(side=Side, padx=px, pady=py)
-
+		ui_logger.info("StandardButton.pack() - Button placed")
 
 '''
 These are the boxes that display the top 10 information
@@ -56,31 +59,41 @@ class InfoBox:
 	def __init__(self, parent, h, w, title, palette, px=10, py=10):
 		self._palette = palette
 		self._info_frame = tk.Frame(parent, bg=self._palette.secondary_b, bd=5, relief="groove", width=w, height=h)
+		ui_logger.info(self.__class__.__name__, self.__init__.__name__, "Information Frame created")
 		self._title = tk.Label(self._info_frame, text=title, bg=self._palette.secondary_b, fg=self._palette.secondary_a, font=('Helvetica', 16, 'bold'))
 		self._title.pack(side="top", padx=10, pady=2)
+		ui_logger.info(self.__class__.__name__, self.__init__.__name__, "Title created and drawn")
 		self._box_text = tk.Text(self._info_frame, height=h, width=w, bg=self._palette.secondary_b, fg=self._palette.secondary_a, highlightbackground=self._palette.secondary_b, font=('Helvetica', 14,))
+		ui_logger.info(self.__class__.__name__, self.__init__.__name__, "Textbox created")
 		self._box_text.configure(state="disabled")
+		ui_logger.info(self.__class__.__name__, self.__init__.__name__, "Textbox configured")
 		self._box_text.pack(side="left", padx=5, pady=10)
+		ui_logger.info(self.__class__.__name__, self.__init__.__name__, "Textbox placed")
 
 	def grid(self, r, c, px=10, py=10):
 		self._info_frame.grid(row=r, column=c, padx=px, pady=py)
+		ui_logger.info(self.__class__.__name__, self.grid.__name__, "InfoBox placed")
 
 	def pack(self, Side, px=10, py=10):
 		self._info_frame.pack(side=Side, padx=px, pady=py)
+		ui_logger.info(self.__class__.__name__, self.pack.__name__, "InfoBox placed")
 
 	def append(self, text):
 		self._box_text.configure(state="normal")
 		self._box_text.insert(tk.END, text)
 		self._box_text.configure(state="disabled")
+		ui_logger.info(self.__class__.__name__, self.append.__name__, f"{text} has been appended to {self.title["text"]}")
 
 	def clear(self):
 		self._box_text.configure(state="normal")
 		self._box_text.delete("1.0", tk.END)
 		self._box_text.configure(state="disabled")
+		ui_logger.info(self.__class__.__name__, self.clear.__name__, f"{self._title_text} has been cleared")
 
 	def export_md(self):
 		string = "## " + self.title["text"] + "\n"
 		string += self._box_text.get("1.0", tk.END)
+		ui_logger.info(self.__class__.__name__, self.export_md.__name__, f"{self._title_text} has been exported")
 		return string
 
 '''
