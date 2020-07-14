@@ -259,6 +259,7 @@ def longest_durations():
 	first, = res[0]
 	while i < 10 and i < len(res):
 		val, = res[i]
+		val = round(val, 5)
 		if i == 9:
 			output_str = output_str + f"{i+1}. {val}"
 		else:

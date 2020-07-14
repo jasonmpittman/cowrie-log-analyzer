@@ -7,6 +7,7 @@ class ui:
 		'''
 		Constant variables that control the size of the top 10 boxes
 		'''
+		
 		self.palette = color_palette.color("#161925","#23395b","#406e8e","#8ea8c3","#cbf7ed")
 		self._info_box_col = 35
 		self._info_box_row = 10
