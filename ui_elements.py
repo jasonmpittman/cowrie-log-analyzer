@@ -26,6 +26,7 @@ A button class with basic functionality
 '''
 class StandardButton:
 	def __init__(self, parent, command_function, button_text, palette):
+		self._button_text = button_text
 		self._palette = palette
 		self._style = ttk.Style()
 		self._style.theme_use('classic')
@@ -34,18 +35,17 @@ class StandardButton:
 	    background=[('pressed', '!disabled', self._palette.accent_b), ('active', self._palette.accent_b)],
 		relief=[('pressed', 'flat'), ('!pressed', 'flat')]
 		)
-		self._style.configure("Accent.TButton", background=self._palette.accent_a, foreground=self._palette.accent_b, relief="flat", borderwidth=0, font=('Helvetica', 14, 'bold') )
-		ui_logger.info("StandardButton.__init__() - Visual Design Configured")
-		self._button = ttk.Button(parent, text=button_text, command=command_function, width=10, style="Accent.TButton")
-		ui_logger.info("StandardButton.__init__() - Button initialized")
-
+		self._style.configure("Accent.TButton", background=self._palette.accent_a, foreground=self._palette.accent_b, relief="flat", borderwidth=0, font=('Helvetica', 14, 'bold'))
+		ui_logger.info(self.__class__.__name__, self.__init__.__name__, f"{self._button_text}: Visual Design Configured")
+		self._button = ttk.Button(parent, text=self._button_text, command=command_function, width=10, style="Accent.TButton")
+		ui_logger.info(self.__class__.__name__, self.__init__.__name__, f"{self._button_text}: Button initialized")
 	def grid(self, r, c, px=10, py=10):
 		self._button.grid(row=r, column=c, padx=px, pady=py)
-		ui_logger.info("StandardButton.grid() - Button placed")
+		ui_logger.info(self.__class__.__name__, self.grid.__name__, f"{self._button_text}: Button placed")
 
 	def pack(self, Side, px=10, py=10):
 		self._button.pack(side=Side, padx=px, pady=py)
-		ui_logger.info("StandardButton.pack() - Button placed")
+		ui_logger.info(self.__class__.__name__, self.pack.__name__, f"{self._button_text}: Button placed")
 
 '''
 These are the boxes that display the top 10 information
@@ -58,31 +58,32 @@ These are the boxes that display the top 10 information
 class InfoBox:
 	def __init__(self, parent, h, w, title, palette, px=10, py=10):
 		self._palette = palette
+		self._title_text = title
 		self._info_frame = tk.Frame(parent, bg=self._palette.secondary_b, bd=5, relief="groove", width=w, height=h)
-		ui_logger.info(self.__class__.__name__, self.__init__.__name__, "Information Frame created")
+		ui_logger.info(self.__class__.__name__, self.__init__.__name__, f"{self._title_text}: Information Frame created")
 		self._title = tk.Label(self._info_frame, text=title, bg=self._palette.secondary_b, fg=self._palette.secondary_a, font=('Helvetica', 16, 'bold'))
 		self._title.pack(side="top", padx=10, pady=2)
-		ui_logger.info(self.__class__.__name__, self.__init__.__name__, "Title created and drawn")
+		ui_logger.info(self.__class__.__name__, self.__init__.__name__, f"{self._title_text}: Title created and drawn")
 		self._box_text = tk.Text(self._info_frame, height=h, width=w, bg=self._palette.secondary_b, fg=self._palette.secondary_a, highlightbackground=self._palette.secondary_b, font=('Helvetica', 14,))
-		ui_logger.info(self.__class__.__name__, self.__init__.__name__, "Textbox created")
+		ui_logger.info(self.__class__.__name__, self.__init__.__name__, f"{self._title_text}: Textbox created")
 		self._box_text.configure(state="disabled")
-		ui_logger.info(self.__class__.__name__, self.__init__.__name__, "Textbox configured")
+		ui_logger.info(self.__class__.__name__, self.__init__.__name__, f"{self._title_text}: Textbox configured")
 		self._box_text.pack(side="left", padx=5, pady=10)
-		ui_logger.info(self.__class__.__name__, self.__init__.__name__, "Textbox placed")
+		ui_logger.info(self.__class__.__name__, self.__init__.__name__, f"{self._title_text}: Textbox placed")
 
 	def grid(self, r, c, px=10, py=10):
 		self._info_frame.grid(row=r, column=c, padx=px, pady=py)
-		ui_logger.info(self.__class__.__name__, self.grid.__name__, "InfoBox placed")
+		ui_logger.info(self.__class__.__name__, self.grid.__name__, f"{self._title_text}: InfoBox placed")
 
 	def pack(self, Side, px=10, py=10):
 		self._info_frame.pack(side=Side, padx=px, pady=py)
-		ui_logger.info(self.__class__.__name__, self.pack.__name__, "InfoBox placed")
+		ui_logger.info(self.__class__.__name__, self.pack.__name__, f"{self._title_text}: InfoBox placed")
 
 	def append(self, text):
 		self._box_text.configure(state="normal")
 		self._box_text.insert(tk.END, text)
 		self._box_text.configure(state="disabled")
-		ui_logger.info(self.__class__.__name__, self.append.__name__, f"{text} has been appended to {self.title["text"]}")
+		ui_logger.info(self.__class__.__name__, self.append.__name__, f"{self._title_text}: text has been appended")
 
 	def clear(self):
 		self._box_text.configure(state="normal")
@@ -91,7 +92,7 @@ class InfoBox:
 		ui_logger.info(self.__class__.__name__, self.clear.__name__, f"{self._title_text} has been cleared")
 
 	def export_md(self):
-		string = "## " + self.title["text"] + "\n"
+		string = "## " + self._title_text + "\n"
 		string += self._box_text.get("1.0", tk.END)
 		ui_logger.info(self.__class__.__name__, self.export_md.__name__, f"{self._title_text} has been exported")
 		return string
@@ -110,9 +111,15 @@ class Graph:
 		self._data = []
 		self._figure = Figure(figsize=(widthIn, heightIn), dpi=100)
 		self._figure.tight_layout()
+		ui_logger.info(self.__class__.__name__, self.__init__.__name__, f"figure created and layout set")
 		self._canvas = FigureCanvasTkAgg(self._figure, parent)
+		ui_logger.info(self.__class__.__name__, self.__init__.__name__, f"canvas created")
 		self._graph = self._figure.add_subplot(1, 1, 1, label=title)
+		ui_logger.info(self.__class__.__name__, self.__init__.__name__, f"subplot created (the actual graph)")
+
 		self._widget = self._canvas.get_tk_widget()
+		ui_logger.info(self.__class__.__name__, self.__init__.__name__, f"tk graph widget created")
+
 		self._title = title
 		self._xLabel = xLabel
 		self._yLabel = yLabel
@@ -120,27 +127,37 @@ class Graph:
 
 	def grid(self, r, c, colSpan=2, px=10, py=10):
 		self._widget.grid(row=r, column=c, columnspan=colSpan, padx=px, pady=py)
+		ui_logger.info(self.__class__.__name__, self.grid.__name__, f"graph placed")
+
 
 	def pack(self, Side, px=10, py=10):
 		self._widget.pack(side=Side, padx=px, pady=py)
+		ui_logger.info(self.__class__.__name__, self.pack.__name__, f"graph placed")
 
 	def draw(self):
 		self._graph.cla()
 		self._graph.set_xticklabels(self._data[0], rotation=70)
+		ui_logger.info(self.__class__.__name__, self.draw.__name__, f"label format set")
 		self._graph.bar(self._data[0], self._data[1])
+		ui_logger.info(self.__class__.__name__, self.draw.__name__, f"bar graph is drawn")
 		self._figure.set_tight_layout(tight=True)
+		ui_logger.info(self.__class__.__name__, self.draw.__name__, f"set figure layout")
 		self._graph.set_title(self._title)
 		self._graph.set_xlabel(self._xLabel)
 		self._graph.set_ylabel(self._yLabel)
+		ui_logger.info(self.__class__.__name__, self.draw.__name__, f"graph title, x-labels, and y-labels are drawn onto the graph")
 
 	def draw_histogram(self):
 		self._graph.cla()
 		# self._graph.set_xticklabels(rotation=70)
 		self._graph.hist(self._data[0], bins=5)
+		ui_logger.info(self.__class__.__name__, self.draw_histograph.__name__, f"histogram drawn")
 		self._figure.set_tight_layout(tight=True)
+		ui_logger.info(self.__class__.__name__, self.draw_histograph.__name__, f"figure's layout is set")
 		self._graph.set_title(self._title)
 		self._graph.set_xlabel(self._xLabel)
 		self._graph.set_ylabel(self._yLabel)
+		ui_logger.info(self.__class__.__name__, self.draw_histograph.__name__, f"histogram title, x-labels, and y-labels are drawn onto the histogram")
 
 
 	def pd_data(self, col):
@@ -150,16 +167,19 @@ class Graph:
 				GROUP BY {col}
 				ORDER BY cnt DESC;"""
 		self._data = pd.read_sql(sql, conn).head(10)
+		ui_logger.info(self.__class__.__name__, self.pd_data.__name__, f"{col}: data fetched")
 		x_list = self._data.iloc[:,0].tolist()
 		y_list = self._data.cnt.tolist()
 		self._data = [x_list, y_list]
+		ui_logger.info(self.__class__.__name__, self.pd_data.__name__, f"{col}: data set")
 
 	def graph_export(self, filename):
 		extention = filename[-4::]
 		if extention != ".png":
 			filename = filename + ".png"
-
+			ui_logger.info(self.__class__.__name__, self.graph_export.__name__, ".png extention added to file name")
 		self._figure.savefig(filename)
+		ui_logger.info(self.__class__.__name__, self.graph_export.__name__, f"Graph exported as {filename}")
 		return True
 
 '''
