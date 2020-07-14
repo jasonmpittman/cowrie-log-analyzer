@@ -279,12 +279,15 @@ class SelectionMenu:
 	def __init__(self, parent, palette):
 		self._parent = parent
 		self._palette = palette
+		ui_logger.info(self.__class__.__name__, self.__init__.__name__, f"Initialized")
 
 	def pack(self, side="top"):
 		self.menu.pack(side=side, padx=0, pady=0)
+		ui_logger.info(self.__class__.__name__, self.pack.__name__, f"Placed")
 
 	def grid(self, r, c):
 		self.menu.grid(row=r, column=c, padx=0, pady=0)
+		ui_logger.info(self.__class__.__name__, self.grid.__name__, f"Placed")
 
 	def graph_it(self):
 		#duration is going to change
@@ -292,25 +295,29 @@ class SelectionMenu:
 					"Countries": {"category": "country", "x_label": "Country", "y_label": "Frequency", "title": "Country Graph"},
 					"Session Duration": {"category": "duration", "x_label": "Time(s)", "y_label": "Longest Durations", "title": "Time Duration Graph"}}
 		graph_type = self.string_var.get()
+		ui_logger.info(self.__class__.__name__, self.graph_it.__name__, f"{graph_type} selected")
 		print(graph_type)
 		graph_window(self._parent, self.dict[graph_type]["category"], self.dict[graph_type]["x_label"], self.dict[graph_type]["y_label"], self.dict[graph_type]["title"], self._palette)
+		ui_logger.info(self.__class__.__name__, self.graph_it.__name__, f"{graph_type} graphed")
 
 	def pop(self):
 		self.window = tk.Toplevel(self._parent)
 		self.window.configure(bg=self._palette.secondary_b)
 		self.window.resizable(False, False)
+		ui_logger.info(self.__class__.__name__, self.pop.__name__, f"Selection Menu pop-up configured and displaying")
 		self.string_var = tk.StringVar(self.window)
 		self.menu = tk.OptionMenu(self.window, self.string_var, "IP Address", "Countries", "Session Duration")
 		self.menu.config(width=16, bg=self._palette.secondary_b)
 		self.menu.pack(side="top")
+		ui_logger.info(self.__class__.__name__, self.pop.__name__, f"Option menu created, configured, and placed")
 		self.button_bar = tk.Frame(self.window)
 		self.button_bar.configure(bg=self._palette.secondary_b)
 		self.button_bar.pack(side="bottom")
-
 		self.button = StandardButton(self.button_bar, self.graph_it, "Graph it!", self._palette)
 		self.button.pack("right")
 		self.cancel = StandardButton(self.button_bar, self.window.destroy, "Cancel", self._palette)
 		self.cancel.pack("right")
+		ui_logger.info(self.__class__.__name__, self.pop.__name__, f"Option menu created buttons and button bar created and displayed")
 
 '''
 A fuction that does nothing (so it can be passed to a class in the event nothing needs to be done)
@@ -322,20 +329,23 @@ def no_update():
 Everything the graph window needs to be shown is done in here
 '''
 def graph_window(parent, category, x_label, y_label, title, palette):
-
 	graphW = tk.Toplevel(parent)
 	graphW.resizable(False, False)
 	graphW.title("Graph")
+	ui_logger.info("", graph_window.__name__, f"graph_window created and displayed")
+
 	bar = tk.Frame(graphW)
 	bar.pack(side="bottom")
 
 	#self.window.destroy()
 	exit_button = StandardButton(bar, graphW.destroy, "Cancel", palette)
 	exit_button.pack("right")
+	ui_logger.info("", graph_window.__name__, f"buttons and button bar created and placed")
 
 	G = Graph(graphW, 8, 5, x_label, y_label, title)
 	G.pd_data(category)
 	G.pack("top")
+	ui_logger.info("", graph_window.__name__, f"Graph created")
 	if category == "duration":
 		G.draw_histogram()
 	else:
@@ -345,6 +355,8 @@ def graph_window(parent, category, x_label, y_label, title, palette):
 
 	export_graph = StandardButton(bar, graph_export_popup.pop_up_box, "Export", palette)
 	export_graph.pack("right")
+	ui_logger.info("", graph_window.__name__, f"graph export pop-up displayed and button created")
+
 
 
 #
