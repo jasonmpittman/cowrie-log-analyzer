@@ -18,9 +18,9 @@ def main():
 
 
 	user_interface = ui_class.ui(root)
-	c_logger.info("UI created")
+	c_logger.info("UI class object created")
 	user_interface.start_up()
-	c_logger.info("UI drawn")
+	c_logger.info("UI drawn in root window")
 	root.mainloop()
 
 if __name__ == '__main__':
