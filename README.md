@@ -3,11 +3,27 @@ Cowrie Log Analzer (CLA) is a Python\TKinter program which analyzes cowrie honey
 
 Two things makes CLA different than other cowrie log analyzers. The first is the notion of history. CLA retains parsed data in persistent database storage. The second is the notion of search.
 
+## Things You Need Before Getting Started With CLA
+CLA has the following dependencies. You'll want to install this before you get started.
+- Tkinter
+- Matplotlib
+- Pandas
+
+## Getting Started With CLA
+You can clone this repository once you have the prerequisites installed. Try this: `git clone https://github.com/jasonmpittman/cowrie-log-analyzer.git`
+
+## Using CLA
+Using CLA is straightfoward. First, place the cowrie JSON log or logs you want analyzed in the *import* subdirectory.
+
+Then, to run the program, execute `python3 client.py` from a shell or terminal.
+
 ## Input
-CLA consumes cowrie JSON log files. The optimal and expected operation is to consume a single JSON.
+CLA consumes cowrie JSON log files only. Other types of log files are not viable and attempting to load them will result in a program crash.
+
+# Things CLA Analyzes
 
 ## IP Addresses
-CLA captures source IP address and source IP port.   
+CLA analyzes source IP address and source IP port.   
 
 ## Messages
 CLA captures and deconstructs *messages*. The message types CLA targets are:
