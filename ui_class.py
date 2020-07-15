@@ -2,6 +2,7 @@ from ui_elements import *
 from facade import *
 import tkinter as tk
 import color_palette
+import log
 
 ui_class_logger = log.Logger("ui_class")
 
