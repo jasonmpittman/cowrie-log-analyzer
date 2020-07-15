@@ -10,17 +10,20 @@ import datetime
 
 from event_class import *
 
+import log
+
+events_db_log = log.Logger("events_db")
 
 '''Creates a database connection to a SQLite database '''
 def create_connection(db_file="events.db"):
-
 	conn = None
-
 	try:
 		conn = sqlite3.connect(db_file)
+		events_db_log.info("", create_connection.__name__, f"Successfully connected to {db_file}")
 		return conn
 	except Error as e:
 		print(e)
+		events_db_log.info("", create_connection.__name__, f"Failed to connect to {db_file}")
 		return conn
 
 '''
@@ -90,6 +93,7 @@ def get_type(event_id):
 		return config_dict[event_id]
 	except:
 		print(f"Missing from config file: {event_id}, full event id will be used")
+		events_db_log.info("", get_type.__name__, f"Missing from config file: {event_id}, full event id will be used")
 		return event_id
 
 '''
@@ -152,8 +156,9 @@ def add_event(conn, event):
 	try:
 		cur.execute(sql, preped_data)
 		rowid = cur.lastrowid
+
 	except:
-		print("nothing was inserted")
+		events_db_log.info("", add_event.__name__, f"Nothnig was inserted")
 		return False
 
 	if type == "Command":
@@ -166,8 +171,10 @@ def add_event(conn, event):
 			data = (foreign_key, com)
 			try:
 				cur.execute(sql, data)
+				events_db_log.info("", add_event.__name__, f"Command inserted")
 			except:
 				print("Failed to insert command")
+				events_db_log.info("", add_event.__name__, f"Failed to insert command")
 				return False
 	return True
 
@@ -192,6 +199,7 @@ def query_top_ten(conn, col1):
 		strReturn = ""
 		stop_val = 10
 		print_num = 1
+		events_db_log.info("", query_top_ten.__name__, f"Top ten queried {col1}")
 		while i < stop_val and i < len(res):
 			key, _ = res[i]
 
@@ -204,6 +212,7 @@ def query_top_ten(conn, col1):
 			i += 1
 		first, _ = res[0]
 		cur.close()
+		events_db_log.info("", query_top_ten.__name__, f"Top ten queried {col1} - Successful")
 		return (strReturn, first)
 	except:
 		print("Failed")
@@ -233,7 +242,7 @@ def top_ten_user_pass(conn):
 			totals[combined] += 1
 
 	sortedDictionary = sorted(totals.items(), key = lambda x : x[1], reverse=True)
-
+	events_db_log.info("", top_ten_user_pass.__name__, f"Top ten queried user_pass - Successful")
 	while i < 10 and i < len(sortedDictionary):
 		key, value = sortedDictionary[i]
 		if i == 9:
@@ -265,6 +274,7 @@ def longest_durations():
 		else:
 			output_str = output_str + f"{i+1}.  {val}\n"
 		i += 1
+	events_db_log.info("", longest_durations.__name__, f"Top ten longest durations - Successful")
 	return output_str, first
 
 
