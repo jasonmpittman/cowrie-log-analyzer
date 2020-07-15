@@ -2,6 +2,10 @@ import pathlib
 import sqlite3
 from sqlite3 import Error
 
+import log
+
+country_db_logger = log.Logger("country_db")
+
 country_db = "country_lookup.db"
 '''
 Create a database connection to a SQLite database
@@ -9,13 +13,15 @@ Input: Database file name
 Output: a connection to the database
 '''
 def create_connection(db_file):
-	conn = None
 
+	conn = None
 	try:
 		conn = sqlite3.connect(db_file)
+		country_db_logger.info("", create_connection.__name__, f"Successfully connected to {db_file}")
 		return conn
 	except Error as e:
 		print(e)
+		country_db_logger.info("", create_connection.__name__, f"Failed to connect to {db_file}")
 		return conn
 
 '''
@@ -70,8 +76,10 @@ def query_country_db(ip):
 		c.execute(sql)
 		country = c.fetchall()
 		c.close()
+		country_db_logger.info("", query_country_db.__name__, f"Successfully found ip: {ip}")
 		return country[0][0]
 	except Error as e:
+		country_db_logger.info("", query_country_db.__name__, f"failed to find ip: {ip}")
 		print(e)
 
 '''
