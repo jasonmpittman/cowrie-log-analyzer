@@ -353,7 +353,6 @@ def graph_window(parent, category, x_label, y_label, title, palette):
 		G.draw()
 
 	graph_export_popup = PopUp(G.graph_export, no_update, graphW, "Export Graph", "Export", "", "Name of PNG file", palette)
-
 	export_graph = StandardButton(bar, graph_export_popup.pop_up_box, "Export", palette)
 	export_graph.pack("right")
 	ui_logger.info("", graph_window.__name__, f"graph export pop-up displayed and button created")

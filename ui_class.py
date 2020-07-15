@@ -2,16 +2,20 @@ from ui_elements import *
 from facade import *
 import tkinter as tk
 import color_palette
+
+ui_class_logger = log.Logger("ui_class")
+
 class ui:
 	def __init__(self, root):
 		'''
 		Constant variables that control the size of the top 10 boxes
 		'''
-		
+		ui_class_logger.info(self.__class__.__name__, self.__init__.__name__, "Palette initialization")
 		self.palette = color_palette.color("#161925","#23395b","#406e8e","#8ea8c3","#cbf7ed")
 		self._info_box_col = 35
 		self._info_box_row = 10
 
+		ui_class_logger.info(self.__class__.__name__, self.__init__.__name__, "Event handler creation")
 		self.eh = event_handler(self.update_screen, self.export)
 
 		self.root = root
@@ -19,11 +23,13 @@ class ui:
 		'''
 		Import and Export pop-up window
 		'''
+		ui_class_logger.info(self.__class__.__name__, self.__init__.__name__, "Import and export pop-ups initialization")
 		self.import_pop = PopUp(self.eh.import_pop_get_data, self.eh.import_pop_update_database, self.root, "Import", "Import", "Not a file or directory", "File or directory name: ", self.palette)
 		self.export_pop = PopUp(self.eh.export_pop_export_data, self.eh.export_pop_no_update, self.root, "Export", "Export", "", "Name of markdown file: ", self.palette)
 		'''
 		Creation of the rows, so it can be organized
 		'''
+		ui_class_logger.info(self.__class__.__name__, self.__init__.__name__, "First and second row creation")
 		self.first_row = tk.Frame()
 		self.first_row.configure(bg=self.palette.primary)
 		self.second_row = tk.Frame()
@@ -32,6 +38,7 @@ class ui:
 		'''
 		First row of boxes
 		'''
+		ui_class_logger.info(self.__class__.__name__, self.__init__.__name__, "Creation of first row of boxes")
 		self.ip_address = InfoBox(self.first_row, self._info_box_row, self._info_box_col, "Top 10 IP Addresses", self.palette)
 		self.user_names = InfoBox(self.first_row, self._info_box_row, self._info_box_col, "Top 10 Usernames", self.palette)
 		self.passwords = InfoBox(self.first_row, self._info_box_row, self._info_box_col, "Top 10 Passwords", self.palette)
@@ -40,6 +47,7 @@ class ui:
 		'''
 		Second row of boxes
 		'''
+		ui_class_logger.info(self.__class__.__name__, self.__init__.__name__, "Creation of second row of boxes")
 		self.download_file = InfoBox(self.second_row, self._info_box_row, self._info_box_col, "Top 10 Downloads", self.palette)
 		self.origin_country = InfoBox(self.second_row, self._info_box_row, self._info_box_col, "Top 10 Countries", self.palette)
 		self.session_duration = InfoBox(self.second_row, self._info_box_row, self._info_box_col, "Top 10 Session Durations", self.palette)
@@ -47,13 +55,14 @@ class ui:
 
 
 		#Exit button creation and placement
+		ui_class_logger.info(self.__class__.__name__, self.__init__.__name__, "Creation of bottom bar")
 		self.bottom_bar = tk.Frame(self.root)
 		self.bottom_bar.configure(bg=self.palette.primary)
-
 		self.exit_button = StandardButton(self.bottom_bar, self.eh.exit_button_press, "Exit", self.palette)
 
 
 		#Graph selection creation and button creation
+		ui_class_logger.info(self.__class__.__name__, self.__init__.__name__, "Graph portion creation")
 		self.graph_selection_menu = SelectionMenu(self.root, self.palette)
 		self.graph_button = StandardButton(self.bottom_bar, self.graph_selection_menu.pop, "Graph", self.palette)
 
@@ -67,6 +76,7 @@ class ui:
 		'''
 		Placing the first row in position
 		'''
+		ui_class_logger.info(self.__class__.__name__, self._place_first_row.__name__, "First row placement")
 		self.first_row.pack(side="top")
 		self.ip_address.grid(0, 1)
 		self.user_names.grid(0, 2)
@@ -77,6 +87,7 @@ class ui:
 		'''
 		Placing the second row in position
 		'''
+		ui_class_logger.info(self.__class__.__name__, self._place_second_row.__name__, "Secord row placement")
 		self.second_row.pack(side="top")
 		self.download_file.grid(0, 0)
 		self.origin_country.grid(0, 1)
@@ -87,6 +98,7 @@ class ui:
 		'''
 		Creation of a bottom bar of buttons
 		'''
+		ui_class_logger.info(self.__class__.__name__, self._place_button_bar.__name__, "Bottom bar placement")
 		self.bottom_bar.pack(side="bottom")
 		self.exit_button.pack("right")
 		self.graph_button.pack("right")
@@ -98,9 +110,11 @@ class ui:
 	Input: filename --> name of file with or without .md on the end --> it will handle it either way
 	'''
 	def export(self, filename):
+		ui_class_logger.info(self.__class__.__name__, self.export.__name__, "Export")
 		extention = filename[-3::]
 		if extention != ".md":
 			filename = filename + ".md"
+			ui_class_logger.info(self.__class__.__name__, self.export.__name__, ".md added")
 
 		str_output = "#Text Output\n"
 		str_output += self.ip_address.export_md()
@@ -115,6 +129,7 @@ class ui:
 
 		with open(filename, "w") as f:
 			f.write(str_output)
+		ui_class_logger.info(self.__class__.__name__, self.export.__name__, f"Written to {str_output} file")
 		return True
 
 	# '''
@@ -122,6 +137,7 @@ class ui:
 	# '''
 	def update_screen(self):
 		conn = create_connection("events.db")
+		ui_class_logger.info(self.__class__.__name__, self.update_screen.__name__, "Performing screen update")
 		try:
 			ip_res, ip1 = query_top_ten(conn, "ip_address")
 			self.ip_address.clear()
@@ -154,11 +170,15 @@ class ui:
 
 			self.overall_one.clear()
 			self.overall_one.append(f"- ip: {ip1}\n- usr: {usr1}\n- pass: {pass1}\n- User/Pass: {usr_pass_1} \n- Downloads: {download1}\n- Country: {country1}\n- Duration: {sess1}")
+			ui_class_logger.info(self.__class__.__name__, self.update_screen.__name__, "Successfully updated")
 		except:
+			ui_class_logger.info(self.__class__.__name__, self.update_screen.__name__, "Screen update failed")
 			print("Please Import Data")
+			# Add a popup box here to let user know
 
 
 	def start_up(self):
+		ui_class_logger.info(self.__class__.__name__, self.start_up.__name__, "Running start up...")
 		self._place_first_row()
 		self._place_second_row()
 		self._place_button_bar()
