@@ -107,9 +107,15 @@ This allows for the creation and drawing of graphs (bar and histograms)
 	- graph_export --> saves the graph as a .png
 '''
 class Graph:
-	def __init__(self, parent, widthIn, heightIn, xLabel, yLabel, title="Title"):
+	def __init__(self, parent, widthIn, heightIn, xLabel, yLabel, palette, title="Title"):
+		self.palette = palette
+		self._graph_background = self.palette.secondary_a
+		self._graph_bar_color = self.palette.secondary_b
+		self._graph_label_color = self.palette.accent_a
+		self._graph_figure_color = self.palette.primary
 		self._data = []
 		self._figure = Figure(figsize=(widthIn, heightIn), dpi=100)
+		self._figure.patch.set_facecolor(self._graph_figure_color)
 		self._figure.tight_layout()
 		ui_logger.info(self.__class__.__name__, self.__init__.__name__, f"figure created and layout set")
 		self._canvas = FigureCanvasTkAgg(self._figure, parent)
@@ -123,7 +129,7 @@ class Graph:
 		self._title = title
 		self._xLabel = xLabel
 		self._yLabel = yLabel
-		matplotlib.rc('xtick', labelsize=10)
+		matplotlib.rc('xtick', labelsize=10, color=self._graph_label_color)
 
 	def grid(self, r, c, colSpan=2, px=10, py=10):
 		self._widget.grid(row=r, column=c, columnspan=colSpan, padx=px, pady=py)
@@ -137,14 +143,20 @@ class Graph:
 	def draw(self):
 		self._graph.cla()
 		self._graph.set_xticklabels(self._data[0], rotation=70)
+		# self._graph.set_yticklabels()
+		self._graph.tick_params(axis='x', colors=self._graph_label_color)
+		self._graph.tick_params(axis='y', colors=self._graph_label_color)
 		ui_logger.info(self.__class__.__name__, self.draw.__name__, f"label format set")
-		self._graph.bar(self._data[0], self._data[1])
+		self._graph.bar(self._data[0], self._data[1], color=self._graph_bar_color)
+		self._graph.set_facecolor(self._graph_background)
 		ui_logger.info(self.__class__.__name__, self.draw.__name__, f"bar graph is drawn")
 		self._figure.set_tight_layout(tight=True)
 		ui_logger.info(self.__class__.__name__, self.draw.__name__, f"set figure layout")
-		self._graph.set_title(self._title)
+		self._graph.set_title(self._title, color=self._graph_label_color)
 		self._graph.set_xlabel(self._xLabel)
 		self._graph.set_ylabel(self._yLabel)
+		self._graph.xaxis.label.set_color(self._graph_label_color)
+		self._graph.yaxis.label.set_color(self._graph_label_color)
 		ui_logger.info(self.__class__.__name__, self.draw.__name__, f"graph title, x-labels, and y-labels are drawn onto the graph")
 
 	def draw_histogram(self):
@@ -333,9 +345,11 @@ def graph_window(parent, category, x_label, y_label, title, palette):
 	graphW = tk.Toplevel(parent)
 	graphW.resizable(False, False)
 	graphW.title("Graph")
+	graphW.configure(background=palette.primary)
 	ui_logger.info("", graph_window.__name__, f"graph_window created and displayed")
 
 	bar = tk.Frame(graphW)
+	bar.configure(background=palette.primary)
 	bar.pack(side="bottom")
 
 	#self.window.destroy()
@@ -343,7 +357,7 @@ def graph_window(parent, category, x_label, y_label, title, palette):
 	exit_button.pack("right")
 	ui_logger.info("", graph_window.__name__, f"buttons and button bar created and placed")
 
-	G = Graph(graphW, 8, 5, x_label, y_label, title)
+	G = Graph(graphW, 8, 5, x_label, y_label, palette, title)
 	G.pd_data(category)
 	G.pack("top")
 	ui_logger.info("", graph_window.__name__, f"Graph created")
