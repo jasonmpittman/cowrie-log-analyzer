@@ -1,5 +1,5 @@
-from events_class import *
-from events_database import *
+import events_class
+import events_database
 import sys
 import log
 
@@ -7,7 +7,7 @@ system_logger = log.Logger("system")
 
 class logic:
 	def __init__(self):
-		self.events_object = Events()
+		self.events_object = events_class.Events()
 
 	def get_data(self, name):
 		system_logger.info(self.__class__.__name__, self.get_data.__name__, "get_data called")
@@ -15,16 +15,16 @@ class logic:
 
 	def update_database(self):
 		system_logger.info(self.__class__.__name__, self.update_database.__name__, "update_database called")
-		conn = create_connection("events.db")
-		config_dict = get_config()
+		conn = events_database.create_connection("events.db")
+		config_dict = events_database.get_config()
 		test = True
 		for event in self.events_object.events:
-			res = add_event(conn, event)
+			res = events_database.add_event(conn, event)
 			if not res:
 				test = False
 
 		conn.commit()
-		conn = create_connection("events.db")
+		conn = events_database.create_connection("events.db")
 
 		return test
 

@@ -8,6 +8,8 @@ import datetime
 
 import log
 
+import country_database
+
 events_db_log = log.Logger("events_db")
 
 '''Creates a database connection to a SQLite database '''
@@ -114,7 +116,7 @@ def get_data_touple(event):
 	username = event.get("username")
 	password = event.get("password")
 	filename = get_file_name(event.get("url"))
-	country = get_ip_country(event.get("src_ip"))
+	country = country_database.get_ip_country(event.get("src_ip"))
 
 	duration = event.get("duration")
 	if duration != "-":
