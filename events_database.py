@@ -4,11 +4,7 @@ from sqlite3 import Error
 
 import json
 
-from country_database import *
-
 import datetime
-
-from event_class import *
 
 import log
 
