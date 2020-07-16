@@ -16,7 +16,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 import matplotlib.pyplot as plt
 
-from events_database import *
+import events_database
 
 import log
 
@@ -161,7 +161,7 @@ class Graph:
 
 
 	def pd_data(self, col):
-		conn = create_connection()
+		conn = events_database.create_connection()
 		sql = f"""SELECT {col},COUNT({col}) AS cnt FROM events
 				WHERE {col} NOT IN ('-')
 				GROUP BY {col}
