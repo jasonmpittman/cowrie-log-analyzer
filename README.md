@@ -17,6 +17,17 @@ Using CLA is straightfoward. First, place the cowrie JSON log or logs you want a
 
 Then, to run the program, execute `python3 client.py` from a shell or terminal.
 
+### Import
+To import new data into the program, press the import button and type in the file/directory path to the file/derectory that contains the data that you would like to import (relative to execution location).
+
+### Export
+#### Export Data
+To export the data, simply press the export button and type in the filename that you would like to export as. The .md extention is added automatically if you do not include it in the filename.
+
+#### Export Graph
+To export the graphs created, after selecting and having the graph drawn, simply select export. Much like when exporting data, type in the filename that you would like it to be exported as. The .png extention will be added if you do not already have it.
+
+
 ## Input
 CLA consumes cowrie JSON log files only. Other types of log files are not viable and attempting to load them will result in a program crash.
 
