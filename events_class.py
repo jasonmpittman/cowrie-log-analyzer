@@ -1,6 +1,6 @@
 import json
 
-from event_class import *
+import event_class
 
 import os
 
@@ -28,7 +28,7 @@ class Events:
 
 		for line in lines:
 			json_line_dict = json.loads(line)
-			obj = Event(json_line_dict)
+			obj = event_class.Event(json_line_dict)
 			self.events.append(obj)
 
 

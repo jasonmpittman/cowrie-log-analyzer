@@ -2,6 +2,7 @@ import system
 import log
 
 facade_logger = log.Logger("facade")
+
 class event_handler:
 	def __init__(self, update_screen, export):
 		self.logic = system.logic()
