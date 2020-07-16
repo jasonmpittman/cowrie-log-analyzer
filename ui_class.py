@@ -1,8 +1,14 @@
-from ui_elements import *
-from facade import *
+import ui_elements
+
+import facade
+
 import tkinter as tk
+
 import color_palette
+
 import log
+
+import events_database
 
 ui_class_logger = log.Logger("ui_class")
 
@@ -17,7 +23,7 @@ class ui:
 		self._info_box_row = 10
 
 		ui_class_logger.info(self.__class__.__name__, self.__init__.__name__, "Event handler creation")
-		self.eh = event_handler(self.update_screen, self.export)
+		self.eh = facade.event_handler(self.update_screen, self.export)
 
 		self.root = root
 		self.root.configure(bg=self.palette.primary)
@@ -25,8 +31,8 @@ class ui:
 		Import and Export pop-up window
 		'''
 		ui_class_logger.info(self.__class__.__name__, self.__init__.__name__, "Import and export pop-ups initialization")
-		self.import_pop = PopUp(self.eh.import_pop_get_data, self.eh.import_pop_update_database, self.root, "Import", "Import", "Not a file or directory", "File or directory name: ", self.palette)
-		self.export_pop = PopUp(self.eh.export_pop_export_data, self.eh.export_pop_no_update, self.root, "Export", "Export", "", "Name of markdown file: ", self.palette)
+		self.import_pop = ui_elements.PopUp(self.eh.import_pop_get_data, self.eh.import_pop_update_database, self.root, "Import", "Import", "Not a file or directory", "File or directory name: ", self.palette)
+		self.export_pop = ui_elements.PopUp(self.eh.export_pop_export_data, self.eh.export_pop_no_update, self.root, "Export", "Export", "", "Name of markdown file: ", self.palette)
 		'''
 		Creation of the rows, so it can be organized
 		'''
@@ -40,38 +46,38 @@ class ui:
 		First row of boxes
 		'''
 		ui_class_logger.info(self.__class__.__name__, self.__init__.__name__, "Creation of first row of boxes")
-		self.ip_address = InfoBox(self.first_row, self._info_box_row, self._info_box_col, "Top 10 IP Addresses", self.palette)
-		self.user_names = InfoBox(self.first_row, self._info_box_row, self._info_box_col, "Top 10 Usernames", self.palette)
-		self.passwords = InfoBox(self.first_row, self._info_box_row, self._info_box_col, "Top 10 Passwords", self.palette)
-		self.user_and_pass = InfoBox(self.first_row, self._info_box_row, self._info_box_col, "Top 10 User/Pass Pairs", self.palette)
+		self.ip_address = ui_elements.InfoBox(self.first_row, self._info_box_row, self._info_box_col, "Top 10 IP Addresses", self.palette)
+		self.user_names = ui_elements.InfoBox(self.first_row, self._info_box_row, self._info_box_col, "Top 10 Usernames", self.palette)
+		self.passwords = ui_elements.InfoBox(self.first_row, self._info_box_row, self._info_box_col, "Top 10 Passwords", self.palette)
+		self.user_and_pass = ui_elements.InfoBox(self.first_row, self._info_box_row, self._info_box_col, "Top 10 User/Pass Pairs", self.palette)
 
 		'''
 		Second row of boxes
 		'''
 		ui_class_logger.info(self.__class__.__name__, self.__init__.__name__, "Creation of second row of boxes")
-		self.download_file = InfoBox(self.second_row, self._info_box_row, self._info_box_col, "Top 10 Downloads", self.palette)
-		self.origin_country = InfoBox(self.second_row, self._info_box_row, self._info_box_col, "Top 10 Countries", self.palette)
-		self.session_duration = InfoBox(self.second_row, self._info_box_row, self._info_box_col, "Top 10 Session Durations", self.palette)
-		self.overall_one = InfoBox(self.second_row, self._info_box_row, self._info_box_col, "Overall Number 1", self.palette)
+		self.download_file = ui_elements.InfoBox(self.second_row, self._info_box_row, self._info_box_col, "Top 10 Downloads", self.palette)
+		self.origin_country = ui_elements.InfoBox(self.second_row, self._info_box_row, self._info_box_col, "Top 10 Countries", self.palette)
+		self.session_duration = ui_elements.InfoBox(self.second_row, self._info_box_row, self._info_box_col, "Top 10 Session Durations", self.palette)
+		self.overall_one = ui_elements.InfoBox(self.second_row, self._info_box_row, self._info_box_col, "Overall Number 1", self.palette)
 
 
 		#Exit button creation and placement
 		ui_class_logger.info(self.__class__.__name__, self.__init__.__name__, "Creation of bottom bar")
 		self.bottom_bar = tk.Frame(self.root)
 		self.bottom_bar.configure(bg=self.palette.primary)
-		self.exit_button = StandardButton(self.bottom_bar, self.eh.exit_button_press, "Exit", self.palette)
+		self.exit_button = ui_elements.StandardButton(self.bottom_bar, self.eh.exit_button_press, "Exit", self.palette)
 
 
 		#Graph selection creation and button creation
 		ui_class_logger.info(self.__class__.__name__, self.__init__.__name__, "Graph portion creation")
-		self.graph_selection_menu = SelectionMenu(self.root, self.palette)
-		self.graph_button = StandardButton(self.bottom_bar, self.graph_selection_menu.pop, "Graph", self.palette)
+		self.graph_selection_menu = ui_elements.SelectionMenu(self.root, self.palette)
+		self.graph_button = ui_elements.StandardButton(self.bottom_bar, self.graph_selection_menu.pop, "Graph", self.palette)
 
 
 		#Import button and placement
-		self.import_button = StandardButton(self.bottom_bar, self.import_pop.pop_up_box, "Import", self.palette)
+		self.import_button = ui_elements.StandardButton(self.bottom_bar, self.import_pop.pop_up_box, "Import", self.palette)
 		#Export button creation
-		self.export_button = StandardButton(self.bottom_bar, self.export_pop.pop_up_box, "Export", self.palette)
+		self.export_button = ui_elements.StandardButton(self.bottom_bar, self.export_pop.pop_up_box, "Export", self.palette)
 
 	def _place_first_row(self):
 		'''
@@ -137,35 +143,35 @@ class ui:
 	# update_screen --> updates all the visible data with what is in the datebase
 	# '''
 	def update_screen(self):
-		conn = create_connection("events.db")
+		conn = events_database.create_connection()
 		ui_class_logger.info(self.__class__.__name__, self.update_screen.__name__, "Performing screen update")
 		try:
-			ip_res, ip1 = query_top_ten(conn, "ip_address")
+			ip_res, ip1 = events_database.query_top_ten(conn, "ip_address")
 			self.ip_address.clear()
 			self.ip_address.append(ip_res)
 
-			usr_res, usr1 = query_top_ten(conn, "username")
+			usr_res, usr1 = events_database.query_top_ten(conn, "username")
 			self.user_names.clear()
 			self.user_names.append(usr_res)
 
-			pass_res, pass1 = query_top_ten(conn, "password")
+			pass_res, pass1 = events_database.query_top_ten(conn, "password")
 			self.passwords.clear()
 			self.passwords.append(pass_res)
 
-			user_pass_res, usr_pass_1 = top_ten_user_pass(conn)
+			user_pass_res, usr_pass_1 = events_database.top_ten_user_pass(conn)
 			self.user_and_pass.clear()
 			self.user_and_pass.append(user_pass_res)
 
 			#more information needed
-			download_res, download1 = query_top_ten(conn, "filename")
+			download_res, download1 = events_database.query_top_ten(conn, "filename")
 			self.download_file.clear()
 			self.download_file.append(download_res)
 
-			country_res, country1 = query_top_ten(conn, "country")
+			country_res, country1 = events_database.query_top_ten(conn, "country")
 			self.origin_country.clear()
 			self.origin_country.append(country_res)
 
-			sess_res, sess1 = longest_durations()
+			sess_res, sess1 = events_database.longest_durations()
 			self.session_duration.clear()
 			self.session_duration.append(sess_res)
 
