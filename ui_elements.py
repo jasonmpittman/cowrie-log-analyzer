@@ -162,13 +162,19 @@ class Graph:
 	def draw_histogram(self):
 		self._graph.cla()
 		# self._graph.set_xticklabels(rotation=70)
-		self._graph.hist(self._data[0], bins=5)
+		self._graph.tick_params(axis='x', colors=self._graph_label_color)
+		self._graph.tick_params(axis='y', colors=self._graph_label_color)
+
+		self._graph.hist(self._data[0], bins=5, color=self._graph_bar_color)
+		self._graph.set_facecolor(self._graph_background)
 		ui_logger.info(self.__class__.__name__, self.draw_histogram.__name__, f"histogram drawn")
 		self._figure.set_tight_layout(tight=True)
 		ui_logger.info(self.__class__.__name__, self.draw_histogram.__name__, f"figure's layout is set")
-		self._graph.set_title(self._title)
+		self._graph.set_title(self._title, color=self._graph_label_color)
 		self._graph.set_xlabel(self._xLabel)
 		self._graph.set_ylabel(self._yLabel)
+		self._graph.xaxis.label.set_color(self._graph_label_color)
+		self._graph.yaxis.label.set_color(self._graph_label_color)
 		ui_logger.info(self.__class__.__name__, self.draw_histogram.__name__, f"histogram title, x-labels, and y-labels are drawn onto the histogram")
 
 
