@@ -20,6 +20,9 @@ Then, to run the program, execute `python3 client.py` from a shell or terminal.
 ### Import
 To import new data into the program, press the import button and type in the file/directory path to the file/derectory that contains the data that you would like to import (relative to execution location).
 
+#### Data persistence
+Repeat data will not be readded to the program. The program saves and uses all imported data that has ever been imported. If you would like to reset its memory of previous data, simply delete the "events.db" file. Run the program again and import the data.
+
 ### Export
 #### Export Data
 To export the data, simply press the export button and type in the filename that you would like to export as. The .md extention is added automatically if you do not include it in the filename.
