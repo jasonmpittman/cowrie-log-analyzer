@@ -338,6 +338,21 @@ class SelectionMenu:
 		self.cancel.pack("right")
 		ui_logger.info(self.__class__.__name__, self.pop.__name__, f"Option menu created buttons and button bar created and displayed")
 
+class alert_window:
+	def __init__(self, parent, palette):
+		self._parent = parent
+		self._palette = palette
+
+	def pop_up(self, message):
+		self._window = tk.Toplevel(self._parent)
+		self._window.configure(bg=self._palette.secondary_b)
+		self._window.resizable(False, False)
+		ui_logger.info(self.__class__.__name__, alert_window.__name__, f"Alert window configured and displaying")
+		self._label = tk.Label(self._window, text=message, bg=self._palette.secondary_b, fg=self._palette.secondary_a)
+		self._label.pack(side="top")
+		self._button = StandardButton(self._window, self._window.destroy, "Ok", self._palette)
+		self._button.pack("bottom")
+
 '''
 A fuction that does nothing (so it can be passed to a class in the event nothing needs to be done)
 '''

@@ -24,6 +24,8 @@ def create_connection(db_file="events.db"):
 		events_db_log.info("", create_connection.__name__, f"Failed to connect to {db_file}")
 		return conn
 
+
+
 '''
 Creates the command table
 '''
@@ -156,7 +158,7 @@ def add_event(conn, event):
 		rowid = cur.lastrowid
 
 	except:
-		events_db_log.info("", add_event.__name__, f"Nothnig was inserted")
+		events_db_log.info("", add_event.__name__, f"Nothing was inserted")
 		return False
 
 	if type == "Command":

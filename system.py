@@ -18,15 +18,17 @@ class logic:
 		conn = events_database.create_connection("events.db")
 		config_dict = events_database.get_config()
 		test = True
+		count = 0
 		for event in self.events_object.events:
 			res = events_database.add_event(conn, event)
 			if not res:
 				test = False
+				count += 1
 
 		conn.commit()
 		conn = events_database.create_connection("events.db")
 
-		return test
+		return test, count
 
 	def no_update(self):
 		pass

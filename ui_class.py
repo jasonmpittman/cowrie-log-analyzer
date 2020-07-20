@@ -23,10 +23,13 @@ class ui:
 		self._info_box_row = 10
 
 		ui_class_logger.info(self.__class__.__name__, self.__init__.__name__, "Event handler creation")
-		self.eh = facade.event_handler(self.update_screen, self.export)
+
 
 		self.root = root
 		self.root.configure(bg=self.palette.primary)
+
+		self.alert = ui_elements.alert_window(self.root, self.palette)
+		self.eh = facade.event_handler(self.update_screen, self.export, self.alert.pop_up)
 		'''
 		Import and Export pop-up window
 		'''
@@ -75,7 +78,9 @@ class ui:
 
 
 		#Import button and placement
-		self.import_button = ui_elements.StandardButton(self.bottom_bar, self.import_pop.pop_up_box, "Import", self.palette)
+		# self.import_button = ui_elements.StandardButton(self.bottom_bar, self.import_pop.pop_up_box, "Import", self.palette)
+
+		self.import_button = ui_elements.StandardButton(self.bottom_bar, self.eh.import_files, "Import", self.palette)
 		#Export button creation
 		self.export_button = ui_elements.StandardButton(self.bottom_bar, self.export_pop.pop_up_box, "Export", self.palette)
 
