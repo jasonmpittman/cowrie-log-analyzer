@@ -17,6 +17,8 @@ def create_connection(db_file="events.db"):
 	conn = None
 	try:
 		conn = sqlite3.connect(db_file)
+		create_table(conn)
+		create_command_table(conn)
 		events_db_log.info("", create_connection.__name__, f"Successfully connected to {db_file}")
 		return conn
 	except Error as e:
