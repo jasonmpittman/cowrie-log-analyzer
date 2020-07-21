@@ -192,13 +192,20 @@ class Graph:
 		ui_logger.info(self.__class__.__name__, self.pd_data.__name__, f"{col}: data set")
 
 	def graph_export(self, filename):
-		extention = filename[-4::]
-		if extention != ".png":
-			filename = filename + ".png"
-			ui_logger.info(self.__class__.__name__, self.graph_export.__name__, ".png extention added to file name")
-		self._figure.savefig(filename)
-		ui_logger.info(self.__class__.__name__, self.graph_export.__name__, f"Graph exported as {filename}")
-		return True
+		self.graph_export_alert = ui_elements.alert_window(self.root, self.palette)
+		try:
+			extention = filename[-4::]
+			if extention != ".png":
+				filename = filename + ".png"
+				ui_logger.info(self.__class__.__name__, self.graph_export.__name__, ".png extention added to file name")
+			self._figure.savefig(filename)
+			ui_logger.info(self.__class__.__name__, self.graph_export.__name__, f"Graph exported as {filename}")
+			self.graph_export_alert.pop_up(f"Export to {filename} successful")
+			return True
+		except:
+			ui_logger.info(self.__class__.__name__, self.graph_export.__name__, f"Graph failed to export as {filename}")
+			self.graph_export_alert.pop_up(f"Export to {filename} failed")
+			return False
 
 '''
 This is used to allow the user to input things into the program

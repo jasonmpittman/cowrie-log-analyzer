@@ -147,7 +147,9 @@ class ui:
 			self.export_alert.pop_up("Export Successful")
 			return True
 		except:
+			ui_class_logger.info(self.__class__.__name__, self.export.__name__, f"Failed to write to {str_output} file")
 			self.export_alert.pop_up("Export failed")
+			return False
 
 
 	# '''
