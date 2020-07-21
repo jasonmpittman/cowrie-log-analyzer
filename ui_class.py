@@ -193,7 +193,10 @@ class ui:
 			ui_class_logger.info(self.__class__.__name__, self.update_screen.__name__, "Successfully updated")
 		except:
 			ui_class_logger.info(self.__class__.__name__, self.update_screen.__name__, "Screen update failed")
+			self.update_screen_alert = ui_elements.alert_window(self.root, self.palette)
+			self.update_screen_alert.pop_up(f"Please import data")
 			print("Please Import Data")
+
 			# Add a popup box here to let user know
 
 
