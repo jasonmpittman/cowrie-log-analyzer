@@ -122,27 +122,33 @@ class ui:
 	Input: filename --> name of file with or without .md on the end --> it will handle it either way
 	'''
 	def export(self, filename):
-		ui_class_logger.info(self.__class__.__name__, self.export.__name__, "Export")
-		extention = filename[-3::]
-		if extention != ".md":
-			filename = filename + ".md"
-			ui_class_logger.info(self.__class__.__name__, self.export.__name__, ".md added")
+		self.export_alert = ui_elements.alert_window(self.root, self.palette)
+		try:
+			ui_class_logger.info(self.__class__.__name__, self.export.__name__, "Export")
+			extention = filename[-3::]
+			if extention != ".md":
+				filename = filename + ".md"
+				ui_class_logger.info(self.__class__.__name__, self.export.__name__, ".md added")
 
-		str_output = "#Text Output\n"
-		str_output += self.ip_address.export_md()
-		str_output += self.user_names.export_md()
-		str_output += self.passwords.export_md()
-		str_output += self.user_and_pass.export_md()
-		str_output += self.download_file.export_md()
-		str_output += self.origin_country.export_md()
-		str_output += self.session_duration.export_md()
-		str_output += "\n"
-		str_output += self.overall_one.export_md()
+			str_output = "#Text Output\n"
+			str_output += self.ip_address.export_md()
+			str_output += self.user_names.export_md()
+			str_output += self.passwords.export_md()
+			str_output += self.user_and_pass.export_md()
+			str_output += self.download_file.export_md()
+			str_output += self.origin_country.export_md()
+			str_output += self.session_duration.export_md()
+			str_output += "\n"
+			str_output += self.overall_one.export_md()
 
-		with open(filename, "w") as f:
-			f.write(str_output)
-		ui_class_logger.info(self.__class__.__name__, self.export.__name__, f"Written to {str_output} file")
-		return True
+			with open(filename, "w") as f:
+				f.write(str_output)
+			ui_class_logger.info(self.__class__.__name__, self.export.__name__, f"Written to {str_output} file")
+			self.export_alert.pop_up("Export Successful")
+			return True
+		except:
+			self.export_alert.pop_up("Export failed")
+
 
 	# '''
 	# update_screen --> updates all the visible data with what is in the datebase
