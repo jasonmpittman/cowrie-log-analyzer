@@ -35,9 +35,10 @@ class event_handler:
 			for filename in filenames_list:
 				self.logic.get_data(filename)
 			result, count = self.logic.update_database()
+			self.update_screen()
 			if not result:
 				print(f"{count} rows of data not inserted because it is repeated data already in the database")
-				self._alert_window(f"{count} rows of data not inserted because \nit is repeated data already in the database")
+				self._alert_window(f"{count} rows of data not inserted because \nit is repeated data already in the database \nor do not contian relivant data")
 
 	def export_pop_export_data(self, filename):
 		facade_logger.info(self.__class__.__name__, self.export_pop_export_data.__name__, "export_pop_export_data running")

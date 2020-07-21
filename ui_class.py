@@ -197,8 +197,6 @@ class ui:
 			self.update_screen_alert.pop_up(f"Please import data")
 			print("Please Import Data")
 
-			# Add a popup box here to let user know
-
 
 	def start_up(self):
 		ui_class_logger.info(self.__class__.__name__, self.start_up.__name__, "Running start up...")
