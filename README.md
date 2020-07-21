@@ -18,7 +18,7 @@ Using CLA is straightfoward. First, place the cowrie JSON log or logs you want a
 Then, to run the program, execute `python3 client.py` from a shell or terminal.
 
 ### Import
-To import new data into the program, press the import button and type in the file/directory path to the file/derectory that contains the data that you would like to import (relative to execution location).
+To import new data into the program, press the import button and then select all files that you would like to import into the program through the file structure navigation window that pops up.
 
 #### Data persistence
 Repeat data will not be readded to the program. The program saves and uses all imported data that has ever been imported. If you would like to reset its memory of previous data, simply delete the "events.db" file. Run the program again and import the data.
