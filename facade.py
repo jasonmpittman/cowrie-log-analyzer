@@ -11,7 +11,9 @@ __status__ = "Release"
 __dependecies__ = "system, log, tkinter"
 
 import system
+
 import log
+
 import tkinter as tk
 
 facade_logger = log.Logger("facade")
