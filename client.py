@@ -8,7 +8,7 @@ __version__ = "1.0.0"
 __maintainer__ = "Jason M. Pittman"
 __email__ = "jpittman@highpoint.edu"
 __status__ = "Release"
-__dependecies__ = "tkinter, ui_class"
+__dependecies__ = "tkinter, ui_class, log"
 
 import tkinter as tk
 
