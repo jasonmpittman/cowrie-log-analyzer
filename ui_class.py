@@ -1,3 +1,15 @@
+#!/usr/bin/env python3
+
+__author__ = "Kevin A. Rubin, Jason M. Pittman"
+__copyright__ = "Copyright 2020"
+__credits__ = ["Kevin A. Rubin, Jason M. Pittman"]
+__license__ = "GPLv3"
+__version__ = "1.0.0"
+__maintainer__ = "Jason M. Pittman"
+__email__ = "jpittman@highpoint.edu"
+__status__ = "Release"
+__dependecies__ = "ui_elements, facade, tkinter, color_palette, log, events_database"
+
 import ui_elements
 
 import facade
@@ -13,10 +25,44 @@ import events_database
 ui_class_logger = log.Logger("ui_class")
 
 class ui:
+	"""
+	Attributes
+	----------
+	palette : color_palette object
+	_info_box_col : int
+	_info_box_row : int
+	root : tk.Tk object
+	alert : alert window object
+	eh : event handler object
+	import_pop : PopUp object
+	export_pop : PopUp object
+	first_row : tk.Frame object
+	second_row : tk.Frame object
+	ip_address : InfoBox object
+	user_names : InfoBox object
+	passwords : InfoBox object
+	user_and_pass : InfoBox object
+	download_file : InfoBox object
+	origin_country : InfoBox object
+	session_duration : InfoBox object
+	overall_one : InfoBox object
+	bottom_bar : tk.Frame object
+	exit_button : StandardButton object
+	graph_button : StandardButton object
+	import_button : StandardButton object
+	export_button : StandardButton object
+	graph_selection_menu : SelectionMenu object
+
+	"""
 	def __init__(self, root):
-		'''
+		"""
 		Constant variables that control the size of the top 10 boxes
-		'''
+
+		Parameters
+		----------
+		root : tk.Tk object
+		"""
+
 		ui_class_logger.info(self.__class__.__name__, self.__init__.__name__, "Palette initialization")
 		self.palette = color_palette.color("#161925","#23395b","#406e8e","#8ea8c3","#cbf7ed")
 		self._info_box_col = 35
@@ -85,9 +131,9 @@ class ui:
 		self.export_button = ui_elements.StandardButton(self.bottom_bar, self.export_pop.pop_up_box, "Export", self.palette)
 
 	def _place_first_row(self):
-		'''
-		Placing the first row in position
-		'''
+		"""
+		Places the first row in position.
+		"""
 		ui_class_logger.info(self.__class__.__name__, self._place_first_row.__name__, "First row placement")
 		self.first_row.pack(side="top")
 		self.ip_address.grid(0, 1)
@@ -96,9 +142,9 @@ class ui:
 		self.user_and_pass.grid(0,4)
 
 	def _place_second_row(self):
-		'''
-		Placing the second row in position
-		'''
+		"""
+		Places the second row in position.
+		"""
 		ui_class_logger.info(self.__class__.__name__, self._place_second_row.__name__, "Secord row placement")
 		self.second_row.pack(side="top")
 		self.download_file.grid(0, 0)
@@ -107,9 +153,9 @@ class ui:
 		self.overall_one.grid(0, 3)
 
 	def _place_button_bar(self):
-		'''
-		Creation of a bottom bar of buttons
-		'''
+		"""
+		Places bottom bar of buttons and places those buttons in the bar.
+		"""
 		ui_class_logger.info(self.__class__.__name__, self._place_button_bar.__name__, "Bottom bar placement")
 		self.bottom_bar.pack(side="bottom")
 		self.exit_button.pack("right")
@@ -117,11 +163,16 @@ class ui:
 		self.import_button.pack("right")
 		self.export_button.pack("right")
 
-	'''
-	Exports the information to a file that the user specifies
-	Input: filename --> name of file with or without .md on the end --> it will handle it either way
-	'''
+
 	def export(self, filename):
+		"""
+		Exports the information to a file that the user specifies
+		Input: filename --> name of file with or without .md on the end --> it will handle it either way
+
+		Parameters
+		----------
+		filename : str
+		"""
 		self.export_alert = ui_elements.alert_window(self.root, self.palette)
 		try:
 			ui_class_logger.info(self.__class__.__name__, self.export.__name__, "Export")
@@ -151,11 +202,10 @@ class ui:
 			self.export_alert.pop_up("Export failed")
 			return False
 
-
-	# '''
-	# update_screen --> updates all the visible data with what is in the datebase
-	# '''
 	def update_screen(self):
+		"""
+		update_screen --> updates all the visible data with what is in the datebase
+		"""
 		conn = events_database.create_connection()
 		ui_class_logger.info(self.__class__.__name__, self.update_screen.__name__, "Performing screen update")
 		try:
@@ -199,6 +249,9 @@ class ui:
 
 
 	def start_up(self):
+		"""
+		Runs when starting up the application. It gets everything placed, setup, and displayed.
+		"""
 		ui_class_logger.info(self.__class__.__name__, self.start_up.__name__, "Running start up...")
 		self._place_first_row()
 		self._place_second_row()
