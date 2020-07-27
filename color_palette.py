@@ -13,29 +13,29 @@ __dependecies__ = " "
 class color:
 	"""
 	A class used to hold hex value color pallette for the UI
-	
+
 	Attributes:
 	----------
-	
+
 	primary : str
 	secondary_a : str
 	secondary_b : str
 	accent_a : str
 	accent_b : str
 	"""
-	
+
 	def __init__(self, primary, secondary_a, secondary_b, accent_a, accent_b):
 		"""
 		Parameters
 		----------
-		
+
 		primary : str
 		secondary_a : str
 		secondary_b : str
 		accent_a : str
 		accent_b : str
 		"""
-		
+
 		self.primary = primary
 		self.secondary_a = secondary_a
 		self.secondary_b = secondary_b

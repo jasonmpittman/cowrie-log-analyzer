@@ -14,9 +14,6 @@ import tkinter as tk
 
 import ui_class
 
-#import logging
-#logging.basicConfig(filename="log_file.log", level=logging.DEBUG, format="%(levelname)s:%(name)s:%(message)s")
-
 import log
 
 def main():
