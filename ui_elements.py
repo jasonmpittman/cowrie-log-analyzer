@@ -444,14 +444,41 @@ class TextInputSection:
 		ui_logger.info(self.__class__.__name__, self.get.__name__, f"{self._label_text}: text returned")
 		return self._text.get()
 
-'''
-A class that handles all of the pop-up boxes and deals with all of that functionality (in partuclare the popups where the user types information in)
-	- init --> initializes variables
-	- pop_up_box --> creates the pop-up box
-	- btn_cmd --> when the button is pressed this is what runs
-'''
+
 class PopUp:
+	"""
+	A class that handles all of the pop-up boxes and deals with all of that functionality (in partuclare the popups where the user types information in).
+		- init --> initializes variables
+		- pop_up_box --> creates the pop-up box
+		- btn_cmd --> when the button is pressed this is what runs
+
+	Attributes
+	----------
+	_palette : color object
+	_cmd : function
+	_update : function
+	_parent : tk.Frame object
+	_title : str
+	_action_name : str
+	_error_message : tk.StringVar object
+	_error_message_on_screen : str
+	_label_text : str
+	"""
 	def __init__(self, cmd, update, parent, title, action_name, error_message, label_text, palette):
+		"""
+		Sets all the variables the object needs.
+
+		Parameters
+		----------
+		cmd : function
+		update : function
+		parent : tk.Frame object
+		title : str
+		action_name : str
+		error_message : str
+		label_text : str
+		palette : color object
+		"""
 		self._palette = palette
 		self._cmd = cmd
 		self._update = update
@@ -465,6 +492,9 @@ class PopUp:
 		ui_logger.info(self.__class__.__name__, self.__init__.__name__, f"{self._title} - initial variables setup")
 
 	def pop_up_box(self):
+		"""
+		Pops the box up with all the needed elements based on what was inputted on the creation of the object.
+		"""
 		self._error_message.set("")
 		self.window = tk.Toplevel(self._parent)
 		ui_logger.info(self.__class__.__name__, self.pop_up_box.__name__, f"{self._title} - window popped up")
@@ -487,6 +517,10 @@ class PopUp:
 
 
 	def btn_cmd(self, event=None):
+		"""
+		Calling of the button command.
+		event : event object (required for use of clicking button and pressing enter)
+		"""
 		ui_logger.info(self.__class__.__name__, self.pop_up_box.__name__, f"{self._title}: Button command running")
 		input_text = self.input_box.get()
 		succ = self._cmd(input_text)
@@ -498,29 +532,70 @@ class PopUp:
 			ui_logger.warning(self.__class__.__name__, self.pop_up_box.__name__, f"Failed: UI served warning --> {self._error_message_on_screen}")
 			self._error_message.set(self._error_message_on_screen)
 
-'''
-The selection menu for the graphs
-	- init --> keeps track of the parent
-	- Pack and grid --> for placement
-	- graph_it --> determines what graph to draw and then calls the needed functions to do so
-	- pop --> this is the pop-up menu with the options
-'''
+
 class SelectionMenu:
+	"""
+	The selection menu for the graphs
+		- init --> keeps track of the parent
+		- Pack and grid --> for placement
+		- graph_it --> determines what graph to draw and then calls the needed functions to do so
+		- pop --> this is the pop-up menu with the options
+
+		Attributes
+		----------
+		_parent : tk.Frame object
+		_palette : color object
+		window : tk.toplevel object
+		string_var : tk.StringVar object
+		menu : tk.OptionMenu object
+		button_bar : tk.Frame object
+		button : StandardButton object
+		cancel : StandardButton object
+
+
+	"""
 	def __init__(self, parent, palette):
+		"""
+		Sets attribute variables.
+
+		Parameters
+		----------
+		parent : tk.Frame object
+		palette : color object
+		"""
 		self._parent = parent
 		self._palette = palette
 		ui_logger.info(self.__class__.__name__, self.__init__.__name__, f"Initialized")
 
 	def pack(self, side="top"):
+		"""
+		Places the button in the pack style.
+		Parameters
+		----------
+		Side : str
+		px : int
+		py : int
+		"""
 		self.menu.pack(side=side, padx=0, pady=0)
 		ui_logger.info(self.__class__.__name__, self.pack.__name__, f"Placed")
 
 	def grid(self, r, c):
+		"""
+		Places the button in the grid style.
+		Parameters
+		----------
+		r : int
+		c : int
+		px : int
+		py : int
+		"""
 		self.menu.grid(row=r, column=c, padx=0, pady=0)
 		ui_logger.info(self.__class__.__name__, self.grid.__name__, f"Placed")
 
 	def graph_it(self):
-		#duration is going to change
+		"""
+		Creates graph based on the user selection.
+		"""
 		self.dict = {"IP Address": {"category": "ip_address", "x_label": "IP Addresses", "y_label": "Frequency", "title": "IP Address Graph"},
 					"Countries": {"category": "country", "x_label": "Country", "y_label": "Frequency", "title": "Country Graph"},
 					"Session Duration": {"category": "duration", "x_label": "Time(s)", "y_label": "Longest Durations", "title": "Time Duration Graph"}}
@@ -531,6 +606,9 @@ class SelectionMenu:
 		ui_logger.info(self.__class__.__name__, self.graph_it.__name__, f"{graph_type} graphed")
 
 	def pop(self):
+		"""
+		Pops window out with the selection menu on it.
+		"""
 		self.window = tk.Toplevel(self._parent)
 		self.window.configure(bg=self._palette.secondary_b)
 		self.window.resizable(False, False)
@@ -550,11 +628,37 @@ class SelectionMenu:
 		ui_logger.info(self.__class__.__name__, self.pop.__name__, f"Option menu created buttons and button bar created and displayed")
 
 class alert_window:
+	"""
+	Pops up a window to let the user know information.
+
+	Attributes
+	----------
+	_parent : tk.Frame object
+	_palette : color object
+	_window : tk.Toplevel object
+	_label : tk.Label object
+	_button : StandardButton object
+	"""
 	def __init__(self, parent, palette):
+		"""
+		Sets attributes
+
+		Parameters
+		----------
+		parent : tk.Frame object
+		palette : color object
+		"""
 		self._parent = parent
 		self._palette = palette
 
 	def pop_up(self, message):
+		"""
+		Pops up a box with the provided message in order to give the user information.
+
+		Parameters
+		----------
+		message : str
+		"""
 		self._window = tk.Toplevel(self._parent)
 		self._window.configure(bg=self._palette.secondary_b)
 		self._window.resizable(False, False)
@@ -564,16 +668,27 @@ class alert_window:
 		self._button = StandardButton(self._window, self._window.destroy, "Ok", self._palette)
 		self._button.pack("bottom")
 
-'''
-A fuction that does nothing (so it can be passed to a class in the event nothing needs to be done)
-'''
-def no_update():
-	print("")
 
-'''
-Everything the graph window needs to be shown is done in here
-'''
+def no_update():
+	"""
+	A fuction that does nothing (so it can be passed to a class in the event nothing needs to be done)
+	"""
+	pass
+
+
 def graph_window(parent, category, x_label, y_label, title, palette):
+	"""
+	Everything the graph window needs to be shown is done in here
+
+	Parameters
+	----------
+	parent : tk.Frame object
+	category : str
+	x_label : str
+	y_label : str
+	title : str
+	palette : color object
+	"""
 	graphW = tk.Toplevel(parent)
 	graphW.resizable(False, False)
 	graphW.title("Graph")
