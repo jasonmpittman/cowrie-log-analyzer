@@ -10,13 +10,13 @@ __email__ = "jpittman@highpoint.edu"
 __status__ = "Release"
 __dependecies__ = "events_class, events_database, sys, log"
 
-import events_class
+from Events import events_class
 
-import events_database
+from Events import events_database
 
 import sys
 
-import log
+from Log import log
 
 system_logger = log.Logger("system")
 
@@ -50,7 +50,7 @@ class logic:
 		count : number of failed inserts (usually due to repeate data)
 		"""
 		system_logger.info(self.__class__.__name__, self.update_database.__name__, "update_database called")
-		conn = events_database.create_connection("events.db")
+		conn = events_database.create_connection()
 		config_dict = events_database.get_config()
 		test = True
 		count = 0
@@ -61,7 +61,7 @@ class logic:
 				count += 1
 
 		conn.commit()
-		conn = events_database.create_connection("events.db")
+		conn = events_database.create_connection()
 
 		return test, count
 

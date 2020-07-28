@@ -16,17 +16,16 @@ import sqlite3
 
 from sqlite3 import Error
 
-import log
+from Log import log
 
 country_db_logger = log.Logger("country_db")
 
-country_db = "country_lookup.db"
 '''
 Create a database connection to a SQLite database
 Input: Database file name
 Output: a connection to the database
 '''
-def create_connection(db_file):
+def create_connection(db_file="Events/country_lookup.db"):
 	"""
 	Parameters
 	----------
@@ -65,12 +64,13 @@ Inserts a row into the database
 Input: a connection, the information about the row as a touple
 '''
 def insert_country(conn, country_info):
-		"""
-		Parameters
-		----------
-		conn : database connection structure
-		country_info : tuple of 4 str
-		"""
+	"""
+	Parameters
+	----------
+	conn : database connection structure
+	country_info : tuple of 4 str
+	"""
+
 	sql = r"INSERT INTO ip_lookup(ip_from, ip_to, country_code, country_name) VALUES(?,?,?,?)"
 	cur = conn.cursor()
 	cur.execute(sql, country_info)
@@ -108,7 +108,7 @@ def query_country_db(ip):
 	ip : int
 	"""
 	sql = f"SELECT country_name FROM ip_lookup WHERE {ip} >= ip_from and {ip} < ip_to"
-	conn = create_connection(country_db)
+	conn = create_connection()
 	try:
 		c = conn.cursor()
 		#executes the phrase
@@ -131,7 +131,7 @@ def run_sql(sql):
 	----------
 	sql : str
 	"""
-	conn = create_connection(country_db)
+	conn = create_connection()
 	try:
 		c = conn.cursor()
 		c.execute(sql)

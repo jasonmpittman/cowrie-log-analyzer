@@ -10,9 +10,9 @@ __email__ = "jpittman@highpoint.edu"
 __status__ = "Release"
 __dependecies__ = "system, log, tkinter"
 
-import system
+from Events import system
 
-import log
+from Log import log
 
 import tkinter as tk
 

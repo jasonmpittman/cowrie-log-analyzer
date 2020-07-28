@@ -28,9 +28,9 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 import matplotlib.pyplot as plt
 
-import events_database
+from Events import events_database
 
-import log
+from Log import log
 
 ui_logger = log.Logger("ui_elements")
 
@@ -237,6 +237,7 @@ class Graph:
 		palette : color object
 		title : str
 		"""
+		self._parent = parent
 		self.palette = palette
 		self._graph_background = self.palette.secondary_a
 		self._graph_bar_color = self.palette.secondary_b
@@ -258,6 +259,7 @@ class Graph:
 		self._title = title
 		self._xLabel = xLabel
 		self._yLabel = yLabel
+
 		matplotlib.rc('xtick', labelsize=10, color=self._graph_label_color)
 
 	def grid(self, r, c, colSpan=2, px=10, py=10):
@@ -358,7 +360,7 @@ class Graph:
 		----------
 		filename : str
 		"""
-		self.graph_export_alert = ui_elements.alert_window(self.root, self.palette)
+		self.graph_export_alert = alert_window(self._parent, self.palette)
 		try:
 			extention = filename[-4::]
 			if extention != ".png":
@@ -369,6 +371,7 @@ class Graph:
 			self.graph_export_alert.pop_up(f"Export to {filename} successful")
 			return True
 		except:
+			print("graph failed to export")
 			ui_logger.info(self.__class__.__name__, self.graph_export.__name__, f"Graph failed to export as {filename}")
 			self.graph_export_alert.pop_up(f"Export to {filename} failed")
 			return False

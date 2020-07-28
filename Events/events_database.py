@@ -18,14 +18,14 @@ import json
 
 import datetime
 
-import country_database
+from Events import country_database
 
-import log
+from Log import log
 
 events_db_log = log.Logger("events_db")
 
 
-def create_connection(db_file="events.db"):
+def create_connection(db_file="Events/events.db"):
 	"""
 	Creates a database connection to a SQLite database (specifically used for events.db)
 
@@ -219,6 +219,7 @@ def add_event(conn, event):
 
 	try:
 		cur.execute(sql, preped_data)
+
 		rowid = cur.lastrowid
 
 	except:
@@ -284,7 +285,7 @@ def query_top_ten(conn, col):
 		events_db_log.info("", query_top_ten.__name__, f"Top ten queried {col} - Successful")
 		return (strReturn, first)
 	except:
-		print("Failed")
+		print(f"Failed {col}")
 		return None
 
 

@@ -33,7 +33,7 @@ class Logger:
 		"""
 		self.logger = logging.getLogger(name)
 		self.logger.setLevel(logging.INFO)
-		self.file_handler = logging.FileHandler("logfile.log")
+		self.file_handler = logging.FileHandler("Log/logfile.log")
 		self.formatter = logging.Formatter("%(asctime)s: %(levelname)s: %(name)s:%(message)s")
 		self.file_handler.setFormatter(self.formatter)
 		self.logger.addHandler(self.file_handler)

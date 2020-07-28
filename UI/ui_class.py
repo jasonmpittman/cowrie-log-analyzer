@@ -10,17 +10,17 @@ __email__ = "jpittman@highpoint.edu"
 __status__ = "Release"
 __dependecies__ = "ui_elements, facade, tkinter, color_palette, log, events_database"
 
-import ui_elements
+from UI import ui_elements
 
 import facade
 
 import tkinter as tk
 
-import color_palette
+from UI import color_palette
 
-import log
+from Log import log
 
-import events_database
+from Events import events_database
 
 ui_class_logger = log.Logger("ui_class")
 

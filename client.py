@@ -12,9 +12,9 @@ __dependecies__ = "tkinter, ui_class, log"
 
 import tkinter as tk
 
-import ui_class
+from UI import ui_class
 
-import log
+from Log import log
 
 def main():
 	"""

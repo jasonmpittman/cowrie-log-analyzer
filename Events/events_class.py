@@ -10,7 +10,7 @@ __email__ = "jpittman@highpoint.edu"
 __status__ = "Release"
 __dependecies__ = "event_class, json, os, pathlib"
 
-import event_class
+from Events import event_class
 
 import json
 
