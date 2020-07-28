@@ -1,3 +1,15 @@
+#!/usr/bin/env python3
+
+__author__ = "Kevin A. Rubin, Jason M. Pittman"
+__copyright__ = "Copyright 2020"
+__credits__ = ["Kevin A. Rubin, Jason M. Pittman"]
+__license__ = "GPLv3"
+__version__ = "1.0.0"
+__maintainer__ = "Jason M. Pittman"
+__email__ = "jpittman@highpoint.edu"
+__status__ = "Release"
+__dependecies__ = "tkinter, sys, matplotlib, pandas, events_database, log"
+
 import tkinter as tk
 
 from tkinter import ttk
@@ -21,11 +33,28 @@ import events_database
 import log
 
 ui_logger = log.Logger("ui_elements")
-'''
-A button class with basic functionality
-'''
+
 class StandardButton:
+	"""
+	A button class with basic functionality and consistent look.
+
+	Attributes
+	----------
+	_button_text : str
+	_palette : color object
+	_style : ttk.Style object
+	_button : ttk.Button object
+	"""
 	def __init__(self, parent, command_function, button_text, palette):
+		"""
+		Sets up the style, color, and the button.
+		Parameters
+		----------
+		parent : tk container object (tk.Frame)
+		command_function : function
+		button_text : str
+		palette : color object
+		"""
 		self._button_text = button_text
 		self._palette = palette
 		self._style = ttk.Style()
@@ -39,24 +68,64 @@ class StandardButton:
 		ui_logger.info(self.__class__.__name__, self.__init__.__name__, f"{self._button_text}: Visual Design Configured")
 		self._button = ttk.Button(parent, text=self._button_text, command=command_function, width=10, style="Accent.TButton")
 		ui_logger.info(self.__class__.__name__, self.__init__.__name__, f"{self._button_text}: Button initialized")
+
 	def grid(self, r, c, px=10, py=10):
+		"""
+		Places the button in the grid style.
+		Parameters
+		----------
+		r : int
+		c : int
+		px : int
+		py : int
+		"""
 		self._button.grid(row=r, column=c, padx=px, pady=py)
 		ui_logger.info(self.__class__.__name__, self.grid.__name__, f"{self._button_text}: Button placed")
 
 	def pack(self, Side, px=10, py=10):
+		"""
+		Places the button in the pack style.
+		Parameters
+		----------
+		Side : str
+		px : int
+		py : int
+		"""
 		self._button.pack(side=Side, padx=px, pady=py)
 		ui_logger.info(self.__class__.__name__, self.pack.__name__, f"{self._button_text}: Button placed")
 
-'''
-These are the boxes that display the top 10 information
-	- Init --> creates the box
-	- Pack and grid --> for placement
-	- Append --> add text to the box (at the end)
-	- Clear --> remove text from the box
-	- export_md --> returns a string with the data from the box
-'''
+
 class InfoBox:
+	"""
+	These are the boxes that display the top 10 information
+		- Init --> creates the box
+		- Pack and grid --> for placement
+		- Append --> add text to the box (at the end)
+		- Clear --> remove text from the box
+		- export_md --> returns a string with the data from the box
+
+		Attributes
+		----------
+		_palette : color object
+		_title_text : str
+		_info_frame : tk.Frame object
+		_box_text : tk.Text
+	"""
 	def __init__(self, parent, h, w, title, palette, px=10, py=10):
+		"""
+		Creates the the conponents for the InfoBox.
+
+		Parameters
+		----------
+		parent : parent container (tk.Frame)
+		h : int
+		w : int
+		title : str
+		palette : color object
+		px : int
+		py : int
+
+		"""
 		self._palette = palette
 		self._title_text = title
 		self._info_frame = tk.Frame(parent, bg=self._palette.secondary_b, bd=5, relief="groove", width=w, height=h)
@@ -72,42 +141,102 @@ class InfoBox:
 		ui_logger.info(self.__class__.__name__, self.__init__.__name__, f"{self._title_text}: Textbox placed")
 
 	def grid(self, r, c, px=10, py=10):
+		"""
+		Places the button in the grid style.
+		Parameters
+		----------
+		r : int
+		c : int
+		px : int
+		py : int
+		"""
 		self._info_frame.grid(row=r, column=c, padx=px, pady=py)
 		ui_logger.info(self.__class__.__name__, self.grid.__name__, f"{self._title_text}: InfoBox placed")
 
 	def pack(self, Side, px=10, py=10):
+		"""
+		Places the button in the pack style.
+		Parameters
+		----------
+		Side : str
+		px : int
+		py : int
+		"""
 		self._info_frame.pack(side=Side, padx=px, pady=py)
 		ui_logger.info(self.__class__.__name__, self.pack.__name__, f"{self._title_text}: InfoBox placed")
 
 	def append(self, text):
+		"""
+		Adds text to the the end of the InfoBox.
+
+		Parameters
+		----------
+		text : str
+		"""
 		self._box_text.configure(state="normal")
 		self._box_text.insert(tk.END, text)
 		self._box_text.configure(state="disabled")
 		ui_logger.info(self.__class__.__name__, self.append.__name__, f"{self._title_text}: text has been appended")
 
 	def clear(self):
+		"""
+		Empties the text out of the InfoBox.
+		"""
 		self._box_text.configure(state="normal")
 		self._box_text.delete("1.0", tk.END)
 		self._box_text.configure(state="disabled")
 		ui_logger.info(self.__class__.__name__, self.clear.__name__, f"{self._title_text} has been cleared")
 
 	def export_md(self):
+		"""
+		Returns a string to be used for text export.
+		"""
 		string = "## " + self._title_text + "\n"
 		string += self._box_text.get("1.0", tk.END)
 		ui_logger.info(self.__class__.__name__, self.export_md.__name__, f"{self._title_text} has been exported")
 		return string
 
-'''
-This allows for the creation and drawing of graphs (bar and histograms)
-	- init --> initializes variables
-	- grid and Pack --> allow for placement
-	- draw --> actually draws the graph with labels
-	- draw_histogram --> draws a histogram with the data instead of a bar graph
-	- pd_data --> loads the data from the database
-	- graph_export --> saves the graph as a .png
-'''
+
 class Graph:
+	"""
+	This allows for the creation and drawing of graphs (bar and histograms)
+		- init --> initializes variables
+		- grid and Pack --> allow for placement
+		- draw --> actually draws the graph with labels
+		- draw_histogram --> draws a histogram with the data instead of a bar graph
+		- pd_data --> loads the data from the database
+		- graph_export --> saves the graph as a .png
+
+		Attributes
+		----------
+		palette : color object
+		_graph_background : str (hex color value)
+		_graph_bar_color : str (hex color value)
+		_graph_label_color : str (hex color value)
+		_graph_figure_color : str (hex color value)
+		_data : list
+		_figure : matplotlib.figure.Figure object
+		_canvas : matplotlib.backends.backend_tkagg.FigureCanvasTkAgg object
+		_graph : matplotlib.subplot object
+		_widget : tk_widget object
+		_title : str
+		_xLabel : str
+		_yLabel : str
+	"""
 	def __init__(self, parent, widthIn, heightIn, xLabel, yLabel, palette, title="Title"):
+		"""
+		Creates and configures the graph.
+
+		Parameters
+		----------
+		parent : tk.Frame object
+		widthIn : int
+		heightIn : int
+		xLabel : str
+		yLabel : str
+		palette : color object
+		title : str
+		"""
 		self.palette = palette
 		self._graph_background = self.palette.secondary_a
 		self._graph_bar_color = self.palette.secondary_b
@@ -132,15 +261,35 @@ class Graph:
 		matplotlib.rc('xtick', labelsize=10, color=self._graph_label_color)
 
 	def grid(self, r, c, colSpan=2, px=10, py=10):
+		"""
+		Places the button in the grid style.
+		Parameters
+		----------
+		r : int
+		c : int
+		px : int
+		py : int
+		"""
 		self._widget.grid(row=r, column=c, columnspan=colSpan, padx=px, pady=py)
 		ui_logger.info(self.__class__.__name__, self.grid.__name__, f"graph placed")
 
 
 	def pack(self, Side, px=10, py=10):
+		"""
+		Places the button in the pack style.
+		Parameters
+		----------
+		Side : str
+		px : int
+		py : int
+		"""
 		self._widget.pack(side=Side, padx=px, pady=py)
 		ui_logger.info(self.__class__.__name__, self.pack.__name__, f"graph placed")
 
 	def draw(self):
+		"""
+		Draws and places all of the elements for a bar graph.
+		"""
 		self._graph.cla()
 		self._graph.set_xticklabels(self._data[0], rotation=70)
 		# self._graph.set_yticklabels()
@@ -160,6 +309,9 @@ class Graph:
 		ui_logger.info(self.__class__.__name__, self.draw.__name__, f"graph title, x-labels, and y-labels are drawn onto the graph")
 
 	def draw_histogram(self):
+		"""
+		Draws and places all of the elements for a histogram.
+		"""
 		self._graph.cla()
 		# self._graph.set_xticklabels(rotation=70)
 		self._graph.tick_params(axis='x', colors=self._graph_label_color)
@@ -179,6 +331,13 @@ class Graph:
 
 
 	def pd_data(self, col):
+		"""
+		Collects the data from database (x and y data) and adds it to the _data list.
+
+		Parameters
+		----------
+		col : str
+		"""
 		conn = events_database.create_connection()
 		sql = f"""SELECT {col},COUNT({col}) AS cnt FROM events
 				WHERE {col} NOT IN ('-')
@@ -192,6 +351,13 @@ class Graph:
 		ui_logger.info(self.__class__.__name__, self.pd_data.__name__, f"{col}: data set")
 
 	def graph_export(self, filename):
+		"""
+		Exports the graph to the given filename (with extention correction)
+
+		Parameters
+		----------
+		filename : str
+		"""
 		self.graph_export_alert = ui_elements.alert_window(self.root, self.palette)
 		try:
 			extention = filename[-4::]
@@ -207,14 +373,32 @@ class Graph:
 			self.graph_export_alert.pop_up(f"Export to {filename} failed")
 			return False
 
-'''
-This is used to allow the user to input things into the program
-	- init --> initializes the pop-up box and places everything in it
-	- Pack and grid --> for placement
-	- Get --> returns the text that was typed into the textbox
-'''
+
 class TextInputSection:
+	"""
+	This is used to allow the user to input things into the program.
+		- init --> initializes the pop-up box and places everything in it
+		- Pack and grid --> for placement
+		- Get --> returns the text that was typed into the textbox
+
+		Attributes
+		----------
+		_label_text : str
+		_palette : color object
+		_frame : tk.Frame object
+		_label : tk.Label object
+		_text : tk.Entry object
+	"""
 	def __init__(self, parent, label_text, palette):
+		"""
+		Creates and places elements into the TextInputSection object.
+
+		Parameters
+		----------
+		parent : tk.Frame object
+		label_text : str
+		palette : color object
+		"""
 		self._label_text = label_text
 		self._palette = palette
 		self._frame = tk.Frame(parent)
@@ -229,14 +413,34 @@ class TextInputSection:
 		ui_logger.info(self.__class__.__name__, self.__init__.__name__, f"{label_text}: Text entry created, focus set, and placed")
 
 	def pack(self, Side, px=0, py=0):
+		"""
+		Places the button in the pack style. Places the actual TextInputSection object.
+		Parameters
+		----------
+		Side : str
+		px : int
+		py : int
+		"""
 		self._frame.pack(side=Side, padx=px, pady=py)
 		ui_logger.info(self.__class__.__name__, self.pack.__name__, f"{self._label_text}: placed")
 
 	def grid(self, r, c, px=0, py=0):
+		"""
+		Places the button in the grid style. Places the actual TextInputSection object.
+		Parameters
+		----------
+		r : int
+		c : int
+		px : int
+		py : int
+		"""
 		self._frame.grid(row=r, column=c, padx=px, pady=py)
 		ui_logger.info(self.__class__.__name__, self.grid.__name__, f"{self._label_text}: placed")
 
 	def get(self):
+		"""
+		Returns what is in the text feild.
+		"""
 		ui_logger.info(self.__class__.__name__, self.get.__name__, f"{self._label_text}: text returned")
 		return self._text.get()
 
